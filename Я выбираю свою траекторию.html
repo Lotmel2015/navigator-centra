@@ -171,7 +171,15 @@
   /* весь блок «Материалы к занятию» — только для тьютора; школьнику его не показываем */
   .matbar { display:flex; }
   body:not(.role-tyutor) .matbar { display:none !important; }
-  @media print { #authPanel, #reg-shkolnik, #reg-tyutor, #dash-shkolnik, #dash-tutor, #sessionbar { display:none !important; } }
+  /* ==== Модальное окно выбора роли при запуске ==== */
+  .auth-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(20,30,45,.55);
+    overflow: auto; padding: 1.2rem; }
+  .auth-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
+  .auth-overlay .authpanel { margin: 4vh auto 2rem; max-width: 480px; }
+  .auth-overlay .authpanel { box-shadow: 0 24px 70px rgba(0,0,0,.35); }
+  body.auth-open { overflow: hidden; }
+
+@media print { #authPanel, #reg-shkolnik, #reg-tyutor, #dash-shkolnik, #dash-tutor, #sessionbar { display:none !important; } }
 
   /* --- Панель входа: современный лёгкий стиль (вариант 1) --- */
   .authpanel { position: relative; width: 100%; max-width: 460px; margin: 1.6rem auto; border-radius: 20px;
@@ -187,22 +195,28 @@
   .authpanel h2 { margin:.1rem 0 .3rem; font-size:1.6rem; font-weight:800; color:#1f3a5f; letter-spacing:-.01em; }
   .authpanel .auth-sub { margin:0 0 1.2rem; color:#5c6a77; font-size:.9rem; line-height:1.45; }
 
-  /* Табы ролей */
-  .v1-tabs { display:grid; grid-template-columns:1fr 1fr; background:#e7eef7; border-radius:14px;
-             padding:.3rem; margin:0 0 1.5rem; gap:.2rem; }
-  .v1-tabs button { border:0; background:transparent; padding:.65rem .5rem; border-radius:11px;
-                    font:700 14px/1.2 system-ui, sans-serif; color:#5c6a77; cursor:pointer; transition:.18s; }
-  .v1-tabs button.active { background:#fff; color:#1f3a5f; box-shadow:0 2px 8px rgba(31,58,95,.16); }
-  .v1-tabs button:not(.active):hover { color:#0f6f69; }
+  /* Роли-карточки («Кто ты сегодня») */
+  .v3-roles { display:flex; flex-direction:column; gap:.55rem; margin:0 0 1.3rem; }
+  .v3-role { border:1.5px solid #d5dce4; border-radius:12px; padding:.8rem 1rem; cursor:pointer;
+    transition:.15s; display:flex; gap:.75rem; align-items:flex-start; text-align:left;
+    font:inherit; background:#fff; width:100%; }
+  .v3-role:hover { border-color:#0f6f69; background:#f4faf8; }
+  .v3-role.active { border-color:#0f6f69; background:#e7f2ee; box-shadow:0 0 0 3px rgba(15,111,105,.12); }
+  .v3-role .role-ico { font-size:1.35rem; flex:0 0 auto; line-height:1.3; }
+  .v3-role .role-tt b { display:block; color:#1f3a5f; font-size:.98rem; }
+  .v3-role .role-tt small { color:#5c6a77; font-size:.82rem; line-height:1.35; display:block; margin-top:.15rem; }
+
+  /* Сетка полей (две колонки) */
+  .auth-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
 
   /* Форма: одна колонка */
   .auth-form .field { margin-bottom: 1.05rem; }
   .auth-form .field label { display:block; font-size:.8rem; font-weight:700; color:#374151; margin-bottom:.35rem; }
-  .authpanel input[type=text], .authpanel select { width:100%; border:1.5px solid #d5dce4; border-radius:12px;
+  .authpanel input[type=text], .authpanel input[type=email], .authpanel input[type=password], .authpanel select { width:100%; border:1.5px solid #d5dce4; border-radius:12px;
     padding:.78rem .9rem; font:15px/1.4 system-ui, sans-serif; background:#f8fafb; color:#22303c; transition:.15s;
     box-sizing:border-box; box-shadow:inset 0 1px 2px rgba(31,58,95,.04); }
-  .authpanel input[type=text]:hover, .authpanel select:hover { border-color:#b6c2cf; background:#fff; }
-  .authpanel input[type=text]:focus, .authpanel select:focus { outline:none; border-color:#0f6f69; background:#fff;
+  .authpanel input[type=text]:hover, .authpanel input[type=email]:hover, .authpanel input[type=password]:hover, .authpanel select:hover { border-color:#b6c2cf; background:#fff; }
+  .authpanel input[type=text]:focus, .authpanel input[type=email]:focus, .authpanel input[type=password]:focus, .authpanel select:focus { outline:none; border-color:#0f6f69; background:#fff;
     box-shadow:0 0 0 3px rgba(15,111,105,.14); }
   .authpanel select { appearance:none; -webkit-appearance:none;
     background-image: linear-gradient(45deg, transparent 50%, #5c6a77 50%), linear-gradient(135deg, #5c6a77 50%, transparent 50%);
@@ -215,6 +229,7 @@
   .authpanel .btn-enter:hover { background:#0f6f69; transform:translateY(-1px); }
   .authmsg { color:#b3382c; font-size:.85rem; margin-top:.5rem; line-height:1.4; }
   .authpanel .auth-hint { text-align:center; color:#8b97a4; font-size:.8rem; margin-top:1rem; }
+  @media (max-width: 520px) { .auth-grid2 { grid-template-columns:1fr; } }
   @media (max-width: 480px) { .authpanel { padding: 1.6rem 1.2rem 1.3rem; } }
 
   /* Весь маршрут ниже панели входа скрыт, пока пользователь не вошёл */
@@ -424,49 +439,66 @@
     <p><b>Кому это нужно:</b> школьникам 7–11 классов, которые хотят осознанно выбрать экзамены, профиль, вуз; тьюторам, которые помогают им этот путь построить; родителям, которые хотят, чтобы ребёнок учился без страха и с интересом.</p>
   </section>
 
+<div class="auth-overlay" id="authOverlay">
 <div class="authpanel" id="authPanel">
     <div class="auth-head">
-      <div class="auth-tag">Твой личный навигатор</div>
-      <h2>Вход в маршрут</h2>
-      <p class="auth-sub">Профиль хранится в этом браузере. Заполни форму — маршрут откроется сразу.</p>
+      <div class="auth-tag">Навигатор центра</div>
+      <h2>Кто ты сегодня?</h2>
+      <p class="auth-sub">Выбери роль — увидишь свою рабочую зону. Профиль хранится в этом браузере.</p>
     </div>
 
-    <div class="v1-tabs" id="authTabs">
-      <button type="button" class="active" data-role="shkolnik" onclick="showRegForm('shkolnik')">Ученик</button>
-      <button type="button" data-role="tyutor" onclick="showRegForm('tyutor')">Тьютор</button>
+    <div class="v3-roles" id="authRoles">
+      <button type="button" class="v3-role active" data-role="shkolnik" onclick="showRegForm('shkolnik')">
+        <span class="role-ico">🧭</span>
+        <span class="role-tt"><b>Я определяюсь</b><small>школьник 7–11 класса: выбираю профиль, экзамены, своё будущее. Откроется мой маршрут и мои документы.</small></span>
+      </button>
+      <button type="button" class="v3-role" data-role="tyutor" onclick="showRegForm('tyutor')">
+        <span class="role-ico">🤝</span>
+        <span class="role-tt"><b>Я помогаю определяться</b><small>наставник, тьютор, педагог: сопровождаю учеников. Откроется панель сопровождения и материалы в помощь.</small></span>
+      </button>
     </div>
 
-    <!-- Форма школьника -->
+    <!-- Форма определяющегося -->
     <div id="reg-shkolnik" class="auth-form">
       <div class="field"><label>Имя и фамилия</label><input type="text" id="sh-fio" placeholder="Иванов Иван" autocomplete="off"></div>
-      <div class="field"><label>Класс</label>
-        <select id="sh-klass">
-          <option value="8">8 класс</option>
-          <option value="9">9 класс</option>
-          <option value="10">10 класс</option>
-          <option value="11">11 класс</option>
-        </select>
+      <div class="auth-grid2">
+        <div class="field"><label>Класс</label>
+          <select id="sh-klass">
+            <option value="8">8 класс</option>
+            <option value="9">9 класс</option>
+            <option value="10">10 класс</option>
+            <option value="11">11 класс</option>
+          </select>
+        </div>
+        <div class="field"><label>Школа</label><input type="text" id="sh-ou" placeholder="Где учишься?" autocomplete="off"></div>
       </div>
-      <div class="field"><label>Школа</label><input type="text" id="sh-ou" placeholder="Где учишься?" autocomplete="off"></div>
-      <div class="field"><label>Мой тьютор</label>
+      <div class="auth-grid2">
+        <div class="field"><label>Электронная почта</label><input type="email" id="sh-email" placeholder="you@mail.ru" autocomplete="off"></div>
+        <div class="field"><label>Пароль</label><input type="password" id="sh-pass" placeholder="Придумай пароль" autocomplete="off"></div>
+      </div>
+      <div class="field"><label>Мой наставник</label>
         <select id="sh-tutor"><option value="">— выбери из списка —</option></select>
       </div>
       <button class="btn-enter" onclick="registerShkolnik()">Открыть мой маршрут →</button>
-      <div class="authmsg">Тьютор — из списка зарегистрированных. Нет его — войди без, назначим позже.</div>
+      <div class="authmsg">Наставник — из списка зарегистрированных. Нет его — войди без, назначим позже.</div>
     </div>
 
-    <!-- Форма тьютора -->
+    <!-- Форма помогающего -->
     <div id="reg-tyutor" class="auth-form" style="display:none">
       <div class="field"><label>ФИО</label><input type="text" id="t-fio" placeholder="Смирнова Анна Петровна" autocomplete="off"></div>
       <div class="field"><label>Организация</label><input type="text" id="t-ou" placeholder="Школа / центр" autocomplete="off"></div>
-      <button class="btn-enter" onclick="registerTyutor()">Открыть панель тьютора →</button>
-      <div class="authmsg">После входа ты появишься в списке тьюторов — школьники смогут тебя выбрать.</div>
+      <div class="auth-grid2">
+        <div class="field"><label>Электронная почта</label><input type="email" id="t-email" placeholder="you@mail.ru" autocomplete="off"></div>
+        <div class="field"><label>Пароль</label><input type="password" id="t-pass" placeholder="Придумай пароль" autocomplete="off"></div>
+      </div>
+      <button class="btn-enter" onclick="registerTyutor()">Открыть панель сопровождения →</button>
+      <div class="authmsg">После входа ты появишься в списке наставников — определяющиеся смогут тебя выбрать.</div>
     </div>
 
     <div class="authmsg" id="errS"></div>
     <div class="auth-hint">Всё сохраняется в браузере · данные не уходят в интернет</div>
-    <div style="text-align:center;color:#cbd5e1;font-size:.68rem;margin-top:.8rem">версия 2 · новый дизайн входа</div>
   </div>
+</div>
 
   <div id="route">
   <div id="sessionbar"></div>
@@ -1723,9 +1755,9 @@
 
   /* Переключение табов ролей в панели входа */
   window.showRegForm = function (role) {
-    var tabs = document.querySelectorAll("#authTabs button[data-role]");
-    for (var i = 0; i < tabs.length; i++) {
-      tabs[i].classList.toggle("active", tabs[i].getAttribute("data-role") === role);
+    var cards = document.querySelectorAll("#authRoles .v3-role");
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.toggle("active", cards[i].getAttribute("data-role") === role);
     }
     var shForm = el("reg-shkolnik");
     var tyForm = el("reg-tyutor");
@@ -1733,14 +1765,14 @@
     else if (role === "tyutor") { shForm.style.display = "none"; tyForm.style.display = "block"; }
   };
 
-  /* Заполнить список тьюторов в форме школьника */
+  /* Заполнить список наставников в форме определяющегося */
   function fillTutorSelect() {
     var sel = el("sh-tutor");
     var tyr = getUsers().filter(function (u) { return u.role === "tyutor"; });
     sel.innerHTML = "";
     var opt0 = document.createElement("option");
     opt0.value = "";
-    opt0.textContent = tyr.length ? "— выбери своего тьютора —" : "Пока нет зарегистрированных тьюторов";
+    opt0.textContent = tyr.length ? "— выбери из списка —" : "Пока нет зарегистрированных наставников";
     sel.appendChild(opt0);
     tyr.forEach(function (t) {
       var o = document.createElement("option");
@@ -1750,7 +1782,7 @@
     });
   }
 
-  /* Регистрация школьника */
+  /* Регистрация определяющегося */
   window.registerShkolnik = function () {
     var fio = (el("sh-fio").value || "").trim();
     if (!fio) { el("errS").textContent = "Укажите фамилию и имя."; return; }
@@ -1758,24 +1790,36 @@
     if (!klass) { el("errS").textContent = "Выберите класс."; return; }
     var ou = (el("sh-ou").value || "").trim();
     if (!ou) { el("errS").textContent = "Укажите школу."; return; }
+    var email = (el("sh-email").value || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { el("errS").textContent = "Укажите корректную электронную почту."; return; }
+    var pass = el("sh-pass").value || "";
+    if (pass.length < 4) { el("errS").textContent = "Пароль должен быть не короче 4 символов."; return; }
+    var emailTaken = getUsers().some(function (u) { return u.email && u.email.toLowerCase() === email.toLowerCase(); });
+    if (emailTaken) { el("errS").textContent = "Эта почта уже зарегистрирована. Войдите под ней."; return; }
     var tutorId = el("sh-tutor").value || "";
     var login = uid("sh");
     var users = getUsers();
-    users.push({ login: login, role: "shkolnik", fio: fio, klass: klass, ou: ou, tutorId: tutorId, created: new Date().toISOString() });
+    users.push({ login: login, role: "shkolnik", fio: fio, klass: klass, ou: ou, email: email, pass: pass, tutorId: tutorId, created: new Date().toISOString() });
     saveUsers(users);
     setSession({ login: login, role: "shkolnik" });
     el("errS").textContent = "";
     renderApp();
   };
 
-  /* Регистрация тьютора */
+  /* Регистрация помогающего */
   window.registerTyutor = function () {
     var fio = (el("t-fio").value || "").trim();
     if (!fio) { el("errS").textContent = "Укажите ФИО."; return; }
     var ou = (el("t-ou").value || "").trim();
+    var email = (el("t-email").value || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { el("errS").textContent = "Укажите корректную электронную почту."; return; }
+    var pass = el("t-pass").value || "";
+    if (pass.length < 4) { el("errS").textContent = "Пароль должен быть не короче 4 символов."; return; }
+    var emailTaken = getUsers().some(function (u) { return u.email && u.email.toLowerCase() === email.toLowerCase(); });
+    if (emailTaken) { el("errS").textContent = "Эта почта уже зарегистрирована. Войдите под ней."; return; }
     var login = uid("ty");
     var users = getUsers();
-    users.push({ login: login, role: "tyutor", fio: fio, ou: ou, created: new Date().toISOString() });
+    users.push({ login: login, role: "tyutor", fio: fio, ou: ou, email: email, pass: pass, created: new Date().toISOString() });
     saveUsers(users);
     setSession({ login: login, role: "tyutor" });
     el("errS").textContent = "";
@@ -1866,14 +1910,23 @@
     var bar = el("sessionbar");
     var prog = el("progbar-wrap");
     var authSec = el("authPanel");
+    var overlay = el("authOverlay");
     var dashSh = el("dash-shkolnik");
     var dashTut = el("dash-tutor");
     if (!sess) {
       bar.style.display = "none"; prog.style.display = "none";
+      if (overlay) {
+        overlay.classList.add("show");
+        document.body.classList.add("auth-open");
+      }
       if (authSec) authSec.style.display = "block";
       if (dashSh) dashSh.style.display = "none";
       if (dashTut) dashTut.style.display = "none";
       return;
+    }
+    if (overlay) {
+      overlay.classList.remove("show");
+      document.body.classList.remove("auth-open");
     }
     if (authSec) authSec.style.display = "none";
     bar.style.display = "block";
