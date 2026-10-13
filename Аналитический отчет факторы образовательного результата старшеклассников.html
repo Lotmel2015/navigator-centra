@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Факторы образовательного результата старшеклассников — аналитический обзор</title>
+<style>
+  :root {
+    --bg:#ffffff; --ink:#1f2328; --muted:#5b6470;
+    --accent:#14657a; --accent-soft:#e7f1f4; --accent2:#0f5132;
+    --line:#e4e8ec; --flag:#b45309; --conflict:#b91c1c;
+    --kpi-edge:#dceaf0;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;}
+  main{max-width:880px;margin:0 auto;padding:2rem 1.25rem 3.5rem;}
+  header h1{font-size:1.85rem;line-height:1.25;margin:0 0 .35rem;letter-spacing:-.01em;}
+  .subtitle{color:var(--muted);font-size:1.02rem;margin:0 0 .5rem;}
+  .meta{color:var(--muted);font-size:.85rem;border-bottom:1px solid var(--line);padding-bottom:.9rem;}
+  .tldr{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1.6rem 0;}
+  .tldr b{color:var(--accent);}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.8rem;margin:1.5rem 0 2rem;}
+  .kpi{border:1px solid var(--kpi-edge);border-top:3px solid var(--accent);border-radius:8px;padding:.8rem 1rem;background:#fbfdfe;}
+  .kpi b{display:block;font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.1;}
+  .kpi span{color:var(--muted);font-size:.78rem;}
+  section{margin:2.1rem 0;}
+  h2{font-size:1.2rem;border-bottom:2px solid var(--accent);padding-bottom:.4rem;margin:0 0 1rem;color:var(--accent);}
+  h3{font-size:1.03rem;margin:1.1rem 0 .4rem;color:var(--ink);}
+  p{margin:.55rem 0;}
+  p.lead{color:var(--ink);}
+  ul{margin:.5rem 0 .9rem 1.1rem;padding:0;}
+  li{margin:.3rem 0;}
+  sup a, sup{color:var(--accent);text-decoration:none;font-size:.68em;font-weight:700;}
+  sup a:hover{text-decoration:underline;}
+  strong{font-weight:650;}
+  .flag{color:var(--flag);font-weight:600;}
+  .conflict{color:var(--conflict);font-weight:600;}
+  .takeaway{background:var(--accent-soft);border-radius:6px;padding:.6rem .9rem;margin:.7rem 0;font-size:.96rem;}
+  .takeaway b{color:var(--accent);}
+  .parent{background:#f0f6ee;border-left:4px solid var(--accent2);border-radius:0 6px 6px 0;padding:.55rem .85rem;margin:.55rem 0 .9rem;font-size:.93rem;}
+  .parent b{color:var(--accent2);}
+  .parent p{margin:.2rem 0;}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.6rem 0;}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top;}
+  th{background:#f5f8f9;color:var(--accent);font-weight:650;}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .tags{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0;}
+  .tag{font-size:.72rem;padding:.15rem .6rem;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid #cfe3ea;}
+  .tag.dark{background:#eef1f3;color:var(--muted);border-color:#dde3e7;}
+  footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:3rem;padding-top:.8rem;}
+  ol.sources{font-size:.86rem;}
+  ol.sources li{margin:.5rem 0;}
+  ol.sources a{color:var(--accent);word-break:break-all;}
+  @media print{ main{max-width:none;padding:0;} .kpi,table,svg{break-inside:avoid;} a{color:inherit;text-decoration:none;} section{page-break-inside:auto;} }
+  @media (max-width:600px){ main{padding:1.25rem .9rem 2rem;} header h1{font-size:1.45rem;} }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Факторы, влияющие на образовательный результат старшеклассников (14–18 лет)</h1>
+    <p class="subtitle">Критический научный обзор для руководителей школ, педагогов и родителей</p>
+    <p class="meta">Возраст 8–11 классы · синтез мировой и российской научной литературы · сформировано 01.10.2026 · все утверждения проверены и снабжены ссылками на первоисточники</p>
+  </header>
+
+  <div class="tldr"><b>Главное.</b> Образовательный результат подростка определяется суммой доказанных факторов: достаточный сон (~8 часов), поддерживающая автономию мотивационная среда, качество преподавания (а не размер класса), чувство принадлежности к школе и контакт с реальным миром труда в профориентации. Большинство популярных «панацей» (тесты профориентации, установка на рост, «стили обучения») имеют малый или недоказанный эффект. Опираться следует на верифицированные метаанализы, а не на отдельные эффект-размеры.</div>
+
+  <div class="kpis">
+    <div class="kpi"><b>8 ч</b><span>оптимум сна для успеваемости (14–17 лет)</span></div>
+    <div class="kpi"><b>≤0,4 %</b><span>доля дисперсии благополучия, объясняемая экранами (Orben, 2019)</span></div>
+    <div class="kpi"><b>r≈0,10</b><span>корреляция установки на рост с успеваемостью</span></div>
+    <div class="kpi"><b>26 %</b><span>профессию выбирают «случайно» vs 24 % «по призванию» (ВШЭ)</span></div>
+    <div class="kpi"><b>d≈0,48</b><span>эффект обратной связи по прямому метаанализу</span></div>
+  </div>
+
+  <section>
+    <h2>1. Нейробиология и физиология подростка</h2>
+    <div class="tags"><span class="tag">доказано (множественные источники)</span><span class="tag dark">часть интерпретаций — гипотеза</span></div>
+    <p>Мозг подростка созревает неравномерно: <strong>«лимбическая» (социоэмоциональная) система</strong> достигает пика чувствительности в середине подросткового возраста, тогда как <strong>исполнительная (префронтальная кора)</strong> созревает лишь к середине 20-х — это «двойная система» (dual systems model), объясняющая рискованность, влияние сверстников и импульсивность.<sup><a href="#s1">[1]</a></sup> Пик объёма серого вещества в лобно-теменной коре приходится на ~11–12 лет, далее идёт синаптический прунинг.<sup><a href="#s1">[1]</a></sup><sup><a href="#s8">[8]</a></sup></p>
+    <div class="parent"><b>Для родителя.</b> Если подросток кажется «непоследовательным» — то вспыльчивым, то рассудительным, — это не плохое воспитание, а реальная незрелость отдела мозга, отвечающего за самоконтроль. Ему пока трудно всегда «включать голову». Помогают не нравоучения, а спокойные правила, структура и поддержка. А ещё сейчас то, чем занят ребёнок (учёба, спорт, увлечения, а не бесцельный скроллинг), буквально «прописывается» в мозге — занятия, которые вы поддерживаете сегодня, закрепляются надолго.</div>
+    <p>Дофаминовая система у подростка ещё не завершена: nucleus accumbens созревает раньше коры, а присутствие сверстников усиливает активность областей вознаграждения и рискованное поведение.<sup><a href="#s2">[2]</a></sup><sup><a href="#s3">[3]</a></sup></p>
+    <div class="parent"><b>Для родителя.</b> Подростку физически «в кайф» то, что одобряют друзья, — даже если это вредно. Компания влияет огромно. Не запрещайте общение вообще (это вызовет бунт), а мягко помещайте ребёнка в правильную среду: секции, кружки, олимпиады, где «хорошая» компания — это норма.</div>
+    <h3>Сон — самый управляемый фактор</h3>
+    <p>С половым созреванием фаза сна сдвигается до ~2 часов, отсюда трудности утреннего пробуждения. Рекомендация для 14–17 лет — <strong>8–10 часов</strong> (AASM/AAP). Исследование 54 тыс. восьмиклассников показало оптимум ~8 часов: меньше 6 и больше 10 связаны с более низкой успеваемостью (перевёрнутая U-кривая).<sup><a href="#s4">[4]</a></sup><sup><a href="#s5">[5]</a></sup></p>
+    <div class="parent"><b>Для родителя.</b> Если ребёнок не высыпается и плохо учится — проверьте сон, а не мотивацию. Его биологические часы действительно сдвинуты. Правило: за 1–1,5 часа до сна — никаких экранов (свет гаджетов подавляет гормон сна), тёмная тихая комната. Оптимум ~8 часов: и недосып, и пересып связаны с худшими результатами.</div>
+    <h3>Активность, питание, пубертат</h3>
+    <ul>
+      <li>Обзор 41 метаанализа: хроническая физическая активность даёт средний положительный эффект на успеваемость; кратковременная не вредит.<sup><a href="#s6">[6]</a></sup></li>
+      <li>Железодефицитная анемия — ведущая причина потерянных лет жизни и худших академических результатов у подростков; эффект добавок железа — смешанный.<sup><a href="#s7">[7]</a></sup></li>
+      <li>Пубертатные гормоны перестраивают миндалину, гиппокамп и дофаминергические пути; «сенсационная жажда» связана скорее с пубертатной стадией, чем с возрастом.<sup><a href="#s8">[8]</a></sup></li>
+    </ul>
+    <div class="parent"><b>Для родителя.</b> Спорт — не «время, отнятое от учёбы», а вклад в неё: движение улучшает внимание и память. Следите и за здоровьем: хроническая вялость и бледность могут быть анемией (нехваткой железа), которая реально снижает успеваемость — особенно у девочек. А гормональная перестройка влияет на настроение — это биология, а не «он стал плохим»: в бурные периоды лучше выслушать, не осуждая.</div>
+    <div class="takeaway"><b>Вывод:</b> подростковый возраст — «окно высокой пластичности» для обучения, но с уязвимостью к недосыпу и влиянию сверстников; здоровье-сбалансированные интервенции (сон, движение, автономия) дают согласованный положительный эффект.</div>
+  </section>
+
+  <section>
+    <h2>2. Психология подростка</h2>
+    <ul>
+      <li><strong>Идентичность (Марсия/Эриксон).</strong> Доля «достигших» идентичность растёт с 13,8 % до 20,8 % от 12–16 к 16–20 годам; актуально для работы с самоопределением.<sup><a href="#s9">[9]</a></sup></li>
+      <div class="parent"><b>Для родителя.</b> Ребёнок сейчас ищет ответ на вопрос «кто я?» — примеряет роли, меняет мнения, пробует разное. Это и есть взросление. Не требуйте «уже реши, кем будешь»: большинство находят себя только к 18–20 годам. Поддерживайте исследование (кружки, пробы разных занятий), а не настаивайте на окончательном выборе.</div>
+      <li><strong>Самооценка ↔ успеваемость.</strong> Метаанализ 68 продольных исследований: связь реципрокная (β=0,16 и 0,08), усиливается в подростковом возрасте.<sup><a href="#s10">[10]</a></sup> Самоэффективность буферизует стресс → выгорание.<sup><a href="#s11">[11]</a></sup></li>
+      <div class="parent"><b>Для родителя.</b> Вера ребёнка в свои силы — и результат, и причина успехов. Если всё «валится из рук» — помогите получить маленький успех: разбейте большую задачу на мелкие шаги. Похвала и поддержка здесь важнее критики: верящий в себя ребёнок меньше выгорает со стрессом.</div>
+      <li><strong>«Stop and stress» — миф.</strong> В 11 культурных группах негативные проявления атипичны (риски ≤ ~⅓), благополучие в среднем высоко.<sup><a href="#s13">[13]</a></sup><sup><a href="#s14">[14]</a></sup></li>
+      <div class="parent"><b>Для родителя.</b> Подростки в среднем НЕ обязаны быть несчастными и бунтующими. Но у них пока мало навыков справляться с эмоциями. Обучайте простым приёмам: назвать чувство, сделать паузу, выдохнуть, подвигаться. Ваше спокойное присутствие («я рядом, разберёмся») — лучшее «лекарство».</div>
+      <li><strong>Социальное сравнение.</strong> «Эффект большой рыбы в маленьком пруду» снижает академическую самооценку даже в сильных школах.<sup><a href="#s12">[12]</a></sup></li>
+      <div class="parent"><b>Для родителя.</b> В сильном классе способный ребёнок может чувствовать себя «хуже всех» — это не «разбалованность», а эффект сравнения. Не ругайте: объясните «сравнивай себя с собой вчерашним». При сильном давлении задумайтесь, не вредит ли «топовая школа» самооценке больше, чем даёт баллов.</div>
+      <li><strong>Автономия.</strong> Поддержка автономии учителем улучшает вовлечённость; психологический контроль связан с проблемами.<sup><a href="#s16">[16]</a></sup></li>
+      <div class="parent"><b>Для родителя.</b> Чем сильнее «короткий поводок», тем больше сопротивление. Давайте реальную самостоятельность там, где безопасно: сам планирует день, сам отвечает за дела, сам выбирает. Доверие уменьшает бунт и улучшает вовлечённость.</div>
+      <li><strong>Психическое здоровье.</strong> 1 из 7 подростков 10–19 лет имеет расстройство; тревожные расстройства нарастают к 15–19 годам (5,3 %).<sup><a href="#s51">[51]</a></sup></li>
+      <div class="parent"><b>Для родителя.</b> Тревожность у старшеклассников — реальная проблема, чаще к 15–19 годам. Стойкая подавленность, нарушение сна и аппетита, потеря интереса дольше 2–3 недель — повод к специалисту, а не «перетерпеть». Слова «нечего переживать» — худшая реакция: лучше поддержка и спокойная среда.</div>
+    </ul>
+    <div class="takeaway"><b>Вывод:</b> негативный образ подростка как «неизбежно кризисного» — контрпродуктивный стереотип; эффективна поддерживающая среда, укрепляющая самоэффективность и ощущение компетентности.</div>
+  </section>
+
+  <section>
+    <h2>3. Мотивация к обучению</h2>
+    <table>
+      <tr><th>Теория</th><th>Ключевой вывод</th><th>Уровень</th></tr>
+      <tr><td>Самодетерминация (Deci &amp; Ryan)</td><td>Автономия, компетентность, связанность → внутренняя мотивация и лучший результат; контролирующие практики ослабляют.</td><td>доказано</td></tr>
+      <tr><td>Ожидания и ценность (Eccles &amp; Wigfield)</td><td>Субъективная ценность предмета и ожидания успеха предсказывают выбор и настойчивость; мотивация падает к подростковому возрасту.</td><td>доказано</td></tr>
+      <tr><td>Вовлечённость (Fredricks)</td><td>Поведенческая + эмоциональная + когнитивная; податлива к контексту.</td><td>доказано</td></tr>
+      <tr><td>Поток (Csikszentmihalyi)</td><td>Баланс сложности и навыка, ясные цели, быстрая обратная связь.</td><td>доказано</td></tr>
+      <tr><td>Установка на рост (Dweck)</td><td>Эффект мал: r≈0,10; интервенции d≈0,08; сосредоточен у слабоуспевающих.</td><td class="flag">спорно</td></tr>
+      <tr><td>Внешние награды</td><td>Ожидаемые материальные награды снижают внутреннюю мотивацию (d от −0,28 до −0,40); вербальная похвала — усиливает.</td><td>доказано</td></tr>
+    </table>
+    <div class="takeaway"><b>Вывод:</b> ставку делать на автономию, субъективную ценность и компетентность, а не на «вознаграждение за оценку»; результаты mindset-интервенций не переоценивать.<sup><a href="#s17">[17]</a></sup><sup><a href="#s18">[18]</a></sup><sup><a href="#s20">[20]</a></sup><sup><a href="#s21">[21]</a></sup><sup><a href="#s22">[22]</a></sup></div>
+    <div class="parent"><b>Для родителя.</b> Ребёнок учится лучше, когда понимает «зачем» и чувствует, что может влиять на свою учёбу. Принуждение «делай, потому что я сказал» — слабый двигатель. Показывайте практическую пользу предметов («математика нужна для бюджета, физика открывает инженерные профессии»). И не покупайте учёбу деньгами: ожидаемая награда убивает внутренний интерес. Гораздо полезнее словесная похвала за конкретные усилия.</div>
+  </section>
+
+  <section>
+    <h2>4. Доказательная педагогика</h2>
+    <p><strong>Работает (по метаанализам):</strong></p>
+    <ul>
+      <li>Активное припоминание (retrieval practice) — +0,51 против перечитывания.<sup><a href="#s25">[25]</a></sup></li>
+      <li>Распределённая и перемежающаяся практика (spacing, interleaving).<sup><a href="#s26">[26]</a></sup><sup><a href="#s27">[27]</a></sup></li>
+      <li>Обратная связь — d≈0,48 по прямому метаанализу, но ~треть форм вредна (критична форма подачи).<sup><a href="#s28">[28]</a></sup></li>
+      <li>Самообъяснение — g=0,55.<sup><a href="#s29">[29]</a></sup> Принципы Розеншина.<sup><a href="#s30">[30]</a></sup></li>
+    </ul>
+    <p class="conflict"><strong>Не работает / нейромифы:</strong> «стили обучения», «лево-правое полушария», «10 % мозга», перечитывание и подчёркивание как основные техники.<sup><a href="#s31">[31]</a></sup><sup><a href="#s32">[32]</a></sup><sup><a href="#s33">[33]</a></sup></p>
+    <p><strong>О рейтинге Хэтти:</strong> ценен как эвристика, но методология (синтез метаанализов, фикс-эффекты, двойной подсчёт) критикуется статистиками; доверять прямым метаанализам. Большие устойчивые эффекты — коллективная эффективность учителей, обратная связь, предыдущие способности.<sup><a href="#s23">[23]</a></sup><sup><a href="#s24">[24]</a></sup></p>
+    <div class="parent"><b>Для родителя.</b> Лучший способ запомнить материал — не перечитывать конспект, а активно вспоминать: закрыть учебник и попробовать пересказать, ответить на вопросы, решить тест. Заниматься «понемногу, но регулярно» в разы эффективнее, чем «всё в последнюю ночь». Важна и полезная обратная связь — «что именно исправить и как», а не пустая оценка. И не тратьте деньги на тесты «типа обучения» (визуал/аудиал) — наука это не подтверждает.</div>
+  </section>
+
+  <section>
+    <h2>5. Профориентация</h2>
+    <p><strong>Классика — рамки, не «приговор»:</strong> Холланд (RIASEC), Сьюпер (стадия «исследование»), Готтфредсон (циркумскрипция и компромисс — сужение по полу и престижу раньше, чем по интересу), Марсия (статусы идентичности).<sup><a href="#s34">[34]</a></sup><sup><a href="#s35">[35]</a></sup><sup><a href="#s37">[37]</a></sup></p>
+    <p><strong>Современная рамка — карьерная адаптивность</strong> (Савикас: забота, контроль, любопытство, уверенность; шкала CAAS валидизирована на русском).<sup><a href="#s36">[36]</a></sup></p>
+    <p><strong>Что доказано (OECD Career Readiness, 11 индикаторов):</strong> карьерные разговоры, контакты с работниками, визиты/теневая работа, навыки подачи заявок, короткие программы, подработка, волонтёрство, карьерная определённость, амбиции, согласованность, инструментальная мотивация — всё это связано с более низкой безработицей и большим заработком во взрослом возрасте.<sup><a href="#s40">[40]</a></sup></p>
+    <p class="flag"><strong>Миф:</strong> тест профориентации как «гарантия» профессии. Эффект тестов ограничен, зависит от пола, культуры и сопровождения специалистом; тест — отправная точка разговора, а не ответ.</p>
+    <div class="takeaway"><b>Вывод:</b> школа — «демократизатор» доступа к карьерной информации; наибольшие выгоды от вмешательств получают подростки с низким социальным статусом.<sup><a href="#s38">[38]</a></sup><sup><a href="#s41">[41]</a></sup></div>
+    <div class="parent"><b>Для родителя.</b> Не ищите «единственную идеальную профессию» — её нет. И не делайте из теста профориентации «приговор»: это лишь повод поговорить. Самое работающее — реальный контакт с миром труда: разговоры о профессиях, дни открытых дверей, «понаблюдать за работой», подработка и волонтёрство. Учтите: подростки часто отсекают профессии по стереотипам («для мальчиков/девочек», «непрестижно») — помогайте смотреть шире. И не требуйте «окончательно решить» уже в 9-м классе: современный мир меняется, важнее научить ребёнка учиться и адаптироваться.</div>
+  </section>
+
+  <section>
+    <h2>6. Семья, учитель, школа</h2>
+    <table>
+      <tr><th>Фактор</th><th>Данные</th><th>Источник</th></tr>
+      <tr><td>Социально-экономический статус (SES)</td><td>~12 % дисперсии (PISA), разрыв ≈85 баллов; по Хэтти d≈0,52.</td><td>[41][23]</td></tr>
+      <tr><td>Родительская вовлечённость</td><td>Помогает, кроме прямой помощи с ДЗ (связь нулевая/отрицательная). Эффективна «академическая социализация» — ожидания, обсуждение планов.</td><td>[42]</td></tr>
+      <tr><td>Эффект учителя</td><td>Учитель с VA на 1 SD выше значимо повышает баллы, шанс на колледж и пожизненный заработок (Chetty).</td><td>[43]</td></tr>
+      <tr><td>Принадлежность к школе</td><td>r≈0,18 с успеваемостью, −0,16 с отсевом.</td><td>[44][45]</td></tr>
+      <tr><td>Сверстники</td><td>d≈0,53 (Хэтти); эффект подтверждён.</td><td>[23]</td></tr>
+      <tr><td>Размер класса</td><td class="num">d≈0,21 — слабый фактор.</td><td>[23]</td></tr>
+      <tr><td>Ожидания учителя (Пигмалион)</td><td>Выражен в младших классах, в старших практически отсутствует; методология спорна.</td><td>[46]</td></tr>
+      <tr><td>Внеучебные занятия</td><td>Умеренные положительные эффекты (d≈0,37–0,58); российские данные уточняют.</td><td>[23][52]</td></tr>
+    </table>
+    <div class="parent"><b>Для родителя.</b> Самый большой сюрприз науки: прямая помощь с домашними заданиями «рука в руке» может ВРЕДИТЬ, превращаясь в контроль и давление. Гораздо эффективнее — ожидания, разговоры о планах и ценности образования: «поговорить о завтрашнем дне» полезнее, чем сесть решать с ребёнком задачи. Доход семьи влияет на результат, но это не приговор: внимание и вера в ребёнка могут дать больше, чем богатая, но равнодушная семья. А хороший учитель — реально важен на всю жизнь: не списывайте результат только на «неспособность», при необходимости меняйте класс/школу или нанимайте помощь.</div>
+  </section>
+
+  <section>
+    <h2>7. Цифровые экраны и соцсети</h2>
+    <ul>
+      <li><strong>Величина эффекта спорна:</strong> Orben &amp; Przybylski (≤0,4 % дисперсии благополучия) против Twenge, Haidt («практически важные» эффекты, особенно соцсети у девочек).<sup><a href="#s47">[47]</a></sup><sup><a href="#s48">[48]</a></sup></li>
+      <li><strong>Соцсети и психика:</strong> корреляция с депрессией/тревогой подтверждена; &gt;3 ч/день — двойной риск; причинность не доказана.<sup><a href="#s49">[49]</a></sup><sup><a href="#s50">[50]</a></sup></li>
+      <li><strong>Телефоны в классе:</strong> запрет повысил результаты экзаменов (Beland &amp; Murphy, LSE); по PISA 2022 — 65 % отвлекались на устройствах, 59 % отвлекали чужие.<sup><a href="#s39">[39]</a></sup><sup><a href="#s53">[53]</a></sup></li>
+      <li><strong>Сон:</strong> каждый лишний час экрана → ~3–5 мин короче сон; OR короткого сна 1,25.<sup><a href="#s55">[55]</a></sup></li>
+      <li><strong>Медиа-мультизадачность</strong> негативно связана с когнитивным контролем.<sup><a href="#s54">[54]</a></sup></li>
+      <li><strong>Рекомендации:</strong> ВОЗ — ≥60 мин активности, ограничивать сидячее время/экраны, сон 8–10 ч; AAP — нет фиксированного порога, персонализированный Family Media Plan.<sup><a href="#s56">[56]</a></sup><sup><a href="#s57">[57]</a></sup></li>
+    </ul>
+    <div class="parent"><b>Для родителя.</b> Не воспринимайте экраны как «чистое зло»: решает не число часов, а ЧТО и КОГДА ребёнок делает. Пассивный скроллинг, сильное увлечение соцсетями (&gt;3 ч/день) и ночное сидение связаны с риском тревоги и плохим сном — а учебные видео и творческие занятия нет. Практично: на время учёбы — телефон в другую комнату (мультизадачность ослабляет внимание); за 1–1,5 часа до сна — никаких экранов; поддерживайте правило школы про ограничение телефонов на уроках. Составьте простой «семейный медиа-план» — и сами откладывайте телефон: ваш пример работает сильнее запретов.</div>
+  </section>
+
+  <section>
+    <h2>8. Российский контекст</h2>
+    <ul>
+      <li><strong>Профориентация:</strong> единая модель «профминимум» на базе «Билета в будущее» с 01.09.2023 во всех школах (6–11 классы).<sup><a href="#s58">[58]</a></sup><sup><a href="#s59">[59]</a></sup></li>
+      <li><strong>PISA:</strong> Россия не участвовала в PISA-2022; по «общероссийской оценке по модели PISA» — чтение ~499, математика ~512, естествознание ~483 (цифры требуют сверки с первоисточником ФИОКО).<sup><a href="#s60">[60]</a></sup><sup><a href="#s61">[61]</a></sup></li>
+      <li><strong>ВШЭ «Траектории»:</strong> профессию выбирают «случайно» (26 %) чаще, чем «по призванию» (24 %); неопределившихся становится больше с возрастом; до 40 % разочарования в выборе у окончивших колледж.<sup><a href="#s62">[62]</a></sup></li>
+      <li><strong>ЕГЭ:</strong> 42 % школьников не верят в успешную сдачу; для 48 % ЕГЭ — шанс уехать в другой город.<sup><a href="#s63">[63]</a></sup></li>
+      <li><strong>Предпрофобразование Москвы:</strong> &gt;70 % школ, 40–50 % старшеклассников; каждый третий стобалльник — выпускник предпрофкласса.<sup><a href="#s64">[64]</a></sup></li>
+      <li><strong>Экранное время РФ:</strong> надёжного национального измерения не найдено — есть только санитарные рекомендации Роспотребнадзора.<sup><a href="#s65">[65]</a></sup></li>
+    </ul>
+    <div class="parent"><b>Для родителя.</b> У вас есть больше прав и возможностей, чем кажется: не предлагают сами — спросите про профильный класс, индивидуальный учебный план (свой набор предметов), кружки, дни открытых дверей. Не воспринимайте средние баллы PISA как «приговор для моего ребёнка» — личный результат зависит от школы, учителей и вашей поддержки. И главное из исследования ВШЭ: большинство людей выбирают профессию «случайно» и многие потом разочаровываются — не давите на «окончательный выбор», учите умению учиться и переучиваться. Почти половина школьников боится ЕГЭ — снижайте тревогу спокойным режимом и обсуждением «запасных» сценариев, а не давлением.</div>
+  </section>
+
+  <section>
+    <h2>9. Практические рекомендации</h2>
+    <h3>Руководителям школ</h3>
+    <ul>
+      <li>Позднее начало учебного дня и защита времени сна (~8 ч).<sup><a href="#s4">[4]</a></sup><sup><a href="#s5">[5]</a></sup></li>
+      <li>Политика ограничения телефонов на уроках.<sup><a href="#s39">[39]</a></sup><sup><a href="#s53">[53]</a></sup></li>
+      <li>Профориентация через контакт с миром труда, а не только тесты.<sup><a href="#s40">[40]</a></sup></li>
+      <li>Инвестиции в качество преподавания и климат сильнее, чем в размер класса.<sup><a href="#s23">[23]</a></sup><sup><a href="#s44">[44]</a></sup></li>
+    </ul>
+    <h3>Педагогам</h3>
+    <ul>
+      <li>Техники: припоминание, распределённая/перемежающаяся практика, обратная связь, самообъяснение.<sup><a href="#s25">[25]</a></sup><sup><a href="#s28">[28]</a></sup></li>
+      <li>Поддержка автономии и ценности предмета вместо внешних наград.<sup><a href="#s16">[16]</a></sup><sup><a href="#s17">[17]</a></sup></li>
+      <li>Учитывать эффект социального сравнения и строить принадлежность к классу.<sup><a href="#s12">[12]</a></sup><sup><a href="#s44">[44]</a></sup></li>
+      <li>Не опираться на нейромифы.<sup><a href="#s32">[32]</a></sup></li>
+    </ul>
+    <h3>Родителям</h3>
+    <ul>
+      <li>«Академическая социализация» эффективнее контроля и прямой помощи с ДЗ.<sup><a href="#s42">[42]</a></sup></li>
+      <li>Защищать сон и ограничивать экраны вечером.<sup><a href="#s55">[55]</a></sup></li>
+      <li>Лучше вербальная похвала и автономия, чем материальные награды за учёбу.<sup><a href="#s17">[17]</a></sup></li>
+      <li>Не транслировать миф о «неизбежном кризисе» — это самосбывающееся пророчество.<sup><a href="#s14">[14]</a></sup></li>
+    </ul>
+    <div class="parent"><b>Самое важное — одним абзацем.</b> Лучший «пакет» поддержки подростка: (1) организованный сон ~8 часов и без экранов перед сном; (2) тёплая, поддерживающая атмосфера дома с высокими, но добрыми ожиданиями; (3) разговоры о будущем и ценности учёбы вместо контроля и денежных наград; (4) помощь маленькими достижениями, чтобы укрепить веру в себя; (5) активное обучение (пересказ, тесты, практика) вместо «перечитывания»; (6) интересная и полезная компания и занятия; (7) спокойное отношение к выбору профессии — это процесс, а не приговор. Не нужно быть экспертом — достаточно быть рядом, верить в ребёнка и защищать его сон, настроение и интерес.</div>
+  </section>
+
+  <section>
+    <h2>10. Ограничения и уровень достоверности</h2>
+    <p>Утверждения классифицированы по доверию (два+ независимых источника / единичный источник / спорно). Ключевые оговорки: часть нейробиологических интерпретаций пластичности для человека — гипотеза по данным животных; цифры «модели PISA-2022» требуют сверки с первичным PDF ФИОКО; денежные величины эффекта учителя (Chetty) и эффект-размер interleaving не читались напрямую из первичного текста; большинство связей «экран–благополучие» наблюдательные, причинность не установлена.<sup class="flag">[см. примененные ссылки]</sup></p>
+    <p>Документ не является юридической или медицинской консультацией. Рекомендуется обращаться к первичным публикациям по приведённым ссылкам.</p>
+  </section>
+
+  <footer>
+    <p><b>Источники</b> — пронумерованы в порядке первого упоминания. Ссылки открываются без VPN (академические и официальные домены).</p>
+  </footer>
+
+  <section>
+    <h2>Источники</h2>
+    <ol class="sources">
+      <li id="s1"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4430104">Considerations of a Dual-systems Model of Cognitive Development</a> — Lambert et al. · PMC</li>
+      <li id="s2"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8985849">Differential Dopamine Dynamics in Adolescents and Adults</a> — Journal of Neuroscience</li>
+      <li id="s3"><a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1467-7687.2010.01035.x">Peers increase adolescent risk taking</a> — Chein et al., Developmental Science</li>
+      <li id="s4"><a href="https://www.nature.com/articles/s41539-025-00361-y">Sleep duration and subject-specific academic performance</a> — npj Science of Learning</li>
+      <li id="s5"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8194457">School Start Times for Adolescents</a> — AAP</li>
+      <li id="s6"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7460146">Physical Activity and Academic Achievement: Umbrella Review</a> — Barbosa et al.</li>
+      <li id="s7"><a href="https://www.mdpi.com/2072-6643/14/1/224">Iron Status, Anemia, and Cognitive/Academic Performance in Adolescents</a> — Nutrients</li>
+      <li id="s8"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3410522">The role of puberty in the developing adolescent brain</a> — Blakemore et al.</li>
+      <li id="s9"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3394234">Identity Statuses as Developmental Trajectories</a> — Meeus et al.</li>
+      <li id="s10"><a href="https://link.springer.com/article/10.1007/s10648-021-09600-1">Meta-analysis: Academic Self-Concept and Achievement</a> — Wu et al.</li>
+      <li id="s11"><a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1133706/full">Academic stress and academic burnout in adolescents</a> — Frontiers</li>
+      <li id="s12"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9281383">Social Comparison Effects on Academic Self-Concepts</a> — Jansen et al.</li>
+      <li id="s13"><a href="https://psycnet.apa.org/record/1999-13451-001">Adolescent Storm and Stress, Reconsidered</a> — Arnett</li>
+      <li id="s14"><a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1257641/full">Adolescent storm and stress: a 21st century evaluation</a> — Frontiers</li>
+      <li id="s15"><a href="https://journals.sagepub.com/doi/10.1177/0165025413515405">Emotion regulation from early adolescence to emerging adulthood</a> — Zimmermann &amp; Iwanski</li>
+      <li id="s16"><a href="https://selfdeterminationtheory.org/wp-content/uploads/2024/03/2024_BeyersSoenensVansteenkiste_EJODP.pdf">Autonomy in adolescence</a> — Beyers, Soenens, Vansteenkiste</li>
+      <li id="s17"><a href="https://link.springer.com/article/10.1007/s10648-024-09888-9">Situated Expectancy-Value Model</a> — Eccles &amp; Wigfield</li>
+      <li id="s18"><a href="https://journals.sagepub.com/doi/10.3102/00346543074001059">School Engagement</a> — Fredricks, Blumenfeld, Paris</li>
+      <li id="s19"><a href="https://mlpp.pressbooks.pub/mavlearn/chapter/flow-theory">Flow theory</a> — Csikszentmihalyi (canon)</li>
+      <li id="s20"><a href="https://journals.sagepub.com/doi/10.1177/0956797617739704">Growth mindset meta-analyses</a> — Sisk et al.</li>
+      <li id="s21"><a href="https://psycnet.apa.org/record/2023-14088-001">Growth mindset interventions (systematic review)</a> — Macnamara &amp; Burgoyne</li>
+      <li id="s22"><a href="https://www.nature.com/articles/s41586-019-1466-y">National experiment on growth mindset</a> — Yeager et al., Nature</li>
+      <li id="s23"><a href="https://visible-learning.org/hattie-ranking-influences-effect-sizes-learning-achievement/">Hattie Ranking: 252 Influences</a></li>
+      <li id="s24"><a href="https://erudit.org/en/journals/mje/2016-v51-n2-mje02894/1038611ar.pdf">How to Engage in Pseudoscience With Real Data</a> — Bergeron (критика Хэтти)</li>
+      <li id="s25"><a href="https://journals.sagepub.com/doi/10.3102/0034654316689306">Meta-Analysis of Practice Testing</a> — Adesope et al.</li>
+      <li id="s26"><a href="https://psycnet.apa.org/doi/10.1037/0033-2909.132.3.354">Distributed practice meta-analysis</a> — Cepeda et al.</li>
+      <li id="s27"><a href="https://link.springer.com/article/10.1007/s11251-007-9015-8">Shuffling of mathematics problems</a> — Rohrer &amp; Taylor</li>
+      <li id="s28"><a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.03087/full">The Power of Feedback Revisited</a> — Wisniewski, Zierer, Hattie</li>
+      <li id="s29"><a href="https://link.springer.com/article/10.1007/s10648-018-9434-x">Inducing Self-Explanation meta-analysis</a> — Bisra et al.</li>
+      <li id="s30"><a href="https://www.aft.org/sites/default/files/Rosenshine.pdf">Principles of Instruction</a> — Rosenshine, AFT</li>
+      <li id="s31"><a href="https://journals.sagepub.com/doi/full/10.1111/j.1539-6053.2009.01038.x">Learning Styles: Concepts and Evidence</a> — Pashler et al.</li>
+      <li id="s32"><a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2012.00429/full">Neuromyths in Education</a> — Dekker et al.</li>
+      <li id="s33"><a href="https://journals.sagepub.com/doi/abs/10.1177/1529100612453266">Improving Students’ Learning With Effective Learning Techniques</a> — Dunlosky et al.</li>
+      <li id="s34"><a href="https://www.frontiersin.org/journals/organizational-psychology/articles/10.3389/forgp.2026.1792707/full">Holland RIASEC theory and effectiveness</a> — Frontiers</li>
+      <li id="s35"><a href="https://www1.udel.edu/educ/gottfredson/reprints/1981CCtheory.pdf">Circumscription and Compromise</a> — Gottfredson (оригинал)</li>
+      <li id="s36"><a href="https://www.marksavickas.com/files/1_Savickas_bio/Career%20Construction%20Theory/Publications/Books/Career%20Construction%20Theory/Career_Construction_Theory_Book.pdf">Career Construction Theory</a> — Savickas</li>
+      <li id="s37"><a href="https://files.eric.ed.gov/fulltext/EJ1326053.pdf">School Counselors’ Use of Marcia’s Identity Status Theory</a> — ERIC</li>
+      <li id="s38"><a href="https://www.frontiersin.org/journals/organizational-psychology/articles/10.3389/forgp.2026.1792707/full">RIASEC as career interventions (содержит Whiston et al. 2017)</a></li>
+      <li id="s39"><a href="https://cep.lse.ac.uk/pubs/download/dp1350.pdf">Mobile phone ban and student performance</a> — Beland &amp; Murphy, LSE</li>
+      <li id="s40"><a href="https://oecdedutoday.com/preparing-youth-for-work-what-works-career-guidance">Preparing youth for work: what works in career guidance</a> — OECD</li>
+      <li id="s41"><a href="https://www.oecd.org/en/about/programmes/pisa.html">OECD PISA programme</a></li>
+      <li id="s42"><a href="https://www.apa.org/pubs/journals/releases/dev453740.pdf">Parental Involvement in Middle School</a> — Hill &amp; Tyson</li>
+      <li id="s43"><a href="https://www.aeaweb.org/articles?id=10.1257/aer.104.9.2593">Long-Term Impacts of Teachers</a> — Chetty, Friedman, Rockoff</li>
+      <li id="s44"><a href="https://www.tandfonline.com/doi/full/10.1080/02671522.2019.1615116">School belonging meta-analysis</a></li>
+      <li id="s45"><a href="https://link.springer.com/article/10.1007/s10648-016-9389-8">Fostering School Belonging meta-analysis</a> — Allen et al.</li>
+      <li id="s46"><a href="https://ru.wikipedia.org/wiki/Эффект_Розенталя">Эффект Розенталя (Пигмалион) — обзор</a></li>
+      <li id="s47"><a href="https://www.nature.com/articles/s41562-018-0506-1">Digital technology and adolescent wellbeing</a> — Orben &amp; Przybylski</li>
+      <li id="s48"><a href="https://www.nature.com/articles/s41562-020-0839-4">Underestimating digital media harm</a> — Twenge et al.</li>
+      <li id="s49"><a href="https://www.tandfonline.com/doi/full/10.1080/02673843.2019.1590851">Social media and adolescent depression/anxiety</a> — Keles et al.</li>
+      <li id="s50"><a href="https://www.hhs.gov/surgeongeneral/priorities/youth-mental-health/social-media/index.html">Social Media and Youth Mental Health</a> — Surgeon General (HHS)</li>
+      <li id="s51"><a href="https://www.who.int/news-room/fact-sheets/detail/adolescent-mental-health">Mental health of adolescents</a> — WHO</li>
+      <li id="s52"><a href="https://poisknews.ru/ekspertiza/vneshkolnye-zanyatiya-i-blagopoluchie-shkolnikov-rezultaty-issledovaniya-uchenyh-niu-vshe">Внешкольные занятия и благополучие школьников</a> — ИО НИУ ВШЭ</li>
+      <li id="s53"><a href="https://www.oecd.org/en/publications/students-digital-devices-and-success_9e4c0624-en.html">Students, digital devices and success (PISA 2022)</a> — OECD</li>
+      <li id="s54"><a href="https://link.springer.com/article/10.1007/s10648-023-09746-0">Media multitasking and cognitive control</a> — Kong et al.</li>
+      <li id="s55"><a href="https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2025.1640263/full">Screen time and sleep in adolescents</a> — He et al.</li>
+      <li id="s56"><a href="https://www.who.int/publications/i/item/9789240015128">WHO guidelines on physical activity and sedentary behaviour</a></li>
+      <li id="s57"><a href="https://www.who.int/news-room/fact-sheets/detail/physical-activity">WHO — Physical activity fact sheet</a></li>
+      <li id="s58"><a href="https://bvbinfo.ru/profminimum">Единая модель профориентации «профминимум»</a> — Билет в будущее</li>
+      <li id="s59"><a href="https://edu.gov.ru/career_guidance">Профориентация — Минпросвещения России</a></li>
+      <li id="s60"><a href="https://fioco.ru/pisa">PISA — результаты России (ФИОКО)</a></li>
+      <li id="s61"><a href="https://fioco.ru/Media/Default/Documents/Отчет_общероссийская оценка по модели PISA-2022 (2).pdf">Общероссийская оценка по модели PISA-2022</a> — ФИОКО</li>
+      <li id="s62"><a href="https://ioe.hse.ru/news/792091666.html">«Будущее как в тумане»: неопределённость выпускников</a> — ИО НИУ ВШЭ</li>
+      <li id="s63"><a href="https://trends.rbc.ru/trends/education/682ee1ad9a7947144b56c284">42 % школьников недооценивают шансы ЕГЭ</a> — РБК Тренды</li>
+      <li id="s64"><a href="https://mskobr.ru/school">Предпрофессиональное образование Москвы</a> — Школа.Москва</li>
+      <li id="s65"><a href="https://cgon.rospotrebnadzor.ru/naseleniyu/zdorovyy-obraz-zhizni/ekrannoe-vremya-detyam-i-vzroslym">Экранное время детям и взрослым</a> — Роспотребнадзор</li>
+      <li id="s66"><a href="https://www.skolkovo.ru/public/media/documents/research/sedec/SKOLKOVO_SEDeC_Atlas.pdf">Атлас новых профессий</a> — Павел Лукша и др.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <p>Сформировано 01.10.2026 · глубина: экспертный обзор · 8 исследовательских потоков · синтез мировой и российской литературы · верификация спорных цифр по первоисточникам. Числа и имена приводятся по первоисточникам; агрегаторные пересказы перепроверены.</p>
+  </footer>
+</main>
+</body>
+</html>

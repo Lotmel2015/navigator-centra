@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Рабочие шаблоны ИОМ и ИУП — интерактивный блокнот тьютора</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#ffffff; --ink:#22303c; --muted:#5c6a77;
+    --navy:#1f3a5f; --navy-soft:#e7eef7; --teal:#0f6f69; --teal-soft:#e1efed;
+    --gold:#9a6a1f; --gold-soft:#f8f0dc; --ok:#1a7f4b; --ok-soft:#dcefe3;
+    --warn:#b3382c; --warn-soft:#f9e9e6; --line:#dde3ea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{padding:1.6rem 1.25rem .9rem;border-bottom:2px solid var(--navy)}
+  .inner{max-width:1020px;margin:0 auto}
+  .eyebrow{font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;color:var(--teal);font-weight:700}
+  header h1{font-size:1.7rem;line-height:1.25;margin:.3rem 0 .4rem;color:var(--navy)}
+  .meta{color:var(--muted);font-size:.85rem}
+  .toolbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);padding:.55rem 1.25rem;box-shadow:0 2px 6px rgba(31,58,95,.06)}
+  .toolbar .inner{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+  .toolbar .tt{font-weight:700;color:var(--navy);margin-right:auto;font-size:.92rem}
+  .btn{border:none;border-radius:7px;padding:.48rem .9rem;font:inherit;font-weight:600;cursor:pointer;background:var(--navy);color:#fff}
+  .btn.gold{background:var(--gold)}
+  .btn.teal{background:var(--teal)}
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn.warn{background:var(--warn)}
+  .btn:hover{opacity:.9}
+  .btn.small{padding:.3rem .6rem;font-size:.82rem}
+  nav.tabs{display:block;padding:.8rem 0 .2rem}
+  nav.tabs .inner{display:flex;flex-wrap:wrap;gap:.4rem;padding:0 1.25rem}
+  nav.tabs a{text-decoration:none;font-size:.84rem;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--navy);padding:.42rem .8rem;border-radius:999px}
+  nav.tabs a:hover{border-color:var(--navy)}
+  nav.tabs a.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  main{max-width:1020px;margin:0 auto;padding:1.2rem 1.25rem 3rem}
+  .panel{display:none}
+  .panel.active{display:block}
+  .blank-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.7rem;margin:1rem 0 .4rem}
+  .blank-head h2{margin:0;font-size:1.35rem;color:var(--navy)}
+  .blank-head .ver{font-size:.8rem;color:var(--muted);background:var(--gold-soft);border:1px solid var(--gold);border-radius:999px;padding:.1rem .6rem}
+  .blank-desc{color:var(--muted);font-size:.92rem;margin:0 0 1rem;max-width:760px}
+  .block{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.25rem;margin:1.1rem 0}
+  .block>h3{margin:0 0 .7rem;font-size:1.05rem;color:var(--teal)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem}
+  @media(max-width:720px){.grid2,.grid3{grid-template-columns:1fr}}
+  label{display:block;font-size:.8rem;font-weight:650;color:var(--muted);margin:.55rem 0 .2rem}
+  input[type=text],input[type=date],input[type=number],select,textarea{
+    width:100%;padding:.5rem .6rem;border:1px solid var(--line);border-radius:7px;font:inherit;background:#fff;color:var(--ink)}
+  textarea{resize:vertical;min-height:3.2rem}
+  table.tbl{border-collapse:collapse;width:100%;table-layout:fixed;font-size:.88rem;margin:.5rem 0}
+  table.tbl th,table.tbl td{border:1px solid var(--line);padding:.4rem .5rem;vertical-align:top;text-align:left;
+    overflow-wrap:break-word;word-break:break-word;min-width:0}
+  table.tbl th{background:var(--navy-soft);color:var(--navy);font-size:.78rem;font-weight:650}
+  table.tbl td input,table.tbl td select,table.tbl td textarea{width:100%;box-sizing:border-box;min-width:0}
+  .addrow{margin:.4rem 0 .7rem}
+  .hint{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+  .expl{display:block;font-size:.8rem;color:var(--muted);margin:-.35rem 0 .55rem;font-style:italic;
+    line-height:1.45;background:var(--gold-soft);border-left:3px solid var(--gold);
+    border-radius:0 6px 6px 0;padding:.4rem .7rem}
+  .verdict{background:var(--ok-soft);border-left:4px solid var(--ok);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:1rem 0;font-size:.94rem}
+  .verdict b{color:var(--ok)}
+  .sign{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin:.8rem 0}
+  .sign div{border-top:1px dashed var(--muted);padding-top:.4rem;font-size:.88rem;color:var(--muted)}
+  .statusbar{font-size:.82rem;color:var(--muted);margin:.6rem 0 0}
+  @media print{
+    body{background:#fff}
+    .toolbar,nav.tabs,header,.no-print{display:none!important}
+    main{max-width:none;padding:0}
+    .panel{display:block!important}
+    .block{break-inside:avoid;border:none;padding:.4rem 0}
+    table.tbl{font-size:.8rem}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <div class="eyebrow">Интерактивный блокнот тьютора · ИОМ / ИУП · 8–9 классы</div>
+    <h1>Рабочие шаблоны: индивидуальный образовательный маршрут (ИОМ) и учебный план (ИУП)</h1>
+    <p class="meta">Заполняйте онлайн — всё сохраняется автоматически в браузере. В любой момент можно <b>скачать заполненный файл на диск</b> (текстовый отчёт), выгрузить данные (JSON) или распечатать/сохранить в PDF. Версия от 04.10.2026.</p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="inner">
+    <span class="tt">Рабочие шаблоны</span>
+    <button class="btn teal" onclick="downloadHtml()">Сохранить заполненные шаблоны (.html)</button>
+    <button class="btn" onclick="downloadTxt()">Скачать отчёт (.txt)</button>
+    <button class="btn" onclick="downloadJson()">Данные (.json)</button>
+    <button class="btn gold" onclick="window.print()">Печать / PDF</button>
+    <button class="btn ghost" onclick="resetAll()">Очистить всё</button>
+  </div>
+</div>
+
+<nav class="tabs">
+  <div class="inner">
+    <a href="#iom" class="active" onclick="tab('iom');return false">ИОМ — карта маршрута</a>
+    <a href="#iup" onclick="tab('iup');return false">ИУП — план 10 класса</a>
+    <a href="#proby" onclick="tab('proby');return false">Таблица проб</a>
+    <a href="#plan" onclick="tab('plan');return false">План к ОГЭ</a>
+    <a href="#nabl" onclick="tab('nabl');return false">Дневник наблюдений</a>
+    <a href="#stress" onclick="tab('stress');return false">Мои способы справиться</a>
+    <a href="#semya" onclick="tab('semya');return false">Договорённости с семьёй</a>
+    <a href="#mate" onclick="tab('mate');return false">Матрица вуз/СПО</a>
+    <a href="#reflex" onclick="tab('reflex');return false">Входная рефлексия</a>
+    <a href="#pamyatka" onclick="tab('pamyatka');return false">Памятка родителю</a>
+  </div>
+</nav>
+
+<main>
+<span class="statusbar" id="status">Шаблоны готовы к заполнению. Данные сохраняются автоматически в этом браузере.</span>
+
+<!-- ==================== ИОМ ==================== -->
+<section class="panel active" id="iom" data-blank="iom">
+  <div class="blank-head"><h2>Индивидуальный образовательный маршрут (ИОМ)</h2><span class="ver">ключевой документ сопровождения</span></div>
+  <p class="blank-desc">ИОМ — «живой» рабочий документ: педагогическая технология персональной траектории. Юридическую силу даёт ИУП (ст. 34 273-ФЗ), а ИОМ наполняет его содержанием: цели, шаги, контрольные точки, рефлексия. Заполняется вместе с учеником раз в четверть; версии: 0.1 (конец I полугодия 8 кл.), 1.0 (конец 8 кл.), 2.0 (I полугодие 9 кл.), финальная (конец 9 кл.).</p>
+
+  <div class="block">
+    <h3>А. Паспорт маршрута</h3>
+    <div class="expl">Что сюда писать: базовые данные, чтобы документ можно было идентифицировать. «Версия маршрута» — на какой стадии документ (0.1 — начало 8 класса, финальная — конец 9 класса). «Предполагаемый профиль» — куда примерно движемся в 10 классе; можно «пока не выбран».</div>
+    <div class="grid3">
+      <div><label>ФИО ученика</label><input type="text" name="fio" placeholder="Иванова Анна"></div>
+      <div><label>Класс</label><input type="text" name="klass" placeholder="8«А»"></div>
+      <div><label>Школа</label><input type="text" name="shkola" placeholder="СОШ № …"></div>
+    </div>
+    <div class="grid3">
+      <div><label>Тьютор</label><input type="text" name="tyutor" placeholder="ФИО тьютора"></div>
+      <div><label>Учебный год</label><input type="text" name="god" placeholder="2026/2027"></div>
+      <div><label>Версия маршрута</label><select name="version"><option value="">выберите</option><option>0.1 — I полугодие 8 кл.</option><option>1.0 — конец 8 класса</option><option>2.0 — I полугодие 9 кл.</option><option>финальная — конец 9 класса</option></select></div>
+    </div>
+    <div class="grid2">
+      <div><label>Дата начала</label><input type="date" name="dstart"></div>
+      <div><label>Дата следующей ревизии</label><input type="date" name="drev"></div>
+    </div>
+    <div class="grid3">
+      <div><label>Предполагаемый профиль (10 кл.)</label><select name="profil"><option value="">пока не выбран</option><option>технологический</option><option>естественно-научный</option><option>гуманитарный</option><option>социально-экономический</option><option>универсальный</option><option>агротехнологический</option></select></div>
+      <div><label>Области интересов (2–3)</label><input type="text" name="oblasti" placeholder="инженерия, биология…"></div>
+      <div><label>Ожидаемая траектория после 9 кл.</label><select name="traekt"><option value="">выберите</option><option>профильный 10 класс с ИУП</option><option>колледж / СПО</option><option>ещё определяюсь</option></select></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Б. Входная диагностика (занятия 1–2 этапа 8.1)</h3>
+    <div class="expl">Что сюда писать: результаты опросников и ваши наблюдения за учеником. Это стартовая точка — тут «как есть», а не «как надо». «Интересы» — что откликается из занятий и диагностики; «сильные стороны» — что увлекает и получается; «дефициты» — где нужна поддержка. Вывод — короткое резюме, чем руководствуетесь в маршруте.</div>
+    <p class="hint">Данные диагностики — стартовая точка, а не приговор. Не для сравнения с другими.</p>
+    <div class="grid2">
+      <div><label>Интересы и склонности (по итогам диагностики)</label><textarea name="diagn_interesy" placeholder="Что откликается, 2–3 направления"></textarea></div>
+      <div><label>Сильные стороны и способности</label><textarea name="diagn_sila" placeholder="5 сильных сторон, что увлекает и получается"></textarea></div>
+      <div><label>Дефициты и зоны роста (что подтянуть)</label><textarea name="diagn_deficit" placeholder="Темы/предметы, где нужна поддержка"></textarea></div>
+      <div><label>Уровень саморегуляции и самостоятельности</label><select name="diagn_samoreg"><option value="">выберите</option><option>нужна внешняя структура и контроль (типично для 8 кл.)</option><option>частично самостоятелен, нужны дедлайны</option><option>готов брать ответственность (характерно для 9–10 кл.)</option></select></div>
+      <div><label>Тревожность и самооценка (наблюдения)</label><textarea name="diagn_trev" placeholder="Что замечаете: спокоен/тревожен, вера в свои силы…"></textarea></div>
+      <div><label>Учебная мотивация</label><select name="diagn_motiv"><option value="">выберите</option><option>внутренняя (интерес)</option><option>смешанная</option><option>внешняя, спад (нужна поддержка)</option></select></div>
+    </div>
+    <div class="verdict"><b>Вывод по диагностике:</b> <input type="text" name="diagn_vyvod" style="width:100%" placeholder="2–3 предложения: чем руководствуемся при построении маршрута"></div>
+  </div>
+
+  <div class="block">
+    <h3>В. Цели маршрута</h3>
+    <div class="expl">Что сюда писать: формулирует сам ученик (можно с помощью тьютора). «Долгосрочная цель» — куда идём за 2 года (к концу 9 класса). «Цель учебного года» — по SMART: конкретно (что сделаю), измеримо (как пойму, что достиг), с датой (к маю какого года).</div>
+    <div><label>Долгосрочная цель (2 года, формулирует ученик)</label><textarea name="cel_long" placeholder="Например: к концу 9 класса осознанно выбрать профиль, сдать ОГЭ по выбранным предметам, защитить ИУП для 10 класса"></textarea></div>
+    <div><label>Цель учебного года (SMART: конкретная, измеримая, достижимая, значимая, сроками)</label><textarea name="cel_year" placeholder="К маю 2027 я … (что научусь / узнаю / выберу)"></textarea></div>
+    <p class="hint">Цели по четвертям — в таблице «Маршрут по периодам», столбец «Цель периода».</p>
+  </div>
+
+  <div class="block">
+    <h3>Г. Маршрут по периодам (четверти / полугодия)</h3>
+    <div class="expl">Что сюда писать: на каждый учебный период (четверть/полугодие) — одну строку. «Период» — например, «I четверть 8 кл.». «Цель периода» — что хочет ученик к концу этого периода. «Учебные действия» — конкретные шаги по предметам. «Профориентационные действия» — пробы, экскурсии, встречи. «Контрольная точка» — что и когда проверяем (пробник, таблица проб, защита). «Отметка» — выполнено/нет.</div>
+    <p class="hint">Добавляйте строки на каждый учебный период. «Контрольная точка» — что именно и когда проверяем (пробник, таблица проб, защита).</p>
+    <table class="tbl" id="iom-periods">
+      <thead><tr>
+        <th style="width:10%">Период</th>
+        <th style="width:13%">Цель периода (ученик)</th>
+        <th style="width:19%">Учебные действия</th>
+        <th style="width:19%">Профориентационные действия</th>
+        <th style="width:13%">Внеурочные / доп. занятия</th>
+        <th style="width:13%">Контрольная точка</th>
+        <th style="width:13%">Отметка</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('iom-periods')">+ Добавить период</button>
+  </div>
+
+  <div class="block">
+    <h3>Д. Предметы и уровни (связь с ИУП и ОГЭ)</h3>
+    <div class="expl">Что сюда писать: по каким предметам углубляемся и почему, к каким экзаменам готовимся. «Роль» — предмет для ОГЭ / профильный / базовый. «Текущий уровень» — как сейчас (например, «средний»). «Целевой уровень» — куда расти (углублённый). «Связь» — как предмет связан с интересом ученика.</div>
+    <p class="hint">По каким предметам углубляемся и почему; к каким экзаменам готовимся.</p>
+    <table class="tbl" id="iom-predmety">
+      <thead><tr>
+        <th style="width:22%">Предмет</th>
+        <th style="width:16%">Роль</th>
+        <th style="width:16%">Текущий уровень</th>
+        <th style="width:18%">Целевой уровень</th>
+        <th style="width:28%">Связь с интересом / целью</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('iom-predmety')">+ Добавить предмет</button>
+  </div>
+
+  <div class="block">
+    <h3>Е. Ресурсы и поддерживающая среда</h3>
+    <div class="expl">Что сюда писать: чем располагаем для движения по маршруту. «Ресурсы дома» — время, место занятий, техника, поддержка близких. «Ресурсы школы» — кружки, факультативы, консультации. «Доп. образование» — онлайн-платформы, курсы. «Кто ещё помогает» — люди и их роль (учитель, психолог, репетитор).</div>
+    <div class="grid2">
+      <div><label>Ресурсы дома (время, место, техника, поддержка)</label><textarea name="res_dom" placeholder="Например: ежедневно 1,5 ч на подготовку, отдельный стол"></textarea></div>
+      <div><label>Ресурсы школы (кружки, факультативы, консультации)</label><textarea name="res_shkola" placeholder="Олимпиадный кружок, консультация по математике"></textarea></div>
+      <div><label>Дополнительное образование / онлайн-платформы</label><textarea name="res_dop" placeholder="РЭШ, Сириус.Курсы, «Билет в будущее», кружок при вузе"></textarea></div>
+      <div><label>Кто ещё помогает (люди и их роль)</label><textarea name="res_ludi" placeholder="Учитель физики, старший брат, психолог"></textarea></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Ж. Роли и зоны ответственности</h3>
+    <div class="expl">Что сюда писать: кто за что отвечает в маршруте. «Роль» — ученик / тьютор / родитель / школа. «Обязанности» — конкретные действия (например, ученик ведёт таблицу проб, тьютор готовит материалы). «Формат контроля» — как проверяем (встреча, переписка, отметка в таблице). «Периодичность» — как часто.</div>
+    <table class="tbl" id="iom-roli">
+      <thead><tr>
+        <th style="width:18%">Роль</th>
+        <th style="width:40%">Обязанности</th>
+        <th style="width:24%">Формат контроля</th>
+        <th style="width:18%">Периодичность</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('iom-roli')">+ Добавить роль</button>
+  </div>
+
+  <div class="block">
+    <h3>З. Риски и «план Б»</h3>
+    <div class="expl">Что сюда писать: что может пойти не так и как мы готовы. «Возможная трудность» — например, снизилась мотивация во II четверти. «Признаки» — как это распознать. «План действий» — что сделаем. «Кто подключается» — кому сообщаем. Честный план снижает тревогу ученика и семьи.</div>
+    <p class="hint">Что может пойти не так, как распознать и что делать. Честный план снижает тревогу ученика и семьи.</p>
+    <table class="tbl" id="iom-riski">
+      <thead><tr>
+        <th style="width:22%">Возможная трудность</th>
+        <th style="width:24%">Признаки</th>
+        <th style="width:32%">План действий</th>
+        <th style="width:22%">Кто подключается</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('iom-riski')">+ Добавить риск</button>
+  </div>
+
+  <div class="block">
+    <h3>И. Контроль и критерии успешности этапа</h3>
+    <div class="grid2">
+      <div><label>Критерии успешности для ученика (его формулировка)</label><textarea name="krit_uchenik" placeholder="«Я считаю этап успешным, если…»"></textarea></div>
+      <div><label>Критерии успешности для тьютора</label><textarea name="krit_tyutor" placeholder="Доза контакта, выполнение шагов, динамика"></textarea></div>
+      <div><label>Метрики (измеряемое)</label><textarea name="krit_metriki" placeholder="Входной/выходной тест (SD), число сессий/мес, career decidedness, отсев"></textarea></div>
+      <div><label>Как ученик сам оценивает прогресс?</label><select name="krit_samooc"><option value="">выберите</option><option>шкала 1–5 после каждого занятия</option><option>рефлексивный дневник</option><option>встреча-ревизия раз в месяц</option></select></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>К. Рефлексия по периодам (записывается вместе с учеником)</h3>
+    <div class="expl">Что сюда писать: в конце каждого периода — одну строку. «Что получилось» — успехи словами ученика. «Что не получилось / почему» — честно, без самоедства. «Что меняем» — конкретные правки маршрута. «Самооценка ученика» — по шкале 1–5. Это главный источник динамики для следующего периода.</div>
+    <table class="tbl" id="iom-reflex">
+      <thead><tr>
+        <th style="width:10%">Период</th>
+        <th style="width:20%">Что получилось</th>
+        <th style="width:20%">Что не получилось / почему</th>
+        <th style="width:22%">Что меняем в маршруте</th>
+        <th style="width:14%">Самооценка ученика (1–5)</th>
+        <th style="width:14%">Оценка тьютора (1–5)</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('iom-reflex')">+ Добавить запись рефлексии</button>
+  </div>
+
+  <div class="block">
+    <h3>Л. Согласование и подписи</h3>
+    <div class="expl">Что сюда писать: когда маршрут (версия) готов — соберите короткие комментарии семьи и школы и подписи всех сторон. Без подписи родителей документ не считается согласованным для передачи в школу.</div>
+    <div class="grid2">
+      <div><label>Комментарий семьи</label><textarea name="podpis_semya" placeholder="Что семья поддерживает, вопросы"></textarea></div>
+      <div><label>Комментарий школы (если есть)</label><textarea name="podpis_shkola" placeholder="Отметка о согласовании / замечания"></textarea></div>
+    </div>
+    <div class="sign">
+      <div>Ученик: ____________________  дата ________</div>
+      <div>Тьютор: ____________________  дата ________</div>
+      <div>Родитель: ____________________  дата ________</div>
+      <div>Школа: ____________________  дата ________</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ИУП ==================== -->
+<section class="panel" id="iup" data-blank="iup">
+  <div class="blank-head"><h2>Проект индивидуального учебного плана (ИУП) для 10 класса</h2><span class="ver">ст. 34 273-ФЗ · ДГ-2121/07</span></div>
+  <p class="blank-desc">Заполняется на занятиях 17–18 (этап 9.2). По ФГОС СОО учебный план профиля/ИУП содержит не менее 13 предметов и предусматривает не менее 2 предметов на углублённом уровне; нагрузка 2170–2516 часов за 2 года. ИУП согласовывается с родителями и утверждается руководителем школы.</p>
+  <div class="block">
+    <h3>Паспорт и профиль</h3>
+    <div class="expl">Что сюда писать: базовые данные плана для 10 класса. «Профиль» — по ФГОС СОО (технологический, естественно-научный и т.д.). «Вуз/СПО/сфера» — куда ведёт профиль. Поля «Связь» и «Обоснование» — почему выбран именно такой план (опирайтесь на результаты профориентации из ИОМ).</div>
+    <div class="grid3">
+      <div><label>Ученик, класс</label><input type="text" name="iup_fio" placeholder="Иванова Анна, 9«А»"></div>
+      <div><label>Профиль (ФГОС СОО)</label><select name="iup_profil"><option value="">выберите</option><option>технологический</option><option>естественно-научный</option><option>гуманитарный</option><option>социально-экономический</option><option>универсальный</option><option>агротехнологический</option></select></div>
+      <div><label>Предполагаемый вуз / СПО / сфера</label><input type="text" name="iup_vuz" placeholder="КНИТУ-КАИ, технические специальности"></div>
+    </div>
+    <div class="grid2">
+      <div><label>Связь с результатами профориентации (из ИОМ)</label><textarea name="iup_svyaz" placeholder="Какие области интересов и пробы подтвердили выбор"></textarea></div>
+      <div><label>Обоснование выбора углублённых предметов</label><textarea name="iup_obosn" placeholder="Почему эти 2+ предмета на углублённом уровне"></textarea></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3>Учебный план (предметы, уровень, часы)</h3>
+    <div class="expl">Что сюда писать: построчно — каждый предмет 10 класса. «Уровень» — базовый или углублённый (углублённых должно быть не менее 2). «Часов в неделю» — объём. «Связь» — зачем предмет именно этому ученику. «Аттестация» — как проверяется (зачёт, экзамен, проект).</div>
+    <table class="tbl" id="iup-plany">
+      <thead><tr>
+        <th style="width:26%">Предмет</th>
+        <th style="width:16%">Уровень</th>
+        <th style="width:10%">Часов в неделю</th>
+        <th style="width:30%">Связь с интересами / целью</th>
+        <th style="width:18%">Форма промежуточной аттестации</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('iup-plany')">+ Добавить предмет</button>
+  </div>
+  <div class="block">
+    <h3>Согласование</h3>
+    <div class="expl">Что сюда писать: итоги встреч с семьёй и школой. «Что согласовано с родителями» — какие решения приняты. «Что согласовано со школой» — подтверждение администрации, локальный акт, заявление. Подписи — когда проект готов.</div>
+    <div class="grid2">
+      <div><label>Что согласовано с родителями</label><textarea name="iup_sogl_rod" placeholder="Даты встреч, решения"></textarea></div>
+      <div><label>Что согласовано со школой</label><textarea name="iup_sogl_shk" placeholder="Подтверждение администрации, локальный акт"></textarea></div>
+    </div>
+    <div class="sign">
+      <div>Ученик: ____________</div><div>Родитель: ____________</div><div>Тьютор: ____________</div><div>Руководитель школы: ____________</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ПРОБЫ ==================== -->
+<section class="panel" id="proby" data-blank="proby">
+  <div class="blank-head"><h2>Таблица сравнения проб</h2><span class="ver">этап 8.2</span></div>
+  <p class="blank-desc">Заполняется после каждой профпробы (занятия 6–9). Критерии: «мне нравится / у меня получается / где это применяется / какие предметы нужны». Вывод — словами ученика.</p>
+  <div class="block">
+    <div class="expl" style="margin:.2rem 0 .8rem">Что сюда писать: после каждой профпробы — одна строка. «Область/проба» — что пробовали. «Мне нравится» — что понравилось (или не понравилось). «У меня получается» — что вышло. «Где применяется» — в каких профессиях встречается. «Какие предметы нужны» — список. «Итог» — скорее да/нет/не ясно. «Зажгло?» — оценка 1–5.</div>
+    <table class="tbl" id="proby-tbl">
+      <thead><tr>
+        <th style="width:14%">Область / проба</th>
+        <th style="width:17%">Мне нравится</th>
+        <th style="width:17%">У меня получается</th>
+        <th style="width:17%">Где применяется</th>
+        <th style="width:15%">Какие предметы нужны</th>
+        <th style="width:10%">Итог</th>
+        <th style="width:10%">Зажгло? (1–5)</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('proby-tbl')">+ Добавить пробу</button>
+  </div>
+  <div class="block">
+    <h3>Вывод</h3>
+    <div class="expl">Что сюда писать: итог всех проб словами ученика. «Мои области — это…» — 2–3 направления с обоснованием «потому что…». «План Б» — запасной вариант, если первое направление не сложится.</div>
+    <div><label>«Мои области — это… потому что…» (формулировка ученика)</label><textarea name="proby_vyvod" placeholder="Мои области — инженерия и информатика, потому что нравится собирать и считать…"></textarea></div>
+    <div><label>Запасной вариант (план Б)</label><input type="text" name="proby_planb" placeholder="Если первое направление не сложится…"></div>
+  </div>
+</section>
+
+<!-- ==================== ПЛАН К ОГЭ ==================== -->
+<section class="panel" id="plan" data-blank="plan">
+  <div class="blank-head"><h2>План подготовки к ОГЭ</h2><span class="ver">этап 9.1, занятия 12, 15–16</span></div>
+  <p class="blank-desc">Предметы по выбору и резервный предмет; недельный график с проверяемыми критериями освоения (не «хочу знать физику», а «решаю 8 из 10 задач без помощи»).</p>
+  <div class="block">
+    <div class="expl" style="margin:.2rem 0 .8rem">Что сюда писать: сначала в поле выше — какие предметы сдаёте по выбору и резервный. Ниже — недельный график: на каждую неделю одна строка. «Критерий освоения» — как поймёте, что тема выучена (например, «решаю 8 из 10 задач без помощи»).</div>
+    <div class="grid3">
+      <div><label>Предметы по выбору (ОГЭ)</label><input type="text" name="plan_predmety" placeholder="физика, информатика"></div>
+      <div><label>Резервный предмет</label><input type="text" name="plan_rezerv" placeholder="обществознание"></div>
+      <div><label>Дата ОГЭ (основной период)</label><input type="date" name="plan_ddate"></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3>Недельный график</h3>
+    <div class="expl">Что сюда писать: построчно по неделям. «Неделя/дата» — например, «неделя 3–9.11». «Предмет» — какой предмет. «Темы/задания» — конкретный список. «Критерий» — как проверить, что освоено. «Готово» — отметка о выполнении.</div>
+    <table class="tbl" id="plan-tbl">
+      <thead><tr>
+        <th style="width:15%">Неделя / дата</th>
+        <th style="width:15%">Предмет</th>
+        <th style="width:32%">Темы / задания</th>
+        <th style="width:30%">Критерий освоения (проверяемый)</th>
+        <th style="width:8%">Готово</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('plan-tbl')">+ Добавить неделю</button>
+  </div>
+  <div class="block">
+    <h3>Распределение ответственности</h3>
+    <div class="expl">Что сюда писать: кто и что конкретно делает для подготовки к ОГЭ. «Ученик» — его задачи по графику. «Тьютор» — контроль, разбор пробников. «Родитель» — режим и поддержка (не давление).</div>
+    <div class="grid3">
+      <div><label>Ученик</label><textarea name="plan_otv_uch" placeholder="Выполняет задания по графику, ведёт отметки"></textarea></div>
+      <div><label>Тьютор</label><textarea name="plan_otv_tyut" placeholder="Контролирует структуру, разбирает пробники"></textarea></div>
+      <div><label>Родитель</label><textarea name="plan_otv_rod" placeholder="Режим, сон, поддержка без давления"></textarea></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ДНЕВНИК ==================== -->
+<section class="panel" id="nabl" data-blank="nabl">
+  <div class="blank-head"><h2>Дневник наблюдений — «Один день на месте профессии»</h2><span class="ver">этап 8.2, занятие 7</span></div>
+  <p class="blank-desc">Фиксируется во время экскурсии / job shadowing. Реальный контакт с миром труда — один из самых сильных факторов карьерной готовности (OECD).</p>
+  <div class="block">
+    <div class="expl" style="margin:.2rem 0 .8rem">Что сюда писать: во время экскурсии / рабочего дня вместе со специалистом. Заполняйте по ходу, свежими впечатлениями. «Что делал специалист» — 3–5 видов деятельности за день. «Инструменты» — чем работал. «Школьные предметы» — что из школьной программы ему нужно. «Удивило» — неожиданное. Внизу — твоё решение: хочешь попробовать или нет.</div>
+    <div class="grid2">
+      <div><label>Место (предприятие / организация)</label><input type="text" name="nabl_mesto"></div>
+      <div><label>Дата</label><input type="date" name="nabl_ddate"></div>
+    </div>
+    <div><label>Специалист (должность, имя)</label><input type="text" name="nabl_spec"></div>
+    <div><label>Что делал специалист в течение дня</label><textarea name="nabl_delal" placeholder="Опишите 3–5 видов деятельности"></textarea></div>
+    <div><label>Какие инструменты / оборудование использовал</label><textarea name="nabl_instr"></textarea></div>
+    <div><label>Какие школьные предметы ему нужны (и как)</label><textarea name="nabl_predmety"></textarea></div>
+    <div><label>Что меня удивило / неожиданное</label><textarea name="nabl_udivilo"></textarea></div>
+    <div class="grid2">
+      <div><label>Захотелось ли мне попробовать подобное?</label><select name="nabl_hochet"><option value="">выберите</option><option>да</option><option>нет</option><option>не уверен(а)</option></select></div>
+      <div><label>Почему (одна фраза)</label><input type="text" name="nabl_pochemu"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== СТРЕСС ==================== -->
+<section class="panel" id="stress" data-blank="stress">
+  <div class="blank-head"><h2>Карточка «Мои способы справиться»</h2><span class="ver">этап 9.1, занятие 14</span></div>
+  <p class="blank-desc">Личная антистресс-карточка. Выберите и потренируйте 2–3 техники. Тьютор не заменяет психолога: при стойкой тревоге (дольше 2–3 недель, нарушение сна/аппетита) — маршрутизация к специалисту.</p>
+  <div class="block">
+    <div class="expl" style="margin:.2rem 0 .8rem">Что сюда писать: личные, а не «правильные» ответы. Каждая строка — одна стрессовая ситуация (например, «контрольная», «ответ у доски») и техника, которая помогает именно тебе. «Как пойму, что помогло» — конкретный признак. Ниже — подсказки-техники для выбора.</div>
+    <table class="tbl" id="stress-tbl">
+      <thead><tr>
+        <th style="width:28%">Ситуация (страх, стресс)</th>
+        <th style="width:36%">Моя техника</th>
+        <th style="width:22%">Как пойму, что помогло</th>
+        <th style="width:14%">Практикую (дата)</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('stress-tbl')">+ Добавить ситуацию</button>
+  </div>
+  <div class="block">
+    <h3>Техники для выбора (осваиваются на занятии)</h3>
+    <ul style="margin:.4rem 0;padding-left:1.2rem">
+      <li><b>Дыхание по квадрату:</b> вдох 4 сек — пауза 4 — выдох 4 — пауза 4 (×5).</li>
+      <li><b>«Назвать и проговорить»:</b> назвать страх словами, переформулировать в реалистичное ожидание.</li>
+      <li><b>Реалистичные ожидания:</b> «я обязан(а) сделать максимум усилий, а не сдать на 100».</li>
+      <li><b>План Б:</b> расписать «что будет, если результат не идеальный».</li>
+      <li><b>Режим сна ~8 часов, без экранов за 1–1,5 часа до сна</b> — самый управляемый фактор успеваемости.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== СЕМЬЯ ==================== -->
+<section class="panel" id="semya" data-blank="semya">
+  <div class="blank-head"><h2>Договорённости с семьёй</h2><span class="ver">занятия 10 и 18</span></div>
+  <p class="blank-desc">Родители — партнёры маршрута: «академическая социализация» (разговоры о планах, ожидания, ценность образования) эффективнее контроля и прямой помощи с домашними заданиями.</p>
+  <div class="block">
+    <div class="expl" style="margin:.2rem 0 .8rem">Что сюда писать: на встрече с родителями (занятия 10 и 18). «Выбранные области» — что согласовали. «Что поддерживает семья» — режим, мотивация, ресурсы. «Что просит семья» — запрос к тьютору. «Правила обратной связи» — как обсуждаем прогресс без критики личности. Внизу — дата следующей встречи и подписи.</div>
+    <div class="grid2">
+      <div><label>Ученик, класс</label><input type="text" name="semya_fio"></div>
+      <div><label>Родители (ФИО, контакт)</label><input type="text" name="semya_roditeli"></div>
+    </div>
+    <div><label>Выбранные области интересов (согласовано)</label><input type="text" name="semya_oblasti"></div>
+    <div><label>Что поддерживает семья (режим, мотивация, ресурсы)</label><textarea name="semya_podderzhka"></textarea></div>
+    <div><label>Что семья просит у тьютора</label><textarea name="semya_prosba"></textarea></div>
+    <div><label>Правила обратной связи (как обсуждаем прогресс, без критики личности)</label><textarea name="semya_pravila" placeholder="Не критиковать выбор в момент презентации; задавать уточняющие вопросы; совместное решение"></textarea></div>
+    <div class="grid2">
+      <div><label>Дата следующей встречи</label><input type="date" name="semya_next"></div>
+      <div><label>Кто участвует</label><input type="text" name="semya_uchastniki"></div>
+    </div>
+    <div class="sign">
+      <div>Родитель: ____________</div><div>Ученик: ____________</div><div>Тьютор: ____________</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== МАТРИЦА ==================== -->
+<section class="panel" id="mate" data-blank="mate">
+  <div class="blank-head"><h2>Матрица «профиль → вуз/СПО → предметы → конкурс»</h2><span class="ver">этап 9.1, занятие 13</span></div>
+  <p class="blank-desc">Заполняется после дней открытых дверей и анализа учебных заведений (также: propostuplenie.ru, сайты вузов/СПО, bvbinfo.ru).</p>
+  <div class="block">
+    <div class="expl" style="margin:.2rem 0 .8rem">Что сюда писать: после дней открытых дверей и изучения сайтов вузов/СПО. На каждое заведение — строка: какое направление, какие предметы требуются, какой конкурс, совпадает ли с планом ученика и почему. Внизу — вывод словами ученика.</div>
+    <table class="tbl" id="mate-tbl">
+      <thead><tr>
+        <th style="width:18%">Профиль / направление</th>
+        <th style="width:20%">ВУЗ / СПО</th>
+        <th style="width:22%">Требуемые предметы</th>
+        <th style="width:18%">Конкурс / проходной</th>
+        <th style="width:22%">Совпадает с моим планом? Почему?</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn small ghost addrow" onclick="addTableRow('mate-tbl')">+ Добавить заведение</button>
+  </div>
+  <div class="block">
+    <div><label>Вывод: ближе всего…</label><textarea name="mate_vyvod" placeholder="Из просмотренных заведений ближе всего … потому что …"></textarea></div>
+  </div>
+</section>
+
+<!-- ==================== РЕФЛЕКСИЯ ==================== -->
+<section class="panel" id="reflex" data-blank="reflex">
+  <div class="blank-head"><h2>Лист входной рефлексии «Что я хочу понять о себе»</h2><span class="ver">занятия 1–2</span></div>
+  <p class="blank-desc">Заполняется словами ученика. Не экзамен: помогите сформулировать, но не подсказывайте «правильные» ответы. Используется как стартовая точка маршрута.</p>
+  <div class="block">
+    <div class="expl" style="margin:.2rem 0 .8rem">Что сюда писать: отвечает сам ученик, своими словами (занятия 1–2). Это не проверка: помоги сформулировать, но не подсказывай «правильный» ответ. Ответы станут стартовой точкой маршрута и вернутся к ним на рефлексии в конце года.</div>
+    <div class="grid2">
+      <div><label>«Что для меня сейчас самое интересное в учёбе?»</label><textarea name="ref_q1"></textarea></div>
+      <div><label>«А что — самое скучное? Почему?»</label><textarea name="ref_q2"></textarea></div>
+      <div><label>«В чём я силён(а)?»</label><textarea name="ref_q3"></textarea></div>
+      <div><label>«Какие предметы мне кажутся ненужными?»</label><textarea name="ref_q4"></textarea></div>
+      <div><label>«Зачем мне вообще учиться?»</label><textarea name="ref_q5"></textarea></div>
+      <div><label>«Что я хочу попробовать в этом году?»</label><textarea name="ref_q6"></textarea></div>
+      <div><label>«Чего я боюсь в учёбе / будущем?»</label><textarea name="ref_q7"></textarea></div>
+      <div><label>Продолжи фразу: «После этих разговоров я понял(а) о себе, что…»</label><textarea name="ref_q8"></textarea></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ПАМЯТКА ==================== -->
+<section class="panel" id="pamyatka" data-blank="pamyatka">
+  <div class="blank-head"><h2>Памятка родителю</h2><span class="ver">раздать на занятии 10</span></div>
+  <p class="blank-desc">Короткие рекомендации по результатам исследований «Факторы образовательного результата старшеклассников» (01.10.2026). Распечатайте и вручите семье.</p>
+  <div class="block" style="font-size:.95rem">
+    <h3>Что работает</h3>
+    <ul>
+      <li><b>«Академическая социализация»:</b> разговоры о планах, ожидания и ценность образования — эффективнее контроля и помощи с домашними заданиями.</li>
+      <li><b>Вербальная похвала за усилия</b> («ты старался, и это видно») поддерживает внутреннюю мотивацию.</li>
+      <li><b>Автономия:</b> чем больше ребёнок выбирает сам, тем меньше бунт и лучше вовлечённость.</li>
+      <li><b>Сон ~8 часов, без экранов за 1–1,5 часа до сна</b> — самый управляемый фактор успеваемости.</li>
+    </ul>
+    <h3>Чего избегать</h3>
+    <ul>
+      <li>Денежных наград за оценки — они снижают внутреннюю мотивацию (эффект сверхоправдания).</li>
+      <li>Критики личности («ты неспособный») — полезная связь только «как исправить».</li>
+      <li>Давления на «окончательный выбор профессии» в 9 классе — устойчивая идентичность формируется к 16–20 годам; по данным ВШЭ, профессию «случайно» выбирают чаще, чем «по призванию».</li>
+      <li>Сравнения с другими («а вот у Пети…») — подростки и так испытывают «эффект большой рыбы в маленьком пруду».</li>
+    </ul>
+    <h3>При тревоге ребёнка</h3>
+    <ul>
+      <li>Выслушать, не обесценивая («нечего переживать» — худшая реакция).</li>
+      <li>Помочь маленьким успехом: разбить большую задачу на шаги.</li>
+      <li>При стойкой подавленности, нарушении сна/аппетита дольше 2–3 недель — к школьному психологу.</li>
+    </ul>
+    <p style="margin-top:.8rem"><b>Правовая справка:</b> право на ИУП — ст. 34 273-ФЗ; порядок устанавливает школа локальным актом; согласование с родителями — письмо Минпросвещения от 24.11.2021 № ДГ-2121/07.</p>
+  </div>
+</section>
+</main>
+
+<script>
+/* ============ Сериализация: статические поля + динамические таблицы ============ */
+var BLANKS = ['iom','iup','proby','plan','nabl','stress','semya','mate','reflex','pamyatka'];
+var STATUS = document.getElementById('status');
+
+function collectFields(sec){
+  var out = {};
+  sec.querySelectorAll('input,textarea,select').forEach(function(el){
+    if(!el.name || el.dataset.tbl === '1') return;      /* динамические таблицы обрабатываются отдельно */
+    out[el.name] = el.value;
+  });
+  return out;
+}
+function collectTables(sec){
+  var out = {};
+  sec.querySelectorAll('table.tbl').forEach(function(t){
+    var rows = [];
+    t.querySelectorAll('tbody tr').forEach(function(tr){
+      var r = [];
+      tr.querySelectorAll('td').forEach(function(td){
+        var inp = td.querySelector('input,textarea,select');
+        r.push(inp ? inp.value : '');
+      });
+      rows.push(r);
+    });
+    out[t.id] = rows;
+  });
+  return out;
+}
+function save(blank){
+  var sec = document.querySelector('[data-blank="' + blank + '"]');
+  if(!sec) return;
+  var data = { _fields: collectFields(sec), _tables: collectTables(sec), _saved: new Date().toISOString() };
+  try{ localStorage.setItem('tpl_' + blank, JSON.stringify(data)); }catch(e){}
+  STATUS.textContent = 'Сохранено: ' + new Date().toLocaleTimeString('ru-RU');
+}
+function load(blank){
+  var sec = document.querySelector('[data-blank="' + blank + '"]');
+  if(!sec) return;
+  var d; try{ d = JSON.parse(localStorage.getItem('tpl_' + blank) || '{}'); }catch(e){ d={}; }
+  if(d._fields){
+    Object.keys(d._fields).forEach(function(k){
+      sec.querySelectorAll('[name="' + k + '"]').forEach(function(el){
+        if(el.name && !el.dataset.tbl){ el.value = d._fields[k]; }
+      });
+    });
+  }
+  if(d._tables){
+    Object.keys(d._tables).forEach(function(tid){
+      var t = document.getElementById(tid);
+      if(!t) return;
+      var rows = d._tables[tid];
+      t.querySelector('tbody').innerHTML = '';
+      rows.forEach(function(row){
+        addTableRow(tid, row);
+      });
+      if(!rows.length) addTableRow(tid);
+    });
+  }
+}
+/* addTableRow: создаёт строку из шаблона таблицы (берём <thead> количество столбцов) */
+function addTableRow(tid, values){
+  var t = document.getElementById(tid);
+  if(!t) return;
+  var n = t.querySelectorAll('thead th').length;
+  var tr = document.createElement('tr');
+  for(var i = 0; i < n; i++){
+    var td = document.createElement('td');
+    tr.appendChild(td);
+  }
+  t.querySelector('tbody').appendChild(tr);
+  buildCells(tr, n, values);
+  bindTableListeners(t);
+}
+function buildCells(tr, n, values){
+  var tds = tr.querySelectorAll('td');
+  for(var i = 0; i < n; i++){
+    var el;
+    var isNumber = !!tds[i].closest('table').querySelectorAll('thead th')[i] &&
+      /часов|самооценка|оценка|зажгло|отметка/i.test(tds[i].closest('table').querySelectorAll('thead th')[i].textContent);
+    if(isNumber) el = document.createElement('input'); else el = document.createElement('input');
+    el.dataset.tbl = '1';
+    el.dataset.col = i;
+    el.value = (values && values[i] !== undefined) ? values[i] : '';
+    tds[i].appendChild(el);
+  }
+}
+function bindTableListeners(t){
+  t.querySelectorAll('tbody input, tbody textarea, tbody select').forEach(function(el){
+    el.addEventListener('input', function(){ save(blankOfTbl(t)); });
+  });
+}
+function blankOfTbl(t){
+  var s = t.closest('[data-blank]');
+  return s ? s.dataset.blank : null;
+}
+/* наблюдение за статическими полями */
+document.addEventListener('input', function(e){
+  if(e.target && e.target.name && !e.target.dataset.tbl){
+    var s = e.target.closest('[data-blank]');
+    if(s) save(s.dataset.blank);
+  }
+});
+/****** выгрузка ******/
+function labelOf(el){
+  var div = el.closest('div');
+  var lab = div ? div.querySelector('label') : null;
+  return lab ? lab.textContent.replace(/\s+/g,' ').trim() : (el.name || '');
+}
+function downloadTxt(){
+  var lines = [];
+  BLANKS.forEach(function(blank){
+    var sec = document.querySelector('[data-blank="' + blank + '"]');
+    if(!sec) return;
+    lines.push('\n\n' + '='.repeat(56));
+    lines.push('### ' + sec.querySelector('h2').textContent + '  (' + sec.querySelector('.ver').textContent + ')');
+    var data = collectFields(sec);
+    var keys = Object.keys(data);
+    var any = false;
+    keys.forEach(function(k){
+      var v = data[k].trim();
+      if(!v) return;
+      var el = sec.querySelector('[name="' + k + '"]');
+      lines.push(labelOf(el) + ': ' + v);
+      any = true;
+    });
+    if(!any) lines.push('(поля не заполнены)');
+    /* таблицы */
+    var tables = collectTables(sec);
+    Object.keys(tables).forEach(function(tid){
+      var t = document.getElementById(tid);
+      if(!t) return;
+      var th = Array.prototype.map.call(t.querySelectorAll('thead th'), function(h){ return h.textContent.trim(); });
+      var rows = tables[tid];
+      var printed = false;
+      rows.forEach(function(row, ri){
+        var has = row.some(function(v){ return v.trim() !== ''; });
+        if(!has) return;
+        if(!printed){ lines.push(''); printed = true; }
+        lines.push('  — ряд ' + (ri+1) + ':');
+        row.forEach(function(v, j){
+          if(v.trim() !== '') lines.push('      ' + (th[j]||('кол.'+(j+1))) + ': ' + v);
+        });
+      });
+    });
+  });
+  var blob = new Blob(['\ufeff' + lines.join('\n')], {type:'text/plain;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ИОМ ИУП 8-9 - заполненные шаблоны.txt';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 1500);
+}
+function downloadJson(){
+  var data = {};
+  BLANKS.forEach(function(b){
+    var sec = document.querySelector('[data-blank="' + b + '"]');
+    data[b] = { fields: collectFields(sec), tables: collectTables(sec) };
+  });
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ИОМ ИУП 8-9 - данные.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 1500);
+}
+function downloadHtml(){
+  /* Экспортирует заполненные шаблоны в отдельный самодостаточный HTML-файл с печатью */
+  var css = '<style>body{font-family:system-ui,sans-serif;max-width:760px;margin:0 auto;padding:1.5rem;color:#22303c}h1{font-size:1.5rem;color:#1f3a5f}section{border:1px solid #dee3ea;border-radius:8px;padding:1rem 1.2rem;margin:1.2rem 0}h2{font-size:1.1rem;color:#0f6f69;margin:.2rem 0 .5rem}.field{margin:.5rem 0}.lab{font-size:.78rem;color:#5c6a77;font-weight:700}.val{font-size:.95rem;white-space:pre-wrap}table{border-collapse:collapse;width:100%;font-size:.85rem;margin:.5rem 0}td,th{border:1px solid #dee3ea;padding:.35rem .45rem;vertical-align:top;text-align:left}th{background:#eef3f8;color:#1f3a5f}button{background:#1f3a5f;color:#fff;border:none;border-radius:6px;padding:.45rem .8rem;font:inherit;cursor:pointer}button:hover{opacity:.9}@media print{button{display:none}}</style>';
+  var html = '<!DOCTYPE html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n<title>ИОМ ИУП 8-9 - заполненные шаблоны</title>' + css + '</head>\n<body>\n';
+  html += '<h1>Индивидуальный образовательный маршрут (ИОМ) и учебный план (ИУП) — заполненные шаблоны</h1><p>Экспорт из интерактивного блокнота тьютора · ' + new Date().toLocaleDateString('ru-RU') + '</p>\n';
+  BLANKS.forEach(function(blank){
+    var sec = document.querySelector('[data-blank="' + blank + '"]');
+    if(!sec) return;
+    html += '<section>\n<h2>' + sec.querySelector('h2').textContent + '</h2>\n';
+    var data = collectFields(sec);
+    Object.keys(data).forEach(function(k){
+      var v = (data[k]||'').trim();
+      if(!v) return;
+      var el = sec.querySelector('[name="' + k + '"]');
+      html += '<div class="field"><div class="lab">' + labelOf(el) + '</div><div class="val">' + esc(v) + '</div></div>\n';
+    });
+    var tables = collectTables(sec);
+    Object.keys(tables).forEach(function(tid){
+      var t = document.getElementById(tid);
+      if(!t) return;
+      var th = Array.prototype.map.call(t.querySelectorAll('thead th'), function(h){ return h.textContent.trim(); });
+      var rows = tables[tid];
+      var hasAny = rows.some(function(r){ return r.some(function(v){ return v.trim() !== ''; }); });
+      if(!hasAny) return;
+      html += '<table><tr>' + th.map(function(h){ return '<th>' + esc(h) + '</th>'; }).join('') + '</tr>';
+      rows.forEach(function(row){
+        var has = row.some(function(v){ return v.trim() !== ''; });
+        if(!has) return;
+        html += '<tr>' + row.map(function(v){ return '<td>' + esc(v) + '</td>'; }).join('') + '</tr>';
+      });
+      html += '</table>\n';
+    });
+    html += '</section>\n';
+  });
+  html += '<p style="color:#5c6a77;font-size:.8rem"><button onclick="window.print()">Распечатать / сохранить PDF</button></p>';
+  html += '</body>\n</html>';
+  var blob = new Blob(['\ufeff' + html], {type:'text/html;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ИОМ ИУП 8-9 - заполненные шаблоны.html';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 1500);
+}
+function esc(s){
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function resetAll(){
+  if(!confirm('Очистить все заполненные данные в этом браузере? Это действие необратимо.')) return;
+  BLANKS.forEach(function(b){ localStorage.removeItem('tpl_' + b); });
+  location.reload();
+}
+function tab(id){
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('nav.tabs a').forEach(function(a){ a.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  document.querySelector('nav.tabs a[href="#' + id + '"]').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+/****** инициализация: стартовые строки + загрузка ранее сохранённого ******/
+var TABLES_PREFILL = {
+  'iom-periods': 2, 'iom-predmety': 3, 'iom-roli': 3, 'iom-riski': 2, 'iom-reflex': 2,
+  'iup-plany': 2, 'proby-tbl': 2, 'plan-tbl': 3, 'stress-tbl': 2, 'mate-tbl': 2
+};
+BLANKS.forEach(function(b){
+  load(b);
+  /* после load: если таблица пуста (нет сохранённых строк), добавить стартовые */
+  var sec = document.querySelector('[data-blank="' + b + '"]');
+  if(!sec) return;
+  Object.keys(TABLES_PREFILL).forEach(function(tid){
+    var t = document.getElementById(tid);
+    if(!t) return;
+    if(t.querySelectorAll('tbody tr').length === 0){
+      var n = TABLES_PREFILL[tid];
+      for(var i = 0; i < n; i++) addTableRow(tid);
+    }
+  });
+});
+</script>
+</body>
+</html>

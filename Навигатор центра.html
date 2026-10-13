@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Навигатор центра</title>
+<style>
+  :root {
+    --bg:#f6f8fb; --card:#ffffff; --ink:#22303c; --muted:#5c6a77;
+    --navy:#1f3a5f; --navy-soft:#e7eef7;
+    --teal:#0f6f69; --teal-soft:#e1efed;
+    --gold:#9a6a1f; --gold-soft:#f6eeda;
+    --ok:#1a7f4b; --ok-soft:#dcefe3;
+    --warn:#b3382c; --warn-soft:#f9e9e6;
+    --line:#e0e5ec;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:1.4rem 1.25rem 2.5rem; }
+  header { padding:.3rem 0 .8rem; border-bottom:2px solid var(--navy); }
+  .eyebrow { font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); font-weight:700; }
+  header h1 { font-size:1.45rem; line-height:1.25; margin:.2rem 0 .2rem; color:var(--navy); }
+  .meta { color:var(--muted); font-size:.8rem; }
+
+  .tabs { display:flex; flex-wrap:wrap; gap:.35rem; margin:1rem 0 .9rem; }
+  .tabs button { border:1px solid var(--line); background:var(--card); color:var(--navy);
+                 font:600 .8rem/1.2 system-ui,sans-serif; padding:.42rem .8rem; border-radius:999px;
+                 cursor:pointer; transition:.15s; }
+  .tabs button:hover { border-color:var(--navy); }
+  .tabs button.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .panel { display:none; }
+  .panel.active { display:block; animation:fadein .15s ease-out; }
+  @keyframes fadein { from{opacity:0} to{opacity:1} }
+
+  h2 { font-size:1.05rem; color:var(--navy); margin:0 0 .5rem; }
+
+  /* Компактный список документов */
+  .flist { margin:0; padding:0; list-style:none; }
+  .flist li { display:flex; align-items:baseline; gap:.55rem; padding:.38rem .1rem; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .flist li:last-child { border-bottom:none; }
+  .flist a { color:var(--teal); text-decoration:none; font-weight:650; }
+  .flist a:hover { text-decoration:underline; }
+  .flist .grp { flex:0 0 auto; min-width:150px; font-size:.72rem; font-weight:800; text-transform:uppercase;
+                letter-spacing:.05em; color:var(--navy); }
+  .flist .fmt { font-size:.68rem; color:var(--muted); font-family:ui-monospace,Consolas,monospace; white-space:nowrap; }
+  .flist .note { font-size:.78rem; color:var(--muted); }
+  .grp-row { font-size:.82rem; font-weight:800; color:var(--teal); text-transform:uppercase; letter-spacing:.05em;
+             margin:1.1rem 0 .3rem; padding-top:.6rem; border-top:1px dashed var(--line); }
+
+  /* Ссылка-переключатель на методические материалы */
+  .mm-link { color:var(--teal); font-weight:700; text-decoration:none; border-bottom:1px dotted var(--teal); cursor:pointer; }
+  .mm-link:hover { text-decoration:none; border-bottom-style:solid; }
+
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:.7rem .9rem; margin:.6rem 0; }
+  .card p { margin:.15rem 0; font-size:.85rem; }
+  .card a { color:var(--teal); font-weight:650; text-decoration:none; }
+  .card a:hover { text-decoration:underline; }
+
+  /* Блоки методических материалов по ролям */
+  .mm-block { border:1px solid var(--line); border-radius:12px; margin:1rem 0; background:var(--card); overflow:hidden; scroll-margin-top:.8rem; }
+  .mm-block .mb-h { display:flex; align-items:center; gap:.6rem; padding:.65rem 1rem; background:var(--navy-soft);
+                    border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .mm-block .mb-h .ico { font-size:1.1rem; }
+  .mm-block .mb-h b { color:var(--navy); font-size:.95rem; }
+  .mm-block .mb-h .who { margin-left:auto; font-size:.72rem; font-weight:800; text-transform:uppercase;
+                         letter-spacing:.04em; color:var(--teal); }
+  .mm-block .mb-b { padding:.5rem 1rem; }
+
+  /* Аккордеон ролей в разделе «Специалисты» */
+  details.role { border:1px solid var(--line); border-radius:10px; margin:.45rem 0; background:var(--card); }
+  details.role summary { cursor:pointer; padding:.55rem .9rem; font-weight:700; color:var(--navy);
+                         display:flex; align-items:center; gap:.6rem; list-style:none; flex-wrap:wrap; }
+  details.role summary::-webkit-details-marker { display:none; }
+  details.role summary .ico { font-size:1.05rem; }
+  details.role summary .who { margin-left:auto; font-size:.68rem; font-weight:800; text-transform:uppercase;
+                              color:var(--teal); }
+  details.role[open] summary { border-bottom:1px solid var(--line); background:var(--teal-soft); }
+  details.role .rb { padding:.6rem .9rem; }
+  details.role .rb p { margin:.15rem 0 .35rem; font-size:.85rem; color:var(--muted); }
+
+  footer { color:var(--muted); font-size:.75rem; border-top:1px solid var(--line); margin-top:2.2rem; padding-top:.6rem; }
+  @media print { body{background:#fff} main{max-width:none;padding:0} .tabs{display:none} .panel{display:block!important} }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Точка входа · проект сопровождения одарённых</p>
+    <h1>Навигатор центра</h1>
+    <p class="meta">обновлён 13.10.2026 · по клику на раздел открывается только он · ссылки в разделах сотрудников ведут в «Методические материалы»</p>
+  </header>
+
+  <div class="tabs">
+    <button class="active" data-tab="start" onclick="tab('start',this)">1 · Старт</button>
+    <button data-tab="product" onclick="tab('product',this)">2 · Продукт</button>
+    <button data-tab="experts" onclick="tab('experts',this)">3 · Специалисты</button>
+    <button data-tab="mm" onclick="tab('mm',this)">4 · Методические материалы</button>
+    <button data-tab="management" onclick="tab('management',this)">5 · Управление</button>
+    <button data-tab="research" onclick="tab('research',this)">6 · Исследования</button>
+    <button data-tab="sources" onclick="tab('sources',this)">7 · Источники</button>
+    <button data-tab="tech" onclick="tab('tech',this)">8 · Техническое</button>
+  </div>
+
+  <!-- ================= 1 · СТАРТ ================= -->
+  <section class="panel active" id="start">
+    <h2>Старт</h2>
+    <div class="grp-row">Проект</div>
+    <ul class="flist">
+      <li><span class="grp">Что это</span><a href="Экспертиза концепции для центра персонализированного обучения.html">Экспертиза концепции ИОП/ИУП/ИОМ</a></li>
+      <li><span class="grp">Стадия</span><a href="Оптимизация запуска центра предложения и маршрут внедрения.html">Запуск воронки: 32 предложения + маршрут</a></li>
+    </ul>
+    <div class="grp-row">С чего начать новому сотруднику</div>
+    <ul class="flist">
+      <li><span class="grp">1</span><a href="Материалы к занятиям/Цифровые модели специалистов.html">Кто в команде и какие роли</a></li>
+      <li><span class="grp">2</span><a href="Материалы к занятиям/Персонализированный подход что знать уметь делать специалистам.html">Что знать / уметь / делать</a></li>
+      <li><span class="grp">3</span><a href="Система запуска и внедрения предложений.html">Как организована работа</a></li>
+    </ul>
+    <div class="card"><p>Материалы для всех сотрудников собраны в разделе <a class="mm-link" onclick="gotoMM('mm-common');return false;">«Методические материалы» →</a></p></div>
+  </section>
+
+  <!-- ================= 2 · ПРОДУКТ ================= -->
+  <section class="panel" id="product">
+    <h2>Продукт для ученика и тьютора</h2>
+    <div class="grp-row">Главный инструмент</div>
+    <ul class="flist">
+      <li><span class="grp">Интерактив</span><a href="Я выбираю свою траекторию.html">Я выбираю свою траекторию</a> <span class="fmt">html</span></li>
+    </ul>
+    <div class="grp-row">Занятия и шаблоны</div>
+    <ul class="flist">
+      <li><span class="grp">Методички 20 занятий</span><a href="Материалы к занятиям/Методички - курс тьютора 20 занятий (интерактив).html">сводный интерактив</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Отдельные занятия</span><a href="Материалы к занятиям/Методички HTML/">папка «Методички HTML»</a> <span class="note">20 файлов, 8–1 … 9–10</span></li>
+      <li><span class="grp">Рабочие шаблоны</span><a href="Материалы к занятиям/Рабочие шаблоны - ИОМ и ИУП (интерактив).html">ИОМ, ИУП и бланки (интерактив)</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Бланки Word</span><a href="Материалы к занятиям/Бланки и образцы/">папка «Бланки и образцы»</a> <span class="note">10 файлов</span></li>
+      <li><span class="grp">Практикум</span><a href="ИОП и ИУП через ИОМ для 8-9 классов - методический практикум.docx">сводный методический практикум</a> <span class="fmt">docx</span></li>
+    </ul>
+    <div class="grp-row">База знаний</div>
+    <ul class="flist">
+      <li><span class="grp">Источники</span><a href="Материалы к занятиям/Библиотека источников тьютора.html">Библиотека источников тьютора</a> <span class="fmt">html</span></li>
+    </ul>
+    <div class="card"><p>Все рабочие бланки и методички занятий продублированы по ролям в разделе <a class="mm-link" onclick="gotoMM('mm-common');return false;">«Методические материалы» →</a></p></div>
+  </section>
+
+  <!-- ================= 3 · СПЕЦИАЛИСТЫ ================= -->
+  <section class="panel" id="experts">
+    <h2>Специалисты и команда</h2>
+    <p style="font-size:.84rem;color:var(--muted);margin:.1rem 0 .7rem">Общие документы о команде — внизу. Материалы для работы каждой роли — по ссылкам «Методические материалы» (раздел 4).</p>
+
+    <details class="role" open>
+      <summary><span class="ico">🧭</span>Тьютор <span class="who">ядро</span></summary>
+      <div class="rb">
+        <p>Проектирует и ведёт ИОМ: диагностика, цель, этапы, рефлексия. Профстандарт 01.005.</p>
+        <p>Методические материалы: <a class="mm-link" onclick="gotoMM('mm-tutor');return false;">раздел «Тьютору» →</a></p>
+      </div>
+    </details>
+
+    <details class="role">
+      <summary><span class="ico">🧠</span>Педагог-психолог <span class="who">ядро</span></summary>
+      <div class="rb">
+        <p>Диагностика одарённости, тревожность, перфекционизм, кризисы, профориентация. Профстандарт 01.002.</p>
+        <p>Методические материалы: <a class="mm-link" onclick="gotoMM('mm-psych');return false;">раздел «Психологу» →</a></p>
+      </div>
+    </details>
+
+    <details class="role">
+      <summary><span class="ico">📚</span>Учитель-предметник <span class="who">содержание</span></summary>
+      <div class="rb">
+        <p>Углубление, дифференциация, содержание ИУП. Профстандарт «Педагог» (544н).</p>
+        <p>Методические материалы: <a class="mm-link" onclick="gotoMM('mm-teacher');return false;">раздел «Учителю» →</a></p>
+      </div>
+    </details>
+
+    <details class="role">
+      <summary><span class="ico">🏆</span>Олимпиадный тренер <span class="who">предметная вершина</span></summary>
+      <div class="rb">
+        <p>Подготовка к ВсОШ и перечневым, ИОМ олимпиадника. Модель компетенции (Черникова, Якута, 2026).</p>
+        <p>Методические материалы: <a class="mm-link" onclick="gotoMM('mm-trener');return false;">раздел «Тренеру» →</a></p>
+      </div>
+    </details>
+
+    <details class="role">
+      <summary><span class="ico">🗂️</span>Координатор / завуч по УВР <span class="who">организация</span></summary>
+      <div class="rb">
+        <p>Регламент, ИУП, командная работа, метрики. Письмо № 03-205, локальные акты.</p>
+        <p>Методические материалы: <a class="mm-link" onclick="gotoMM('mm-coord');return false;">раздел «Координатору» →</a></p>
+      </div>
+    </details>
+
+    <details class="role">
+      <summary><span class="ico">🤝</span>Внешний наставник (вуз, компания) <span class="who">проекты</span></summary>
+      <div class="rb">
+        <p>Проектная и научная деятельность, выход на вуз/индустрию. Целевая модель наставничества Р-145.</p>
+        <p>Методические материалы: <a class="mm-link" onclick="gotoMM('mm-mentor');return false;">раздел «Наставнику» →</a></p>
+      </div>
+    </details>
+
+    <details class="role">
+      <summary><span class="ico">🧑‍🏫</span>Классный руководитель <span class="who">запасной контур</span></summary>
+      <div class="rb">
+        <p>Координация, связь с семьёй и школой, выявление талантов. Письмо № ВБ-1011/08.</p>
+        <p>Методические материалы: <a class="mm-link" onclick="gotoMM('mm-klruk');return false;">раздел «Классному руководителю» →</a></p>
+      </div>
+    </details>
+
+    <div class="grp-row">Общие документы о ролях</div>
+    <ul class="flist">
+      <li><span class="grp">Паспорт ролей</span><a href="Материалы к занятиям/Цифровые модели специалистов.html">Цифровые модели специалистов</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Компетенции</span><a href="Материалы к занятиям/Персонализированный подход что знать уметь делать специалистам.html">Персонализированный подход: знать / уметь / делать</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Исследование</span><a href="Заключение специалисты сопровождения одарённых старшеклассников.html">Заключение: специалисты сопровождения одарённых</a> <span class="fmt">html · md</span></li>
+    </ul>
+  </section>
+
+  <!-- ================= 4 · МЕТОДИЧЕСКИЕ МАТЕРИАЛЫ ================= -->
+  <section class="panel" id="mm">
+    <h2>Методические материалы</h2>
+    <p style="font-size:.84rem;color:var(--muted);margin:.1rem 0 .6rem">Общая литература для всех сотрудников и рабочие материалы по каждой роли. Сюда ведут ссылки из раздела «Специалисты».</p>
+
+    <!-- Общие -->
+    <div class="mm-block" id="mm-common">
+      <div class="mb-h"><span class="ico">📕</span><b>Общая литература и документы — для всех сотрудников</b><span class="who">стартовая база</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Модель команды</span><a href="Материалы к занятиям/Цифровые модели специалистов.html">Цифровые модели специалистов</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Методика подхода</span><a href="Материалы к занятиям/Персонализированный подход что знать уметь делать специалистам.html">Знать / уметь / делать</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Исследование</span><a href="Заключение специалисты сопровождения одарённых старшеклассников.html">Заключение по специалистам</a> <span class="fmt">html · md</span></li>
+          <li><span class="grp">База знаний</span><a href="Материалы к занятиям/Библиотека источников тьютора.html">Библиотека источников тьютора</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Практикум (все)</span><a href="ИОП и ИУП через ИОМ для 8-9 классов - методический практикум.docx">Методический практикум</a> <span class="fmt">docx</span></li>
+        </ul>
+        <p style="font-size:.78rem;color:var(--muted);margin:.5rem 0 0">Нормативная база (273-ФЗ, профстандарты 01.005/01.002/544н, ФГОС СОО, письма Минпросвещения) — в <a class="mm-link" onclick="gotoMM('mm-law');return false;">блоке «Правовая база» →</a> и в разделе «Источники» (7).</p>
+      </div>
+    </div>
+
+    <!-- Правовая база -->
+    <div class="mm-block" id="mm-law">
+      <div class="mb-h"><span class="ico">⚖️</span><b>Правовая база (для всех)</b><span class="who">нормативные документы</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Закон</span><span class="note">273-ФЗ «Об образовании в РФ», ст. 2, 17, 34, 42, 44, 63 — в Реестре источников (раздел 7)</span></li>
+          <li><span class="grp">Профстандарт тьютора</span><a href="Реестр источников и ссылок/Реестр источников и ссылок.html">01.005 «Специалист в области воспитания»</a></li>
+          <li><span class="grp">Профстандарт психолога</span><a href="Реестр источников и ссылок/Реестр источников и ссылок.html">01.002 «Педагог-психолог»</a></li>
+          <li><span class="grp">Профстандарт педагога</span><a href="Реестр источников и ссылок/Реестр источников и ссылок.html">№ 544н «Педагог»</a></li>
+          <li><span class="grp">Порядок ИУП</span><a href="Реестр источников и ссылок/Реестр источников и ссылок.html">Письмо № 03-205 от 26.02.2021</a></li>
+          <li><span class="grp">Классное руководство</span><a href="Реестр источников и ссылок/Реестр источников и ссылок.html">Письмо № ВБ-1011/08</a></li>
+        </ul>
+        <p style="font-size:.78rem;color:var(--muted);margin:.5rem 0 0">Полные ссылки с проверкой доступности — в <a href="Реестр источников и ссылок/Реестр источников и ссылок.html">Реестре источников</a>.</p>
+      </div>
+    </div>
+
+    <!-- Тьютору -->
+    <div class="mm-block" id="mm-tutor">
+      <div class="mb-h"><span class="ico">🧭</span><b>Тьютору</b><span class="who">ядро маршрута</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Главный интерактив</span><a href="Я выбираю свою траекторию.html">20 занятий + панель тьютора + «В помощь тьютору»</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Методички занятий</span><a href="Материалы к занятиям/Методички - курс тьютора 20 занятий (интерактив).html">все 20 сценариев (сводно)</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Карта маршрута</span><a href="Материалы к занятиям/Рабочие шаблоны - ИОМ и ИУП (интерактив).html">шаблон ИОМ/ИУП (интерактив)</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Бланк ИОМ</span><a href="Материалы к занятиям/Бланки и образцы/Бланк 1 - Карта маршрута ученика (ИОМ).docx">Бланк 1 · Карта маршрута</a> <span class="fmt">docx</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Психологу -->
+    <div class="mm-block" id="mm-psych">
+      <div class="mb-h"><span class="ico">🧠</span><b>Педагогу-психологу</b><span class="who">диагностика и состояние</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Входная рефлексия</span><a href="Материалы к занятиям/Бланки и образцы/Бланк 9 - Что я хочу понять о себе.docx">Бланк 9 · Что я хочу понять о себе</a> <span class="fmt">docx</span></li>
+          <li><span class="grp">Тревожность</span><a href="Материалы к занятиям/Бланки и образцы/Бланк 6 - Мои способы справиться.docx">Бланк 6 · Мои способы справиться</a> <span class="fmt">docx</span></li>
+          <li><span class="grp">Занятие о тревоге</span><a href="Материалы к занятиям/Методички HTML/Занятие 9-4 Работа с тревожностью и самоэффективностью - методичка тьютора.html">9-4 · Тревожность и самоэффективность</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Диагностика</span><a href="Я выбираю свою траекторию.html">разделы «Диагностика» и «Стресс-карточка» в интерактиве</a> <span class="fmt">html</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Учителю -->
+    <div class="mm-block" id="mm-teacher">
+      <div class="mb-h"><span class="ico">📚</span><b>Учителю-предметнику</b><span class="who">содержание и дифференциация</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Профильные предметы</span><a href="Материалы к занятиям/Методички HTML/Занятие 9-2 Профильные предметы план подготовки - методичка тьютора.html">9-2 · Профильные предметы и план</a> <span class="fmt">html</span></li>
+          <li><span class="grp">ИУП предметы/уровни</span><a href="Материалы к занятиям/Методички HTML/Занятие 9-7 Профиль и ИУП предметы уровни часы - методичка тьютора.html">9-7 · Профиль и ИУП</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Шаблон ИУП</span><a href="Материалы к занятиям/Рабочие шаблоны - ИОМ и ИУП (интерактив).html">конструктор ИУП (интерактив)</a> <span class="fmt">html</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Тренеру -->
+    <div class="mm-block" id="mm-trener">
+      <div class="mb-h"><span class="ico">🏆</span><b>Олимпиадному тренеру</b><span class="who">олимпиадный трек</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Профиль и ИУП</span><a href="Материалы к занятиям/Методички HTML/Занятие 9-7 Профиль и ИУП предметы уровни часы - методичка тьютора.html">9-7 · связка предметов и уровней для олимпиадников</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Воронка и подготовка</span><a href="Отчёт Формирование тьюторов и воронки отбора/Отчёт Формирование тьюторов и воронки отбора.html">Отчёт: формирование тьюторов и воронка отбора</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Тренерская модель</span><a href="Заключение специалисты сопровождения одарённых старшеклассников.html">Заключение: раздел «Олимпиадные тренеры»</a> <span class="fmt">html</span></li>
+        </ul>
+        <p style="font-size:.78rem;color:var(--muted);margin:.5rem 0 0">ИОМ олимпиадника, календарь сезона, «поступление без ЕГЭ» — готовятся в рамках предложений команды (раздел «Управление»).</p>
+      </div>
+    </div>
+
+    <!-- Координатору -->
+    <div class="mm-block" id="mm-coord">
+      <div class="mb-h"><span class="ico">🗂️</span><b>Координатору / завучу</b><span class="who">организация и регламент</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Правовая рамка</span><a href="Экспертиза концепции для центра персонализированного обучения.html">Экспертиза: раздел правовой базы</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Регламенты</span><a href="Система запуска и внедрения предложений.html">Реестр, волны, ритуалы</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Технология ИОМ</span><a href="ИОП и ИУП через ИОМ для 8-9 классов - методический практикум.docx">Практикум: структурная часть ИОП/ИУП/ИОМ</a> <span class="fmt">docx</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Наставнику -->
+    <div class="mm-block" id="mm-mentor">
+      <div class="mb-h"><span class="ico">🤝</span><b>Внешнему наставнику</b><span class="who">проекты и наука</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Профпробы</span><a href="Материалы к занятиям/Методички HTML/Занятие 8-7 Один день на месте профессии - методичка тьютора.html">8-7 · Один день на месте профессии</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Встреча</span><a href="Материалы к занятиям/Методички HTML/Занятие 8-8 Встреча с представителями профессий - методичка тьютора.html">8-8 · Встреча с представителями</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Модель наставничества</span><a href="Отчёт Тьюторские службы и наставничество как модель/Отчёт Тьюторские службы и наставничество как модель.html">Отчёт: тьюторские службы и наставничество</a> <span class="fmt">html</span></li>
+        </ul>
+        <p style="font-size:.78rem;color:var(--muted);margin:.5rem 0 0">Стандарт наставника (1 стр.) и «витрина проектов» — в рамках предложений команды (раздел «Управление»).</p>
+      </div>
+    </div>
+
+    <!-- Классному руководителю -->
+    <div class="mm-block" id="mm-klruk">
+      <div class="mb-h"><span class="ico">🧑‍🏫</span><b>Классному руководителю</b><span class="who">связь семьи и школы</span></div>
+      <div class="mb-b">
+        <ul class="flist">
+          <li><span class="grp">Встреча с родителями</span><a href="Материалы к занятиям/Методички HTML/Занятие 8-10 Итоги года карта 1.0 и встреча с родителями - методичка тьютора.html">8-10 · Итоги года и встреча с родителями</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Согласование ИУП</span><a href="Материалы к занятиям/Методички HTML/Занятие 9-8 Согласование с родителями и школой - методичка тьютора.html">9-8 · Согласование с родителями и школой</a> <span class="fmt">html</span></li>
+          <li><span class="grp">Договорённости</span><a href="Материалы к занятиям/Бланки и образцы/Бланк 7 - Договорённости с семьёй.docx">Бланк 7 · Договорённости с семьёй</a> <span class="fmt">docx</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 5 · УПРАВЛЕНИЕ ================= -->
+  <section class="panel" id="management">
+    <h2>Управление и запуск</h2>
+    <ul class="flist">
+      <li><span class="grp">Экспертиза</span><a href="Экспертиза концепции для центра персонализированного обучения.html">Протокол: все 7 сотрудников</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Оптимизация</span><a href="Оптимизация запуска центра предложения и маршрут внедрения.html">32 предложения + маршрут 6 фаз</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Запуск</span><a href="Система запуска и внедрения предложений.html">Реестр, волны, ритуалы</a> <span class="fmt">html</span></li>
+    </ul>
+  </section>
+
+  <!-- ================= 6 · ИССЛЕДОВАНИЯ ================= -->
+  <section class="panel" id="research">
+    <h2>Исследования и аналитика</h2>
+    <div class="grp-row">Аналитика</div>
+    <ul class="flist">
+      <li><span class="grp">Факторы результата</span><a href="Аналитический отчет факторы образовательного результата старшеклассников.html">Аналитический отчёт</a> <span class="fmt">html · docx</span></li>
+    </ul>
+    <div class="grp-row">Отчёты по темам</div>
+    <ul class="flist">
+      <li><span class="grp">Формы обучения</span><a href="Отчёт Индивидуальное образование старшеклассников/Отчёт Индивидуальное образование старшеклассников.html">Индивидуальное образование</a> <span class="fmt">md · html · docx</span></li>
+      <li><span class="grp">Практики</span><a href="Отчёт Практики индивидуального сопровождения/Отчёт Практики индивидуального сопровождения.html">Практики индивидуального сопровождения</a> <span class="fmt">md · html · docx</span></li>
+      <li><span class="grp">Ресурсы</span><a href="Отчёт Ресурсы сопровождения старшеклассников/Отчёт Ресурсы сопровождения старшеклассников.html">Ресурсы сопровождения</a> <span class="fmt">md · html · docx</span></li>
+      <li><span class="grp">Платформа</span><a href="Отчёт Khan Academy как модель сопровождения/Отчёт Khan Academy как модель сопровождения.html">Khan Academy как модель</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Тьюторские службы</span><a href="Отчёт Тьюторские службы и наставничество как модель/Отчёт Тьюторские службы и наставничество как модель.html">Тьюторские службы и наставничество</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Одарённые</span><a href="Отчёт Олимпиадные центры и СУНЦ как модель/Отчёт Олимпиадные центры и СУНЦ как модель.html">Олимпиадные центры и СУНЦ</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Синтез</span><a href="Отчёт Синтез Khan Academy и наставничество/Отчёт Синтез Khan Academy и наставничество.html">Синтез Khan Academy и наставничество</a> <span class="fmt">html</span></li>
+      <li><span class="grp">Тьюторы</span><a href="Отчёт Формирование тьюторов и воронки отбора/Отчёт Формирование тьюторов и воронки отбора.html">Формирование тьюторов и воронки</a> <span class="fmt">md · html · docx</span></li>
+      <li><span class="grp">Проект КАИ</span><a href="Отчёт Система сопровождения на базе КАИ/Отчёт Система сопровождения на базе КАИ.html">Система на базе КАИ</a> <span class="fmt">md · html · docx</span></li>
+      <li><span class="grp">Финансы</span><a href="Отчёт Возможности финансирования сопровождения/Отчёт Возможности финансирования сопровождения.html">Возможности финансирования</a> <span class="fmt">html · docx</span></li>
+      <li><span class="grp">Финансы+</span><a href="Отчёт Финансирование сопровождения и аргументация для руководства/Отчёт Финансирование сопровождения и аргументация для руководства.html">Финансирование и аргументация</a> <span class="fmt">html · docx</span></li>
+      <li><span class="grp">Ресурс</span><a href="Отчёт Создание и оформление ресурса сопровождения/Отчёт Создание и оформление ресурса сопровождения.html">Создание ресурса сопровождения</a> <span class="fmt">html · docx</span></li>
+      <li><span class="grp">Решение</span><a href="Отчёт Решение по системе сопровождения/Отчёт Решение по системе сопровождения.html">Решение по системе</a> <span class="fmt">html</span></li>
+    </ul>
+    <div class="card"><p>Дубли форматов: у части отчётов <span style="font-family:ui-monospace,monospace">.md → .html → .docx</span> — один и тот же текст, правится один источник.</p></div>
+  </section>
+
+  <!-- ================= 7 · ИСТОЧНИКИ ================= -->
+  <section class="panel" id="sources">
+    <h2>Реестр источников</h2>
+    <div class="card">
+      <p><a href="Реестр источников и ссылок/Реестр источников и ссылок.html">Реестр источников и ссылок</a> <span class="fmt">html · docx · md</span> — 160+ ссылок, проверка доступности без VPN.</p>
+    </div>
+  </section>
+
+  <!-- ================= 8 · ТЕХНИЧЕСКОЕ ================= -->
+  <section class="panel" id="tech">
+    <h2>Техническое (служебное)</h2>
+    <ul class="flist">
+      <li><span class="grp">Скрипты</span><span class="note">папка «Вспомогательные материалы / Скрипты сборки»</span></li>
+      <li><span class="grp">Проверки</span><span class="note">папка «Вспомогательные материалы / Артефакты проверки»</span></li>
+      <li><span class="grp">Архив Word</span><span class="note">папка «Вспомогательные материалы / Методички Word (архив)»</span></li>
+      <li><span class="grp">Прототип</span><a href="Варианты оформления входа.html">Варианты оформления входа</a> <span class="fmt">html</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Навигатор центра · 13.10.2026 · ссылки относительные, работают без интернета из папки проекта. Новый документ добавляется строкой в соответствующий раздел; новые методические материалы — в раздел 4 «Методические материалы».</p>
+  </footer>
+</main>
+<script>
+  function tab(id, btn) {
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tabs button').forEach(function (b) { b.classList.remove('active'); });
+    var item = document.getElementById(id);
+    if (item) item.classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function gotoMM(id) {
+    var mm = document.getElementById('mm');
+    var btn = document.querySelector('.tabs button[data-tab="mm"]');
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tabs button').forEach(function (b) { b.classList.remove('active'); });
+    if (mm) mm.classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    var el = document.getElementById(id);
+    if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150);
+  }
+  window.tab = tab;
+  window.gotoMM = gotoMM;
+</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Система сопровождения старшеклассников на базе КНИТУ-КАИ</title>
+<style>
+  :root {
+    --bg: #fbfcfe; --ink: #16222e; --muted: #5c6b78;
+    --accent: #0e7c5b; --accent-soft: #e5f4ef;
+    --accent-2: #1f6feb; --accent-2-soft: #eaf1fd;
+    --warn: #b3382c; --warn-soft: #fbeef0;
+    --mid: #9a6a00; --mid-soft: #fff4e0;
+    --line: #e3e8ee; --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15.5px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 920px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+  header { padding: 2.5rem 0 1rem; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+             color: var(--accent); font-weight: 700; }
+  header h1 { font-size: 1.8rem; line-height: 1.15; margin: .35rem 0 .4rem; }
+  .meta { color: var(--muted); font-size: .85rem; }
+  .tldr { background: var(--accent-soft); border-left: 4px solid var(--accent);
+          padding: 1rem 1.2rem; border-radius: 0 6px 6px 0; margin: 1.75rem 0; }
+  .tldr b { color: var(--accent); }
+  .tldr-note { color: var(--muted); font-size: .9rem; margin-top: .4rem; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+          gap: .75rem; margin: 1.75rem 0; }
+  .kpi { border: 1px solid var(--line); border-radius: 10px; padding: .85rem 1rem; background: var(--card); }
+  .kpi b { display: block; font-size: 1.35rem; font-variant-numeric: tabular-nums; color: var(--accent); }
+  .kpi span { color: var(--muted); font-size: .8rem; }
+  .kpi small { color: var(--accent-2); font-size: .7rem; font-weight: 700; text-transform: uppercase; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--line);
+       padding-bottom: .4rem; margin: 2.4rem 0 .8rem; color: var(--accent); }
+  h3 { font-size: 1.03rem; margin: 1.4rem 0 .45rem; }
+  p { margin: .6rem 0; }
+  ul, ol { margin: .5rem 0 .9rem; padding-left: 1.3rem; }
+  li { margin: .35rem 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.2rem; margin: .9rem 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .85rem; margin: .8rem 0; }
+  th, td { padding: .5rem .6rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: .8rem; background: #f2f5f7; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tag { display: inline-block; font-size: .72rem; font-weight: 700; text-transform: uppercase;
+         padding: .12rem .45rem; border-radius: 999px; }
+  .tag.yes { background: var(--accent-2-soft); color: var(--accent-2); }
+  .tag.mid { background: var(--mid-soft); color: var(--mid); }
+  .tag.no  { background: var(--warn-soft); color: var(--warn); }
+  .map { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:.7rem; margin:.8rem 0; }
+  .map > div { background: var(--card); border:1px solid var(--line); border-radius:8px; padding:.7rem .9rem; }
+  .map b { color: var(--accent); font-size:.92rem; }
+  .steps { counter-reset: st; list-style:none; padding-left:0; }
+  .steps > li { position:relative; padding-left:2.2rem; margin:.55rem 0; }
+  .steps > li::before { counter-increment: st; content: counter(st); position:absolute; left:0; top:.05rem;
+    width:1.5rem; height:1.5rem; background: var(--accent); color:#fff; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700; }
+  footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line);
+           margin-top: 3rem; padding-top: .9rem; }
+  footer h3 { color: var(--muted); margin-top: .4rem; font-size:.95rem; }
+  @media print { main{max-width:none;padding:0;} .kpi,table,.card,.map{break-inside:avoid;} header{padding-top:0;} }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Проектная проработка на базе реального вуза</div>
+    <h1>Система сопровождения и развития старшеклассников на базе КНИТУ-КАИ (СУНЦ и подразделения)</h1>
+    <p class="meta">КАИ им. А.Н. Туполева · СУНЦ «Инженерный лицей-интернат» · Приоритет-2030 · ПИШ &nbsp;·&nbsp; 27.09.2026</p>
+  </header>
+
+  <div class="tldr">
+    <b>Главное.</b> КНИТУ-КАИ уже имеет все физические якоря рекомендованной архитектуры: СУНЦ «Инженерный лицей-интернат» (бесплатно, проектная зона 800 м², СИБУР-класс с 17.09.2026), ЦДО «Интеллект», ПИШ, промышленные партнёры (КАЗ, КВЗ, ОДК, СИБУР), психологическую службу (7 психологов), 246 наставников студентов. Отсутствуют три элемента новизны: <b>тьюторская служба студентов для школьников, возрастной матчинг (8 vs 10–11), онлайн-платформа ОГЭ/ЕГЭ.</b><br>
+    <span class="tldr-note">Проект: корпоративный «Центр сопровождения старшеклассников» при СУНЦ, где ядро — обученные студенты-тьюторы КАИ; финансирование = внебюджет + целевой приём (ПП №555) + гранты Приоритет-2030 (до 100 млн ₽).</span>
+  </div>
+
+  <section>
+    <h2>Ключевые цифры базы</h2>
+    <div class="kpis">
+      <div class="kpi"><small>Студентов</small><b>~14 000</b><span>5 институтов + физмат, 45 кафедр</span></div>
+      <div class="kpi"><small>Грант Приоритет-2030</small><b>до 100 млн ₽</b><span>программа 2025–2036</span></div>
+      <div class="kpi"><small>Психологи</small><b>7</b><span>штатная служба КАИ</span></div>
+      <div class="kpi"><small>Наставники/кураторы</small><b>246 / 69</b><span>существующая система студентов</span></div>
+      <div class="kpi"><small>СНК (кружки)</small><b>15</b><span>студенческое научное общество</span></div>
+      <div class="kpi"><small>Поступление СУНЦ в КАИ</small><b>22–30%</b><span>остальные в КФУ, ИТМО, МФТИ</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Что уже есть у КАИ (якоря)</h2>
+    <div class="map">
+      <div><b>СУНЦ «Инженерный лицей-интернат»</b><br>бесплатно, 5–11 кл., проектная зона 800 м², интернат, «Инженер выходного дня»</div>
+      <div><b>ЦДО «Интеллект»</b><br>курсы ЕГЭ/ОГЭ, IT-школа, олимпиада</div>
+      <div><b>ПИШ «Комплексная Авиационная Инженерия»</b><br>официальная метрика профориентации школьников</div>
+      <div><b>Партнёры</b><br>КАЗ им. Горбунова, КВЗ, ОДК, СИБУР («Крылья Ростеха», 51 место)</div>
+      <div><b>Довузовские олимпиады</b><br>«Звезда», «Росатом», «Шаг в будущее», САММАТ, ТИИМ</div>
+      <div><b>Детский университет</b><br>БПЛА, олимпиадная математика, предпринимательство</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Чего не хватает (элементы новизны для КАИ)</h2>
+    <div class="card">
+      <ul>
+        <li><span class="tag no">Новое:</span> <b>тьюторская служба студентов КАИ для школьников</b> как ядро сопровождения (модель 9-стадийного цикла из прошлого отчёта).</li>
+        <li><span class="tag no">Новое:</span> <b>возрастной матчинг 8 vs 10–11</b> с психологической диагностикой (8 класс — тьютор-«опека», 10–11 — молодой студент-«взрослый друг»).</li>
+        <li><span class="tag no">Новое:</span> <b>онлайн-платформа подготовки к ОГЭ/ЕГЭ</b> (сейчас курсы очные).</li>
+        <li><span class="tag no">Новое:</span> <b>сквозная финмодель</b> «внебюджет + целевой приём + Приоритет-2030», завязанная на конверсию в поступление.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Карта наложения архитектуры на подразделения КАИ</h2>
+    <div class="map">
+      <div><b>Тьюторское ядро</b><br>студенты КАИ (2–4 курс, магистры ПИШ) · координатор в Проектном центре · база в СУНЦ</div>
+      <div><b>Онлайн-курсы ОГЭ/ЕГЭ</b><br>раздел «Довузовское образование» + СУНЦ · оболочка — IT-кафедры / «Цифровой горизонт»</div>
+      <div><b>Профориентация (встроена)</b><br>партнёрства: СИБУР-класс уже открыт, авиазаводы · метрика ПИШ</div>
+      <div><b>Кружки</b><br>лаборатории СУНЦ · «Инженер выходного дня» (расширить на 8–11) · СНО и студенческие КБ</div>
+      <div><b>Цифровая платформа</b><br>кабинет «трек школьника» с матчингом и трекингом</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Этапность внедрения</h2>
+    <div class="svgwrap">
+    <table>
+      <thead><tr><th>Этап</th><th>Срок</th><th>Содержание</th><th>Бюджет</th></tr></thead>
+      <tbody>
+        <tr><td><b>Этап 0</b></td><td>0–6 мес</td><td>Аудит, назначение координатора, школа тьюторов на 20 студентов</td><td class="num">1,5–3 млн ₽</td></tr>
+        <tr><td><b>Этап 1 MVP</b></td><td>6–18 мес</td><td>30–50 тьюторов, пилот 100–150 учеников, первые онлайн-курсы</td><td class="num">6–10 млн ₽</td></tr>
+        <tr><td><b>Этап 2 масштаб</b></td><td>1,5–3 года</td><td>Полные воронки, платформа с матчингом, ПИШ и партнёры, целевой приём</td><td class="num">15–25 млн ₽</td></tr>
+        <tr><td><b>Этап 3 устойчивость</b></td><td>3+ года</td><td>Ежегодный цикл, эндаумент-фонд КАИ, «Лига Победителей»</td><td>внебюджет + гранты</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Воронки отбора</h2>
+    <div class="card">
+      <p><b>Тьюторы (студенты КАИ):</b> отбор по мотивации + диагностика + обучение (32–72 ч) + супервизия; ожидаемый отсев 3–5%; 1 тьютор ведёт 3–5 учеников; матчинг по предмету и возрасту.</p>
+      <p><b>Ученики (8–11, Татарстан):</b> добровольность → профдиагностика (страхи/тревожность) → возрастной матчинг: <span class="tag yes">8 класс — тьютор-куратор постарше</span> · <span class="tag yes">10–11 — молодой студент-«взрослый друг»</span>.</p>
+      <p><b>Прогноз конверсии:</b> 1200 заявок → 800 диагностика → 450 тандемов → 300–350 до поступления.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Финансирование</h2>
+    <div class="card">
+      <ul>
+        <li><b>Внебюджет (≈40–50%):</b> платные подготовительные курсы (СУНЦ и ЦДО «Интеллект»), «Инженер выходного дня» для 8–11, корпоративное наставничество.</li>
+        <li><b>Гранты (≈30%):</b> «Приоритет-2030» (до 100 млн ₽), «Цифровой горизонт», РНФ, «Движение Первых»/Росмолодёжь.</li>
+        <li><b>Целевой приём + партнёры (≈20–30%):</b> договоры по ПП №555 с авиазаводами и машиностроителями РТ; СИБУР-класс как готовая модель; «Крылья Ростеха» (51 место в 2026).</li>
+      </ul>
+      <p>Принцип «тьютор дороже контента» фиксируется в смете: оплата труда тьюторов — приоритетная статья.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Метрики и риски</h2>
+    <div class="card">
+      <p><b>Метрики:</b> конверсия воронки; сравнение баллов ОГЭ/ЕГЭ с контрольной группой; % тьюторов после супервизии; retention; снижение тревожности (вход/выход); число школьников в рамках ПИШ; заключённые целевые договоры; активность на платформе.</p>
+      <p><b>Риски и митигация:</b> выгорание тьюторов-студентов → оплата + супервизия; перегрузка IT-кафедры → готовые LMS; слабая мотивация учеников → «взрослый друг», не «контролёр»; зависимость от гранта → внебюджет + эндаумент; уход партнёров → диверсификация; конкуренция СУНЦ и довузовского блока → единый центр, разделение ролей.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Отличия от аналогов</h2>
+    <div class="card">
+      <p><b>Уже делают другие вузы:</b> корпоративные классы (СИБУР), профориентация через ПИШ, довузовские курсы, наставничество студентов (МФТИ «Классы Физтех XXI», УрФУ «Тест-драйв», ИТМО-кружки, СУНЦ НГУ).</p>
+      <p><span class="tag mid">Новое для КАИ:</span> системная тьюторская служба студентов как ядро + возрастной матчинг + онлайн-платформа + сквозная финмодель на конверсию. КАИ — авиационный вуз с реальными заводами-партнёрами, что даёт уникальное преимущество в целевом наборе со школы.</p>
+    </div>
+  </section>
+
+  <footer>
+    <h3>Источники и ограничения</h3>
+    <p>Первичные: kai.ru/university (структура, «О КАИ»), lyceum.kai.ru (СУНЦ: поступление, выпускники), intellect.kai.ru (ЦДО), priority2030.kai.ru (Приоритет-2030), kai.ru/web/pish (ПИШ), kai.ru/web/sno (СНО), kai.ru/web/studentu/psihologiceskaya-podderzka (психологи), abiturientu.kai.ru/olimpiady1, «Крылья Ростеха», lyceum… СИБУР-класс, Татар-информ (летняя школа). Аналоги: МФТИ (kf21.ru, os.mipt.ru), МИФИ (mephi.ru/pre), ИТМО (start.itmo.ru), УрФУ (testdrive.urfu.ru), СУНЦ НГУ (sesc.nsu.ru), УУНиТ (uust.ru/engineer-school), Минпросвещения об инженерных классах.</p>
+    <p><b>Ограничения:</b> % поступления СУНЦ в КАИ (22–30%) — расчёт автора по первичным спискам, официально не публикуется; роль КАИ в «Билете в будущее» и цифры конкурса — не подтверждены первично (агрегаторы); бюджеты этапов — проектные, требуют уточнения внутри КАИ. Сформировано 27.09.2026.</p>
+  </footer>
+<section>
+    <h2>Дополнение: недоиспользованные доказательные блоки для трека КАИ (01.10.2026)</h2>
+    <div class="card">
+      <p>Дополнение из исследования «Факторы, влияющие на образовательный результат старшеклассников». Проект КАИ сильно на «как организовать»; ниже — физиолого-психологические факторы, которые усиливают трек «дешёво и доказательно».</p>
+      <ul>
+        <li><b>Сон (~8 ч)</b> — самый управляемый фактор успеваемости. Для «Инженерного лицея» с интернатом и интенсивными сменами режим сна должен быть контролируемым: недосып реально снижает баллы (перевёрнутая U-кривая, аномальный сон &lt;6 ч и &gt;10 ч).</li>
+        <li><b>Физическая активность</b> — умеренно повышает успеваемость; в инженерном треке КАИ рекомендуем офлайн-движение (лаборатории, практика), а не только онлайн.</li>
+        <li><b>Эмоциональная регуляция и тревожность.</b> У старшеклассников тревога растёт к 15–19 годам; академический стресс → выгорание. Модуль ППС должен измерять тревожность и career decidedness до/после.</li>
+        <li><b>Автономия как принцип.</b> Поддерживающая автономию позиция тьютора-студента усиливает мотивацию (SDT); возрастной матчинг (8 vs 10–11) подтверждается dual-systems модель. Контроль и денежные награды ослабляют внутреннюю мотивацию.</li>
+        <li><b>Ограничение экранов в онлайн-части</b>: развлекательное использование в классе связано с худшими результатами (PISA 2022); медиа-мультизадачность ослабляет внимание.</li>
+      </ul>
+    </div>
+  </section>
+  </main>
+</body>
+</html>

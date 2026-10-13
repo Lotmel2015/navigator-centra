@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Система запуска и внедрения предложений: как начать, ничего не упустить и дать каждому раскрыться</title>
+<style>
+  :root {
+    --bg:#f6f8fb; --card:#ffffff; --ink:#22303c; --muted:#5c6a77;
+    --navy:#1f3a5f; --navy-soft:#e7eef7;
+    --teal:#0f6f69; --teal-soft:#e1efed;
+    --gold:#9a6a1f; --gold-soft:#f6eeda;
+    --warn:#b3382c; --warn-soft:#f9e9e6;
+    --ok:#1a7f4b; --ok-soft:#dcefe3;
+    --purple:#5b4a9e; --purple-soft:#edeaf8;
+    --line:#e0e5ec;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:1040px; margin:0 auto; padding:2rem 1.25rem 3rem; }
+  header { padding:1.4rem 0 1rem; border-bottom:2px solid var(--navy); }
+  .eyebrow { font-size:.76rem; letter-spacing:.13em; text-transform:uppercase; color:var(--teal); font-weight:700; }
+  header h1 { font-size:1.72rem; line-height:1.28; margin:.3rem 0 .4rem; color:var(--navy); }
+  .meta { color:var(--muted); font-size:.85rem; }
+  .tldr { background:var(--navy-soft); border-left:4px solid var(--navy); padding:.95rem 1.15rem;
+          border-radius:0 8px 8px 0; margin:1.6rem 0; }
+  .tldr b { color:var(--navy); }
+  .task { background:var(--teal-soft); border-left:4px solid var(--teal); padding:.9rem 1.1rem;
+          border-radius:0 8px 8px 0; margin:1.2rem 0; font-size:.95rem; }
+  .task b { color:var(--teal); }
+  h2 { font-size:1.2rem; color:var(--navy); margin:2.4rem 0 .6rem; }
+  h3 { font-size:1rem; color:var(--teal); margin:1.4rem 0 .4rem; }
+
+  /* Принципы */
+  .principles { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:.8rem; margin:1.2rem 0; }
+  .principles .pr { border:1px solid var(--line); border-radius:12px; padding:.9rem 1rem; background:var(--card); }
+  .principles .pr .n { font-size:.72rem; font-weight:800; color:var(--teal); text-transform:uppercase; letter-spacing:.06em; }
+  .principles .pr b { display:block; color:var(--navy); font-size:.98rem; margin:.25rem 0 .3rem; }
+  .principles .pr p { font-size:.84rem; color:var(--muted); margin:0; }
+
+  .twrap { overflow-x:auto; margin:1.1rem 0; border:1px solid var(--line); border-radius:12px; }
+  table.t { border-collapse:collapse; width:100%; font-size:.82rem; background:var(--card); }
+  .t th,.t td { border:1px solid var(--line); padding:.5rem .6rem; text-align:left; vertical-align:top; }
+  .t th { background:var(--navy-soft); color:var(--navy); font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
+  .t td b { color:var(--navy); }
+  .st-dot { display:inline-block; width:.6rem; height:.6rem; border-radius:50%; margin-right:.3rem; vertical-align:1px; }
+  .st-new { background:var(--muted); } .st-work { background:var(--gold); } .st-test { background:var(--teal); }
+  .st-done { background:var(--ok); } .st-hang { background:var(--warn); }
+  .empty-row td { color:var(--muted); font-style:italic; text-align:center; }
+
+  /* Паспорт инициативы */
+  .passport { border:2px dashed var(--teal); border-radius:14px; padding:1.1rem 1.2rem; margin:1.2rem 0;
+              background:var(--card); }
+  .passport h3 { margin-top:0; }
+  .passport .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:.7rem; }
+  .passport .fld label { display:block; font-size:.72rem; font-weight:800; color:var(--muted);
+                         text-transform:uppercase; letter-spacing:.05em; margin-bottom:.15rem; }
+  .passport .fld .in { border:1px solid var(--line); border-radius:8px; min-height:2.1rem; padding:.45rem .6rem;
+                       background:var(--bg); font-size:.87rem; color:var(--ink); }
+  .passport .fld .in.wide { min-height:3.2rem; }
+
+  .waves { margin:1.2rem 0; }
+  .wave { border:1px solid var(--line); border-radius:12px; margin:1rem 0; background:var(--card); overflow:hidden; }
+  .wave .wa-h { display:flex; align-items:center; gap:.7rem; padding:.75rem 1rem; border-bottom:1px solid var(--line);
+                flex-wrap:wrap; }
+  .wave .wa-n { font-weight:800; color:var(--navy); font-size:1rem; }
+  .wave .wa-t { font-size:.8rem; color:var(--muted); }
+  .wave .wa-theme { margin-left:auto; font-size:.74rem; font-weight:800; text-transform:uppercase; border-radius:999px; padding:.2rem .7rem; }
+  .wa-theme.a { background:var(--teal-soft); color:var(--teal); }
+  .wa-theme.b { background:var(--navy-soft); color:var(--navy); }
+  .wa-theme.c { background:var(--purple-soft); color:var(--purple); }
+  .wave .wa-b { padding:.7rem 1rem; }
+  .wave ul { margin:.3rem 0 .5rem; padding-left:1.3rem; }
+  .wave li { font-size:.88rem; margin:.28rem 0; }
+  .wave li b { color:var(--navy); }
+  .wave .wa-kpi { background:var(--bg); border:1px dashed var(--line); border-radius:8px; padding:.5rem .75rem;
+                  font-size:.82rem; color:var(--muted); margin-top:.5rem; }
+  .wave .wa-kpi b { color:var(--ok); }
+
+  .ritual { margin:1rem 0; border:1px solid var(--line); border-radius:12px; padding:.95rem 1.05rem; background:var(--card); }
+  .ritual .rt-h { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-bottom:.35rem; }
+  .ritual .rt-h b { color:var(--navy); font-size:.98rem; }
+  .ritual .rt-h .freq { font-size:.72rem; font-weight:800; color:var(--teal); background:var(--teal-soft);
+                        border-radius:999px; padding:.15rem .6rem; text-transform:uppercase; }
+  .ritual p { font-size:.88rem; color:var(--ink); margin:.25rem 0; }
+
+  .steps5 { margin:1.2rem 0; }
+  .steps5 .st5 { display:flex; gap:.8rem; margin:.6rem 0; }
+  .steps5 .num { flex:0 0 auto; width:1.8rem; height:1.8rem; border-radius:50%; background:var(--teal); color:#fff;
+                 display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; }
+  .steps5 .txt { flex:1 1 auto; }
+  .steps5 .txt b { color:var(--navy); }
+  .steps5 .txt p { margin:.2rem 0 0; font-size:.88rem; color:var(--muted); }
+
+  .check { margin:1rem 0; border:1px solid var(--line); border-radius:12px; padding:1rem 1.1rem; background:var(--card); }
+  .check ul { margin:.3rem 0 .5rem; padding-left:0; list-style:none; }
+  .check li { font-size:.9rem; margin:.45rem 0; padding-left:1.6rem; position:relative; }
+  .check li::before { content:"☐"; position:absolute; left:.1rem; color:var(--teal); font-size:1.05rem; }
+
+  .verdict { background:var(--ok-soft); border-left:4px solid var(--ok); border-radius:0 8px 8px 0;
+             padding:.9rem 1.15rem; margin:1.4rem 0; }
+  .verdict b { color:var(--ok); }
+  .decide { background:var(--navy-soft); border-left:4px solid var(--navy); border-radius:0 8px 8px 0;
+            padding:.9rem 1.15rem; margin:1.4rem 0; }
+  .decide b { color:var(--navy); }
+  footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--line); margin-top:3rem; padding-top:.8rem; }
+  @media print { body{background:#fff} main{max-width:none;padding:0} .wave,.ritual,.check,.passport,table{break-inside:avoid} }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Система запуска · 32 предложения · 7 авторов</p>
+    <h1>Как начать действовать по предложениям: реестр, авторство, волны внедрения, ритуалы</h1>
+    <p class="meta">Подразделение по работе с одарёнными детьми и талантливой молодёжью · 13.10.2026 · регламент запуска внедрения</p>
+  </header>
+
+  <div class="tldr"><b>Главное.</b> Чтобы начать, ничего не упустить и дать каждому раскрыть своё предложение, нужна система из четырёх элементов: <b>(1) Единый реестр</b> всех 32 предложений — единственный источник правды со статусами; <b>(2) Авторство</b> — каждый сотрудник становится <b>владельцем своей инициативы</b> с паспортом и правом вести её до результата; <b>(3) Волны внедрения</b> — 3 волны по 2 недели (вход → сопровождение → результат) вместо «всё сразу»; <b>(4) Ритуалы</b> — еженедельные 15-минутные штабы, демо-ревью в конце волны, правило эскалации «не зависло». Бюджет запуска — 0 ₽, нужны только реестр (таблица) и час команды в неделю.</div>
+
+  <h2>Принцип, с которого всё начинается: «каждый автор — владелец»</h2>
+  <div class="principles">
+    <div class="pr"><div class="n">01</div><b>Автор ведёт сам</b><p>Тот, кто предложил, тот и реализует: составляет паспорт, ищет помощь, отчитывается. Никто не «передаёт» его предложение другому.</p></div>
+    <div class="pr"><div class="n">02</div><b>Один источник правды</b><p>Все 32 предложения — в одном реестре. Любое обсуждение ссылается на строку реестра, а не на переписку.</p></div>
+    <div class="pr"><div class="n">03</div><b>Маленькими волнами</b><p>Не «всё сразу», а 3 волны по 2 недели. В каждой — свой тематический фокус и критерий готовности.</p></div>
+    <div class="pr"><div class="n">04</div><b>Видимость каждого</b><p>Каждый автор публично показывает результат (демо-ревью). Это даёт признание и не даёт «потеряться» ни одному предложению.</p></div>
+  </div>
+
+  <!-- ================= РЕЕСТР ================= -->
+  <h2>Шаг 1 · Единый реестр предложений (шаблон)</h2>
+  <p>Одна таблица на всех. Статусы обязательны: <span class="st-dot st-new"></span>новое · <span class="st-dot st-work"></span>в работе · <span class="st-dot st-test"></span>на тесте · <span class="st-dot st-done"></span>готово · <span class="st-dot st-hang"></span>зависло (эскалация). Правило: статус «в работе» не живёт дольше 2 недель без апдейта — иначе строка автоматически попадает руководителю.</p>
+  <div class="twrap">
+    <table class="t">
+      <thead><tr>
+        <th>№</th><th>Предложение</th><th>Автор (владелец)</th><th>Стадия (вход/сопр./результат)</th><th>Приоритет</th>
+        <th>Статус</th><th>Срок</th><th>Кого просит помочь</th><th>Критерий «готово»</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Онлайн-анкета-скрининг</td><td>Тьютор</td><td>вход</td><td>высокий</td><td><span class="st-dot st-new"></span>новое</td><td></td><td>—</td><td>Анкета работает, собрано 10 заявок</td></tr>
+        <tr><td>2</td><td>Автоматизированный матчинг</td><td>Тьютор</td><td>вход</td><td>высокий</td><td><span class="st-dot st-new"></span>новое</td><td></td><td>психолог</td><td>Подбор пары за 1 день</td></tr>
+        <tr><td>…</td><td colspan="8" style="color:var(--muted)">…и так для всех 32 предложений (строки заполняет каждый автор до конца недели 1)</td></tr>
+        <tr class="empty-row"><td colspan="9">Свободная строка — ваше следующее предложение/инициатива</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.84rem;color:var(--muted)"><b>Техника «не упустить»:</b> в реестре предусмотрены фильтры (по автору, стадии, статусу, приоритету). Каждый понедельник руководитель смотрит только строки, где статус стоит дольше 2 недель или пуст. Всё остальное — работает.</p>
+
+  <!-- ================= ПАСПОРТ ================= -->
+  <h2>Шаг 2 · Паспорт инициативы — как автор «разворачивает» своё предложение</h2>
+  <p>На каждую принятую инициативу автор заполняет паспорт (одна страница). Это и есть способ <b>максимально развернуть предложение</b>: от идеи в одну строку — до плана, ресурсов и критерия успеха.</p>
+  <div class="passport">
+    <h3>Паспорт инициативы № __ · «…»</h3>
+    <div class="grid">
+      <div class="fld"><label>Автор-владелец</label><div class="in">ФИО, должность</div></div>
+      <div class="fld"><label>Стадия (вход / сопровождение / результат)</label><div class="in"></div></div>
+      <div class="fld"><label>Срок волны</label><div class="in">неделя __ – неделя __</div></div>
+      <div class="fld"><label>Приоритет</label><div class="in">высокий / средний</div></div>
+      <div class="fld"><label>Проблема, которую решает (1–2 предложения)</label><div class="in wide"></div></div>
+      <div class="fld"><label>Что делаем (шаги, максимум 5)</label><div class="in wide"></div></div>
+      <div class="fld"><label>Что нужно от других (кто и что)</label><div class="in wide"></div></div>
+      <div class="fld"><label>Критерий «готово» (как поймём, что сработало)</label><div class="in wide"></div></div>
+      <div class="fld"><label>Где живёт результат (папка/CRM/документ)</label><div class="in"></div></div>
+      <div class="fld"><label>Блокер (если есть) — сразу эскалация</label><div class="in"></div></div>
+    </div>
+  </div>
+
+  <!-- ================= ВОЛНЫ ================= -->
+  <h2>Шаг 3 · Волны внедрения: 3 волны по 2 недели</h2>
+  <p>Все 32 предложения не внедряются одновременно. Каждая волна имеет тему, владельцев и критерий приёмки. В конце волны — демо-ревью: каждый автор показывает результат.</p>
+  <div class="waves">
+
+    <div class="wave">
+      <div class="wa-h"><span class="wa-n">Волна 1 · Фундамент: правовая рамка + вход</span><span class="wa-t">недели 1–2</span><span class="wa-theme a">вход</span></div>
+      <div class="wa-b">
+        <ul>
+          <li><b>Координатор:</b> регламент жизненного цикла (SOP), CRM-реестр с дашбордом, пакет документов (договор, 152-ФЗ, положение).</li>
+          <li><b>Тьютор:</b> онлайн-анкета-скрининг, таблица матчинга.</li>
+          <li><b>Психолог:</b> единый пакет диагностик + автоподсчёт, протокол двойной диагностики.</li>
+          <li><b>Классный руководитель:</b> бланк рекомендации школы, 1-страничник.</li>
+          <li><b>Заполнение реестра:</b> все 32 предложения получают владельцев, статусы и сроки (до конца недели 1).</li>
+        </ul>
+        <div class="wa-kpi"><b>Критерий приёмки волны 1:</b> реестр заполнен на 100%; скрининг + диагностика одного ученика ≤ 1,5 ч; шаблоны документов готовы.</div>
+      </div>
+    </div>
+
+    <div class="wave">
+      <div class="wa-h"><span class="wa-n">Волна 2 · Контуры сопровождения и удержания</span><span class="wa-t">недели 3–4</span><span class="wa-theme b">сопровождение</span></div>
+      <div class="wa-b">
+        <ul>
+          <li><b>Тьютор:</b> цифровая карта маршрута, чек-пойнт целей (шаблон), «дорожная карта результата».</li>
+          <li><b>Психолог:</b> ежемесячный экспресс-скрининг состояния, реестр «второго шанса».</li>
+          <li><b>Учитель:</b> банк входных предметных диагностик, шаблон индивидуального учебного контура.</li>
+          <li><b>Тренер:</b> ИОМ олимпиадника с контрольными точками, календарь олимпиадного сезона.</li>
+          <li><b>Координатор:</b> дашборд рисков отсева (автосигналы).</li>
+          <li><b>Наставник:</b> стандарт наставника, этапные вехи проекта.</li>
+        </ul>
+        <div class="wa-kpi"><b>Критерий приёмки волны 2:</b> все инструменты сопровождения оттестированы на 3 волонтёрах; дашборд рисков выдаёт сигналы; 100% заполненных карт маршрута 0.1.</div>
+      </div>
+    </div>
+
+    <div class="wave">
+      <div class="wa-h"><span class="wa-n">Волна 3 · Результаты, партнёрства и мета-отчёт</span><span class="wa-t">недели 5–6</span><span class="wa-theme c">результат</span></div>
+      <div class="wa-b">
+        <ul>
+          <li><b>Наставник:</b> «витрина» проектов партнёров, план «демодня», выход на вузы/компании.</li>
+          <li><b>Тренер:</b> траектория «поступление без ЕГЭ» (связка дипломов с вузами).</li>
+          <li><b>Учитель:</b> формат пробников с прогнозом балла.</li>
+          <li><b>Координатор:</b> метрики благополучия/decidedness в KPI, форма мета-отчёта «результаты».</li>
+          <li><b>Классный руководитель:</b> двусторонний канал «школа ↔ центр».</li>
+          <li><b>Пилот воронки:</b> запуск первого потока 30–50 учеников (стыкуется с фазами 2–4 маршрута).</li>
+        </ul>
+        <div class="wa-kpi"><b>Критерий приёмки волны 3:</b> ≥ 2 соглашения с вузами; «витрина» ≥ 5 проектов; пилот набран; все «средние» инициативы имеют паспорт и дату демо.</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:.84rem;color:var(--muted)">Каждая волна соответствует ближайшим фазам большого маршрута (0–2 → 3 → 4–5). После волны 3 — следующий цикл: новые инициативы, «зависшее» из предыдущих, калибровка по данным пилота.</p>
+
+  <!-- ================= РИТУАЛЫ ================= -->
+  <h2>Шаг 4 · Ритуалы — механизм «ничего не упустить»</h2>
+  <div class="ritual">
+    <div class="rt-h"><b>Понедельник · штаб 15 минут</b><span class="freq">еженедельно</span></div>
+    <p>Всей командой по реестру: что готово, что в работе, что блокирует. Каждый говорит <b>одно</b> предложение о своей инициативе. Не решаем — только снимаем блокеры и назначаем ответы.</p>
+  </div>
+  <div class="ritual">
+    <div class="rt-h"><b>Конец волны · демо-ревью 45 минут</b><span class="freq">каждые 2 недели</span></div>
+    <p>Каждый автор <b>показывает результат</b> своей инициативы (2–3 минуты): что сделано, что показал тест, что берём в работу. Голосование «принято / доработать». Это даёт каждому право раскрыться и признание за вклад.</p>
+  </div>
+  <div class="ritual">
+    <div class="rt-h"><b>Эскалация «зависло»</b><span class="freq">правило 2 недель</span></div>
+    <p>Любая инициатива, которая в статусе «в работе» дольше 2 недель без апдейта, автоматически попадает на стол руководителя. Не наказываем — разбираем: не хватает времени, ресурса, ясности? Решаем вместе.</p>
+  </div>
+  <div class="ritual">
+    <div class="rt-h"><b>Время на инициативы</b><span class="freq">политика</span></div>
+    <p>Каждому сотруднику резервируется время (например, 10–20% рабочей недели) под <b>свои</b> инициативы. Это официальная ставка на «право развернуть предложение», а не «дополнительная нагрузка сверху».</p>
+  </div>
+
+  <!-- ================= 5 ШАГОВ АВТОРА ================= -->
+  <h2>Памятка автору: как развернуть своё предложение за 5 шагов</h2>
+  <div class="steps5">
+    <div class="st5"><div class="num">1</div><div class="txt"><b>Сформулируйте паспорт.</b><p>Заполните карточку инициативы (шаблон выше): проблема, шаги, критерий «готово». 30 минут — и идея перестаёт быть «предложением в чате», становится проектом.</p></div></div>
+    <div class="st5"><div class="num">2</div><div class="txt"><b>Определите, что нужно от других.</b><p>Одно предложение — один запрос: «мне нужен психолог на 2 часа, чтобы проверить форму». Сформулированная просьба получает ответ быстрее, чем расплывчатая.</p></div></div>
+    <div class="st5"><div class="num">3</div><div class="txt"><b>Сделайте минимальную версию за 2 недели.</b><p>Не «полный комплект», а работающий минимум: одна форма, один шаблон, один тест. Минимум можно показать на ближайшем демо.</p></div></div>
+    <div class="st5"><div class="num">4</div><div class="txt"><b>Протестируйте на волонтёрах.</b><p>Покажите инструмент 3 реальным людям (ученикам/коллегам). Соберите 2–3 правки. Это лучше, чем «идеально» в теории.</p></div></div>
+    <div class="st5"><div class="num">5</div><div class="txt"><b>Покажите результат и зафиксируйте.</b><p>Демо-ревью + строка в реестре со статусом «готово» и критерием. Следующее — уже улучшение по данным пилота.</p></div></div>
+  </div>
+
+  <!-- ================= ЧЕК-ЛИСТ ================= -->
+  <h2>Чек-лист запуска: понедельник недели 1</h2>
+  <div class="check">
+    <ul>
+      <li>Создан реестр (таблица/CRM) со всеми 32 предложениями, владельцами и статусами.</li>
+      <li>Каждый сотрудник заполнил паспорт хотя бы на 1 свою инициативу (первую — на выбор).</li>
+      <li>Назначены волны 1–3 и ответственные за каждый инструмент.</li>
+      <li>Зарезервировано время на инициативы (публично, чтобы все знали).</li>
+      <li>Первый штаб на понедельник назначен (15 минут, реестр на экране).</li>
+      <li>Запущено 3 «быстрых» инструмента волны 1 (скрининг, диагностика, матчинг) без ожидания остальных.</li>
+      <li>Определён юрист для пакета документов и лицензирования (подано на вход в фоне).</li>
+      <li>Правило «2 недели без апдейта = эскалация» объявлено и принято командой.</li>
+    </ul>
+  </div>
+
+  <div class="decide"><b>Решение руководителя.</b> Запускаем регламент с этой недели. <b>Понедельник, 09:00 — первое штабное совещание:</b> создаём реестр, каждый автор называет свою первую инициативу и срок паспорта. Правило: <b>каждое предложение живёт до результата</b>, автор несёт его сам, команда помогает по запросу, руководитель снимает блокеры. Волна 1 стартует сразу после штаба — без ожидания идеальных условий.</div>
+
+  <div class="verdict"><b>Как это отвечает на вопрос руководителя.</b> <b>Начать действовать</b> — волна 1 и первый штаб на ближайший понедельник. <b>Ничего не упустить</b> — единый реестр + правило 2 недель + демо-ревью (у каждой строки есть автор, статус и дата). <b>Дать каждому раскрыться</b> — авторство, паспорт инициативы, зарезервированное время и публичное демо: сотрудник не «исполнитель чужого», а ведущий собственного предложения.</div>
+
+  <footer>
+    <p>Документ — регламент запуска внедрения предложений подразделения по работе с одарёнными детьми и талантливой молодёжью (13.10.2026). Приложение к «Оптимизации жизненного цикла: отбор → сопровождение → результат» (32 предложения, 6 фаз). Волны и шаблоны — рабочие инструменты; калибруются на первом штабе.</p>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Библиотека источников тьютора — ИОМ 8–9 классов</title>
+<style>
+  :root {
+    --bg:#f7f8fb; --card:#ffffff; --ink:#22303c; --muted:#5c6a77;
+    --navy:#1f3a5f; --navy-soft:#e7eef7; --teal:#0f6f69; --teal-soft:#e1efed;
+    --gold:#9a6a1f; --gold-soft:#f6eeda; --ok:#1a7f4b; --ok-soft:#dcefe3;
+    --warn:#b3382c; --warn-soft:#f9e9e6; --line:#e0e5ec;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+  header { padding: 2rem 0 .9rem; border-bottom: 2px solid var(--navy); }
+  .eyebrow { font-size: .76rem; letter-spacing: .13em; text-transform: uppercase;
+             color: var(--teal); font-weight: 700; }
+  header h1 { font-size: 1.8rem; line-height: 1.25; margin: .3rem 0 .4rem; color: var(--navy); }
+  .meta { color: var(--muted); font-size: .85rem; }
+  .tldr { background: var(--teal-soft); border-left: 4px solid var(--teal);
+          padding: .95rem 1.15rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+  .tldr b { color: var(--teal); }
+  h2 { font-size: 1.25rem; color: var(--navy); margin: 2.6rem 0 .6rem;
+       border-bottom: 1px solid var(--line); padding-bottom: .35rem; }
+  p { margin: .55rem 0; }
+  .rating { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .04em;
+            text-transform: uppercase; padding: .16rem .55rem; border-radius: 999px; }
+  .rating.official { background: var(--navy-soft); color: var(--navy); }
+  .rating.prof { background: var(--teal-soft); color: var(--teal); }
+  .rating.sci { background: var(--gold-soft); color: var(--gold); }
+  .rating.edu { background: var(--ok-soft); color: var(--ok); }
+  .legend { font-size: .8rem; color: var(--muted); margin: .4rem 0 .8rem; }
+  .legend span { margin-right: .7rem; }
+  .src { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+         padding: .8rem 1rem; margin: .6rem 0; display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .src .name { flex: 1 1 260px; }
+  .src .name b { color: var(--navy); display: block; }
+  .src .name span { color: var(--muted); font-size: .86rem; }
+  .src .for { flex: 1 1 300px; font-size: .88rem; color: var(--muted); }
+  .src a.btn { text-decoration: none; font-size: .82rem; font-weight: 600; background: var(--navy);
+               color: #fff; padding: .4rem .8rem; border-radius: 6px; white-space: nowrap; }
+  .src a.btn:hover { opacity: .88; }
+  .files { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .7rem; margin: 1.2rem 0; }
+  .filecard { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .8rem .95rem; }
+  .filecard b { display: block; color: var(--navy); font-size: .93rem; margin-bottom: .25rem; }
+  .filecard span { font-size: .82rem; color: var(--muted); display: block; margin-bottom: .4rem; }
+  .filecard a { font-size: .8rem; font-weight: 600; color: var(--teal); text-decoration: none;
+                display: inline-block; border: 1px solid var(--teal); border-radius: 6px; padding: .25rem .6rem; margin: .15rem .2rem .15rem 0; }
+  .filecard a:hover { background: var(--teal-soft); }
+  footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line);
+           margin-top: 3rem; padding-top: .8rem; }
+  @media print { body{background:#fff;} main{max-width:none;padding:0;} .src{break-inside:avoid;} }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Комплект материалов к занятиям · 04.10.2026</div>
+    <h1>Библиотека источников и материалов тьютора (ИОМ, 8–9 классы)</h1>
+    <p class="meta">Проверенные порталы, статьи, научные работы и документы в помощь тьютору. Каждый источник снабжён оценкой авторитетности. Материалы к занятиям — в папке «Материалы к занятиям» рядом с этим файлом.</p>
+  </header>
+
+  <div class="tldr"><b>Как пользоваться.</b> Слева от каждого источника — метка авторитетности: <b>официальный</b> (гос. органы, законы), <b>профессиональный</b> (ассоциации, практики), <b>научный</b> (метаанализы, рецензируемые статьи), <b>образовательный</b> (проверенные платформы). Кнопка открывает источник. В разделе «Материалы к занятиям» — методички и бланки к каждому из 20 занятий.</div>
+
+  <div class="legend">
+    <span><span class="rating official">официальный</span> — государственные органы, нормативные акты</span>
+    <span><span class="rating prof">профессиональный</span> — ассоциации, признанные практики</span>
+    <span><span class="rating sci">научный</span> — рецензируемые исследования и метаанализы</span>
+    <span><span class="rating edu">образовательный</span> — проверенные учебные платформы</span>
+  </div>
+
+  <!-- ================= НОРМАТИВНАЯ БАЗА ================= -->
+  <section>
+    <h2>1. Нормативная база (официальная)</h2>
+    <p>Правовая основа права на ИУП, форм обучения, аттестации и тьюторского сопровождения. Используется на занятиях 1, 5, 17, 18, 20.</p>
+    <div class="src"><div class="name"><b>273-ФЗ «Об образовании в РФ» (ст. 2, 17, 34, 42, 63)</b><span>КонсультантПлюс · действующая редакция</span></div><div class="for">Определение и право на ИУП, формы обучения, промежуточная аттестация, психолого-педагогическая помощь.</div><a class="btn" href="https://www.consultant.ru/document/cons_doc_LAW_140174/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Ст. 34 273-ФЗ (право на ИУП)</b><span>ГАРАНТ</span></div><div class="for">Пункт о праве обучаться по индивидуальному учебному плану, в том числе ускоренно.</div><a class="btn" href="https://base.garant.ru/70291362/caed1f338455c425853a4f32b00aa739" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Письмо Минпросвещения № ДГ-2121/07 от 24.11.2021</b><span>согласование и утверждение ИУП</span></div><div class="for">Порядок: ИУП согласовывается с родителями и утверждается руководителем организации.</div><a class="btn" href="https://fs.cap.ru/file/634ba86883394cc090528296d316bb5f" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>ФГОС СОО (приказ № 413) и новый ФГОС (приказ № 414 от 11.06.2026)</b><span>ГАРАНТ / Право.рф</span></div><div class="for">Профили, требование «от 13 предметов, 2 углублённых», нагрузка; новый стандарт с 01.09.2027.</div><a class="btn" href="https://base.garant.ru/70188902/8ef641d3b80ff01d34be16ce9bafc6e0" target="_blank">Открыть</a> <a class="btn" href="http://publication.pravo.gov.ru/document/0001202609170017" target="_blank">№ 414</a></div>
+    <div class="src"><div class="name"><b>Профстандарт 01.005 «Специалист в области воспитания»</b><span>классинформ / ГАРАНТ</span></div><div class="for">Трудовая функция тьютора: «Тьюторское сопровождение обучающихся» (G/01–G/03).</div><a class="btn" href="https://classinform.ru/profstandarty/01.005-spetcialist-v-oblasti-vospitaniia.html" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Целевая модель наставничества (распоряжение № Р-145)</b><span>Минпросвещения</span></div><div class="for">Формы наставничества «студент–ученик» и др.; рамка для программ сопровождения.</div><a class="btn" href="https://docs.cntd.ru/document/564232795" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Банк документов Минпросвещения</b><span>docs.edu.gov.ru</span></div><div class="for">Официальные приказы, письма, методические рекомендации в актуальных редакциях.</div><a class="btn" href="https://docs.edu.gov.ru/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Единое содержание общего образования (edsoo.ru)</b><span>ФГБНУ «Институт стратегии развития образования»</span></div><div class="for">Конструктор учебных планов, реестр ФГОС, рабочие программы, в т.ч. «Россия — мои горизонты».</div><a class="btn" href="https://edsoo.ru/" target="_blank">Открыть</a></div>
+  </section>
+
+  <!-- ================= ПРОФОРИЕНТАЦИЯ ================= -->
+  <section>
+    <h2>2. Профориентация школьников</h2>
+    <p>Диагностика, атласы профессий, пробы и мероприятия. Используется на занятиях 2, 3, 6–9, 13.</p>
+    <div class="src"><div class="name"><b>«Билет в будущее» (bvbinfo.ru)</b><span class="rating official">официальный</span><span> · нацпроект «Молодёжь и дети»</span></div><div class="for">Бесплатные профпробы, диагностика, «Конструктор будущего»; интеграция с профминимумом.</div><a class="btn" href="https://bvbinfo.ru/" target="_blank">Открыть</a> <a class="btn" href="https://kb.bvbinfo.ru/" target="_blank">Конструктор</a></div>
+    <div class="src"><div class="name"><b>Профориентационный минимум «Россия — мои горизонты»</b><span class="rating official">официальный</span></div><div class="for">Курс внеурочной деятельности (6–11 классы) — готовая рамка профориентационной работы школы.</div><a class="btn" href="https://edu.gov.ru/career_guidance" target="_blank">Открыть</a> <a class="btn" href="https://edsoo.ru/wp-content/uploads/2026/07/rossiya-%E2%80%93-moi-gorizonty-2026.pdf" target="_blank">Программа PDF</a></div>
+    <div class="src"><div class="name"><b>ПрофГид (profguide.io)</b><span class="rating prof">профессиональный</span></div><div class="for">Справочник профессий, тесты (Голланд/RIASEC, Климов) — диагностика интересов на занятии 2.</div><a class="btn" href="https://www.profguide.io/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>ЦТР «Гуманитарные технологии» МГУ (proforientator.ru)</b><span class="rating prof">профессиональный</span></div><div class="for">Ведущий центр профдиагностики при факультете психологии МГУ (научный руководитель — проф. А.Г. Шмелёв).</div><a class="btn" href="https://proforientator.ru/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Атлас новых профессий (Сколково)</b><span class="rating prof">профессиональный</span><span> · PDF Лукша и др.</span></div><div class="for">Профессии будущего — для занятия 3 (обзор сфер) и расширения выбора.</div><a class="btn" href="https://www.skolkovo.ru/public/media/documents/research/sedec/SKOLKOVO_SEDeC_Atlas.pdf" target="_blank">PDF</a> <a class="btn" href="https://atlas100.ru/catalog" target="_blank">Каталог</a></div>
+    <div class="src"><div class="name"><b>Навигатор поступления (propostuplenie.ru)</b><span class="rating prof">профессиональный</span></div><div class="for">Образовательные выставки вузов и колледжей — для занятия 13 (дни открытых дверей).</div><a class="btn" href="https://propostuplenie.ru/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>ВЦИОМ «Профориентация: хорошо, но мало!» (2024)</b><span class="rating official">официальный</span></div><div class="for">Данные о состоянии профориентации в РФ — контекст для родителей и занятий.</div><a class="btn" href="https://wciom.ru/analytical-reviews/analiticheskii-obzor/proforientacija-khorosho-no-malo" target="_blank">Открыть</a></div>
+  </section>
+
+  <!-- ================= ТЬЮТОРСКИЕ ПРАКТИКИ ================= -->
+  <section>
+    <h2>3. Тьюторские практики и модели (профессиональные)</h2>
+    <p>Реальные образцы организации тьюторского сопровождения. Используется на занятиях 5, 10, 19, 20.</p>
+    <div class="src"><div class="name"><b>Межрегиональная тьюторская ассоциация (МТА) — thetutor.ru</b><span class="rating prof">профессиональный</span></div><div class="for">Технологии тьюторского сопровождения, альманах практик, сертификация, обучение.</div><a class="btn" href="https://thetutor.ru/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Тьюторская служба Школы ЦПМ</b><span class="rating prof">профессиональный</span></div><div class="for">Эталон организационной структуры тьюторской службы (иерархия, совмещение ролей, онлайн).</div><a class="btn" href="https://xn----7sb3aehik9cm.xn--p1ai/komanda/tyutorskaya-sluzhba" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>«Школа будущего» (Б. Исаково) — тьюторское сопровождение старшеклассников</b><span class="rating prof">профессиональный</span></div><div class="for">Поточно-групповая модель, ИОП для каждого, старт после 9 класса; есть положение о сопровождении.</div><a class="btn" href="https://thetutor.ru/direction_of_activity/selskaya-shkola/kak-organizovat-tjutorskoe-soprovozhdenie-starsheklassnikov" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>КиберЛенинка — научные статьи о тьюторстве и ИОМ</b><span class="rating sci">научный</span></div><div class="for">«Инструменты тьюторской работы» (Довбыш, Колосова) и др. — методология занятий.</div><a class="btn" href="https://cyberleninka.ru/article/n/instrumenty-tyutorskoy-raboty" target="_blank">Открыть</a></div>
+  </section>
+
+  <!-- ================= ГОСУДАРСТВЕННЫЕ ОБРАЗОВАТЕЛЬНЫЕ ПЛАТФОРМЫ ================= -->
+  <section>
+    <h2>4. Государственные образовательные платформы</h2>
+    <p>Бесплатные ресурсы для предметной подготовки и самообразования. Используются на занятиях 12, 15, 16.</p>
+    <div class="src"><div class="name"><b>ФИПИ — демоверсии, спецификации, кодификаторы ОГЭ</b><span class="rating official">официальный</span></div><div class="for">Официальные материалы для планирования подготовки и критериев освоения (занятия 11, 12, 15, 16).</div><a class="btn" href="https://fipi.ru/oge/demoversii-specifikacii-kodifikatory" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Открытый банк заданий ОГЭ (ФИПИ)</b><span class="rating official">официальный</span></div><div class="for">Задания для тренировки и пробников — база для плана подготовки.</div><a class="btn" href="https://oge.fipi.ru/bank" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Российская электронная школа (РЭШ)</b><span class="rating official">официальный</span></div><div class="for">Интерактивные уроки по всей школьной программе 1–11 классов — материал для самостоятельной работы.</div><a class="btn" href="https://resh.edu.ru/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Сириус.Курсы (edu.sirius.online)</b><span class="rating official">официальный</span></div><div class="for">Бесплатные онлайн-курсы за пределами школьной программы — для сильных и мотивированных.</div><a class="btn" href="https://edu.sirius.online/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>ФГИС «Моя школа» (Госуслуги)</b><span class="rating official">официальный</span></div><div class="for">Электронный дневник, учебные материалы, связь школы и семьи.</div><a class="btn" href="https://edu.gosuslugi.ru/" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Рособрнадзор — ГИА-9/ГИА-11</b><span class="rating official">официальный</span></div><div class="for">Официальный порядок проведения экзаменов — для спокойного информирования (занятие 11).</div><a class="btn" href="https://obrnadzor.gov.ru/gia/gia-9" target="_blank">Открыть</a></div>
+  </section>
+
+  <!-- ================= ПСИХОЛОГИЯ И САМОРЕГУЛЯЦИЯ ================= -->
+  <section>
+    <h2>5. Психология подростка и саморегуляция</h2>
+    <p>Научные и проверенные материалы о тревожности, мотивации и самоэффективности. Используется на занятиях 2, 4, 14, 15.</p>
+    <div class="src"><div class="name"><b>Фоксфорд Медиа — «Как снять тревогу подростку»</b><span class="rating edu">образовательный</span></div><div class="for">Практические техники снижения тревожности (дыхание, режим) — материал для занятия 14.</div><a class="btn" href="https://media.foxford.ru/articles/kak-snizit-trevozhnost-podrostku-detyam" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>НИУ ВШЭ / PsyJournals — выгорание старшеклассников</b><span class="rating sci">научный</span></div><div class="for">Мурадымова, Бочавер (2025): роль поддержки учителей, связь нагрузки и выгорания — обоснование для тьютора.</div><a class="btn" href="https://psyjournals.ru/journals/pse/archive/2025_n2/Muradymova_Bochaver" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>ВОЗ — психическое здоровье подростков</b><span class="rating official">официальный</span></div><div class="for">Эпидемиология тревожных расстройств у 10–19 лет; критерии для маршрутизации к психологу.</div><a class="btn" href="https://www.who.int/news-room/fact-sheets/detail/adolescent-mental-health" target="_blank">Открыть</a></div>
+  </section>
+
+  <!-- ================= НАУЧНАЯ БАЗА (МЕТААНАЛИЗЫ) ================= -->
+  <section>
+    <h2>6. Научная база: метаанализы и исследования</h2>
+    <p>Обоснование методик: репетиторство, менторинг, карьерные вмешательства, припоминание, обратная связь. Используется в методичках всех занятий.</p>
+    <div class="src"><div class="name"><b>Nickow et al. — «The Impressive Effects of Tutoring» (NBER, 2020)</b><span class="rating sci">научный</span></div><div class="for">d≈0.37 для высокочастотного репетиторства 1:1 — эффект живого сопровождения.</div><a class="btn" href="https://www.nber.org/papers/w27476" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Raposa et al. 2019 — метаанализ молодежного менторинга</b><span class="rating sci">научный</span></div><div class="for">g≈0.21; целевой (академически-направленный) менторинг в ~2 раза эффективнее — ядро модели.</div><a class="btn" href="https://link.springer.com/article/10.1007/s10964-019-00982-8" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Whiston et al. — метаанализ карьерных вмешательств</b><span class="rating sci">научный</span></div><div class="for">Эффект профориентации на осознанность (≈0.42), а не на баллы — задаёт честные ожидания.</div><a class="btn" href="https://www.sciencedirect.com/science/article/pii/S0001879117300283" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Adesope et al. 2017 — метаанализ активного припоминания</b><span class="rating sci">научный</span></div><div class="for">+0.51 к перечитыванию — техника, которую тьютор применяет в каждой сессии.</div><a class="btn" href="https://journals.sagepub.com/doi/10.3102/0034654316689306" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Wisniewski, Zierer, Hattie — «The Power of Feedback Revisited»</b><span class="rating sci">научный</span></div><div class="for">Обратная связь d≈0.48, но треть форм вредна — принцип «как исправить» для тьютора.</div><a class="btn" href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.03087/full" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>OECD Career Readiness — что работает в профориентации</b><span class="rating official">официальный</span></div><div class="for">11 индикаторов карьерной готовности (контакт с миром труда, разговоры о карьере) — база для проб.</div><a class="btn" href="https://oecdedutoday.com/preparing-youth-for-work-what-works-career-guidance" target="_blank">Открыть</a></div>
+    <div class="src"><div class="name"><b>Eccles &amp; Wigfield — теория ожиданий и ценности</b><span class="rating sci">научный</span></div><div class="for">Субъективная ценность предмета и ожидания успеха — основа занятий 1, 4.</div><a class="btn" href="https://link.springer.com/article/10.1007/s10648-024-09888-9" target="_blank">Открыть</a></div>
+  </section>
+
+  <!-- ================= МАТЕРИАЛЫ К ЗАНЯТИЯМ ================= -->
+  <section>
+    <h2>Материалы к занятиям (файлы в папке)</h2>
+    <p>Основная рабочая тетрадь тьютора — <b>интерактивные шаблоны (ИОМ, ИУП и др.)</b>: заполняйте онлайн и сохраняйте готовый файл на диск. Методички по занятиям — в HTML (открываются в браузере), бланки-образцы — DOCX. Ниже — быстрые переходы.</p>
+    <div class="files">
+      <div class="filecard"><b>Рабочие шаблоны (интерактив)</b><span>ИОМ, ИУП, таблицы, планы — заполнение с сохранением на диск</span><a href="Рабочие шаблоны - ИОМ и ИУП (интерактив).html" target="_blank">Открыть</a></div>
+      <div class="filecard"><b>Курс тьютора — методички (интерактив)</b><span>Все 20 занятий с планами и заметками</span><a href="Методички - курс тьютора 20 занятий (интерактив).html" target="_blank">Открыть</a></div>
+      <div class="filecard"><b>Методички — 8 класс</b><span>Занятия 1–10 (HTML)</span><a href="Методички HTML/" target="_blank">Открыть папку</a></div>
+      <div class="filecard"><b>Методички — 9 класс</b><span>Занятия 11–20 (HTML)</span><a href="Методички HTML/" target="_blank">Открыть папку</a></div>
+      <div class="filecard"><b>Бланки и образцы</b><span>10 рабочих документов</span><a href="Бланки и образцы/" target="_blank">Открыть папку</a></div>
+<div class="filecard"><b>Главный интерактив курса</b><span>Маршрут школьника: 20 занятий, вход школьник/тьютор</span><a href="../Я выбираю свою траекторию.html" target="_blank">Открыть</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Методика оценки авторитетности.</b> «Официальный» — государственные органы (Минпросвещения, ФИПИ, Рособрнадзор, ВОЗ) и нормативные акты; «профессиональный» — профильные ассоциации (МТА) и признанные практики; «научный» — рецензируемые метаанализы и статьи (NBER, Springer, Frontiers, Sciencedirect); «образовательный» — проверенные учебные платформы. Все ссылки открываются из РФ без VPN (проверено на 04.10.2026).</p>
+    <p>Сформировано 04.10.2026 · в составе практикума тьютора (ИОМ, 8–9 классы).</p>
+  </footer>
+</main>
+</body>
+</html>
+
+

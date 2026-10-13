@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Цифровые модели специалистов сопровождения одарённых</title>
+<style>
+  :root {
+    --bg:#f6f8fb; --card:#ffffff; --ink:#22303c; --muted:#5c6a77;
+    --navy:#1f3a5f; --navy-soft:#e7eef7;
+    --teal:#0f6f69; --teal-soft:#e1efed;
+    --gold:#9a6a1f; --gold-soft:#f6eeda;
+    --warn:#b3382c; --warn-soft:#f9e9e6;
+    --ok:#1a7f4b; --ok-soft:#dcefe3;
+    --line:#e0e5ec;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:1000px; margin:0 auto; padding:2rem 1.25rem 3rem; }
+  header { padding:1.4rem 0 1rem; border-bottom:2px solid var(--navy); }
+  .eyebrow { font-size:.76rem; letter-spacing:.13em; text-transform:uppercase;
+             color:var(--teal); font-weight:700; }
+  header h1 { font-size:1.8rem; line-height:1.25; margin:.3rem 0 .4rem; color:var(--navy); }
+  .meta { color:var(--muted); font-size:.85rem; }
+  .tldr { background:var(--teal-soft); border-left:4px solid var(--teal);
+          padding:.95rem 1.15rem; border-radius:0 8px 8px 0; margin:1.6rem 0; }
+  .tldr b { color:var(--teal); }
+
+  /* Фильтры */
+  .filters { display:flex; flex-wrap:wrap; gap:.45rem; margin:1.4rem 0 1rem; }
+  .filters .f-caption { width:100%; font-size:.78rem; font-weight:700; color:var(--muted);
+                        text-transform:uppercase; letter-spacing:.06em; margin-bottom:.1rem; }
+  .chip { border:1px solid var(--line); background:var(--card); color:var(--navy);
+          font:600 .84rem/1.2 system-ui,sans-serif; padding:.45rem .85rem; border-radius:999px;
+          cursor:pointer; transition:.15s; }
+  .chip:hover { border-color:var(--navy); }
+  .chip.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+  /* Карточки специалиста */
+  .sectors { margin:1.2rem 0; }
+  .sector-title { font-size:1.05rem; color:var(--navy); margin:2rem 0 .5rem; display:flex;
+                  align-items:center; gap:.6rem; }
+  .sector-title .n { background:var(--teal); color:#fff; width:1.7rem; height:1.7rem;
+                     border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+                     font-size:.9rem; font-weight:700; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1rem; }
+  .sp-card { background:var(--card); border:1px solid var(--line); border-radius:14px;
+             padding:1rem 1.1rem 1.15rem; box-shadow:0 1px 3px rgba(31,58,95,.05);
+             transition:.2s; border-top:4px solid var(--teal); }
+  .sp-card.core { border-top-color:var(--teal); }
+  .sp-card.extend { border-top-color:var(--navy); }
+  .sp-card.backup { border-top-color:var(--gold); }
+  .sp-card .top { display:flex; align-items:flex-start; gap:.7rem; margin-bottom:.4rem; }
+  .sp-card .ico { flex:0 0 auto; width:2.5rem; height:2.5rem; border-radius:10px;
+                  background:var(--navy-soft); color:var(--navy); display:flex; align-items:center;
+                  justify-content:center; font-size:1.25rem; }
+  .sp-card.core .ico { background:var(--teal-soft); color:var(--teal); }
+  .sp-card h3 { margin:0; font-size:1.02rem; color:var(--navy); line-height:1.3; }
+  .sp-card .role-tag { font-size:.72rem; font-weight:700; text-transform:uppercase;
+                      letter-spacing:.05em; color:var(--muted); }
+  .sp-card .role-tag.core { color:var(--teal); } .sp-card .role-tag.extend { color:var(--navy); }
+  .sp-card .role-tag.backup { color:var(--gold); }
+  .sp-card .desc { font-size:.88rem; color:var(--muted); margin:.25rem 0 .7rem; }
+  .blk { margin:.55rem 0; }
+  .blk .blk-h { font-size:.72rem; font-weight:700; text-transform:uppercase;
+                letter-spacing:.05em; color:var(--muted); margin-bottom:.2rem; }
+  .blk ul { margin:.15rem 0 .15rem 1.1rem; padding:0; }
+  .blk li { font-size:.86rem; line-height:1.45; margin:.18rem 0; }
+
+  /* Шкала компетенций */
+  .sk { margin:.3rem 0; }
+  .sk .sk-row { display:grid; grid-template-columns:150px 1fr 40px; gap:.5rem; align-items:center; margin:.28rem 0; font-size:.8rem; }
+  .sk .sk-lbl { color:var(--muted); }
+  .sk .sk-tr { background:var(--line); border-radius:3px; height:.6rem; overflow:hidden; }
+  .sk .sk-fi { height:100%; border-radius:3px; background:var(--teal); }
+  .sk .sk-vl { font-variant-numeric:tabular-nums; font-family:ui-monospace,Consolas,monospace; text-align:right; }
+
+  /* Метрики эффективности */
+  .metrics { background:var(--navy-soft); border-radius:8px; padding:.55rem .7rem; margin:.6rem 0; }
+  .metrics .blk-h { color:var(--navy); }
+  .metrics li { font-size:.82rem; }
+
+  /* Красные флаги */
+  .flags { background:var(--warn-soft); border-left:3px solid var(--warn); border-radius:0 8px 8px 0;
+           padding:.5rem .7rem; margin:.55rem 0; }
+  .flags .blk-h { color:var(--warn); }
+  .flags li { font-size:.82rem; }
+
+  /* Врезка "что НЕ делает" */
+  .not { background:var(--gold-soft); border-left:3px solid var(--gold); border-radius:0 8px 8px 0;
+         padding:.5rem .7rem; margin:.55rem 0; }
+  .not .blk-h { color:var(--gold); }
+  .not li { font-size:.82rem; }
+
+  /* Матрица */
+  .table-wrap { overflow-x:auto; margin:1rem 0; border:1px solid var(--line); border-radius:12px; }
+  table.mat { border-collapse:collapse; width:100%; font-size:.84rem; background:var(--card); }
+  .mat th, .mat td { border:1px solid var(--line); padding:.5rem .6rem; text-align:left; vertical-align:top; }
+  .mat th { background:var(--navy-soft); color:var(--navy); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; }
+  .mat td b { color:var(--navy); }
+  .mat .y { color:var(--ok); font-weight:700; } .mat .n { color:var(--muted); } .mat .p { color:var(--gold); font-weight:700; }
+
+  /* Как собрать команду */
+  .road { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:.8rem; margin:1rem 0; }
+  .road .step { border:1px solid var(--line); border-radius:12px; padding:.85rem .95rem; background:var(--card); }
+  .road .step .n { color:var(--teal); font-weight:800; font-size:1.1rem; }
+  .road .step h4 { margin:.2rem 0 .3rem; color:var(--navy); font-size:.95rem; }
+  .road .step p { font-size:.84rem; color:var(--muted); margin:0; }
+
+  footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--line);
+           margin-top:3rem; padding-top:.8rem; }
+  footer a { color:var(--teal); }
+  h2 { font-size:1.2rem; color:var(--navy); margin:2.4rem 0 .6rem; }
+
+  @media print {
+    body { background:#fff; }
+    main { max-width:none; padding:0; }
+    .filters { display:none; }
+    .sp-card, .road .step, table { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Цифровой паспорт сопровождения</p>
+    <h1>Цифровые модели специалистов сопровождения одарённых старшеклассников</h1>
+    <p class="meta">Категория: только одарённые дети · основано на заключении от 12.10.2026 · 7 моделей ролей · уровень компетенций — модельные оценки для планирования</p>
+  </header>
+
+  <div class="tldr"><b>Назначение паспорта.</b> Модели описывают, какой специалист, когда и с какими компетенциями подключается к маршруту одарённого ученика (ИОП → ИУП → ИОМ): профиль компетенций со шкалами, правовая база, границы ответственности (что делает и что НЕ делает), метрики результативности и красные флаги. Модели — рабочий инструмент для отбора, обучения и супервизии команды, а не должностные инструкции.</div>
+
+  <div class="filters">
+    <span class="f-caption">Фильтр по роли в команде</span>
+    <button class="chip active" onclick="fil('all',this)">Все роли</button>
+    <button class="chip" onclick="fil('core',this)">Ядро (3) <span style="opacity:.6">владеют маршрутом</span></button>
+    <button class="chip" onclick="fil('extend',this)">Расширение (3) <span style="opacity:.6">содержание и наука</span></button>
+    <button class="chip" onclick="fil('backup',this)">Партнёры и запасной контур (3) <span style="opacity:.6">массовая школа</span></button>
+  </div>
+
+  <div class="sectors">
+    <!-- ================= ЯДРО ================= -->
+    <div class="sector-title"><span class="n">1</span>Ядро команды — владельцы маршрута</div>
+    <div class="cards">
+
+      <!-- ТЬЮТОР -->
+      <div class="sp-card core" data-role="core" data-stage="all">
+        <div class="top"><div class="ico">🧭</div><div><h3>Тьютор</h3><span class="role-tag core">ядро</span></div></div>
+        <p class="desc">Проектирует и ведёт ИОМ: диагностика, индивидуальная цель, этапы, рефлексия. Главный сопроводитель маршрута одарённого.</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Диагностические</span><div class="sk-tr"><div class="sk-fi" style="width:88%"></div></div><span class="sk-vl">88%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Проектировочные (ИОМ)</span><div class="sk-tr"><div class="sk-fi" style="width:95%"></div></div><span class="sk-vl">95%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Коммуникативные</span><div class="sk-tr"><div class="sk-fi" style="width:90%"></div></div><span class="sk-vl">90%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Рефлексивные</span><div class="sk-tr"><div class="sk-fi" style="width:85%"></div></div><span class="sk-vl">85%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Организационные</span><div class="sk-tr"><div class="sk-fi" style="width:82%"></div></div><span class="sk-vl">82%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Профстандарт 01.005 «Специалист в области воспитания» (№ 53н от 30.01.2023), ОТФ G «Тьюторское сопровождение».</li>
+          <li>Письмо Минпросвещения № 03-205 от 26.02.2021 — «вносит важный вклад в составление ИУП».</li>
+          <li>Образование: высшее/СПО педагогическое + ДПО, переподготовка не реже 1 раза в 3 года.</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>С 8 класса (начало маршрута), далее непрерывно; на всех этапах ИОМ.</li>
+          <li>При необходимости ускорения/углубления — совместно с предметниками.</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>Доля учеников, доведённых до этапа выбора профиля без отсева.</li>
+          <li>Доза контакта: число сессий в неделю (доказано: главный коррелят эффекта).</li>
+          <li>Определённость выбора (career decidedness) — прирост по опроснику.</li>
+          <li>Качество рефлексивных записей в карте маршрута (супервизорская оценка).</li>
+        </ul></div>
+        <div class="not"><div class="blk-h">Что НЕ делает</div><ul>
+          <li>Не ставит диагнозы и не заменяет психолога при стойкой тревоге.</li>
+          <li>Не отвечает за юридическое утверждение ИУП (это педсовет и директор).</li>
+          <li>Не выбирает за ученика (поддерживает автономию выбора).</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>Сессии реже 1 раза в 2 недели → эффект падает в разы.</li>
+          <li>Тьютор ведёт >15 учеников (перегруз, норма «Школы будущего»).</li>
+          <li>Нет супервизии и рефлексивных записей → выгорание и дрейф.</li>
+        </ul></div>
+      </div>
+
+      <!-- ПЕДАГОГ-ПСИХОЛОГ -->
+      <div class="sp-card core" data-role="core" data-stage="all">
+        <div class="top"><div class="ico">🧠</div><div><h3>Педагог-психолог</h3><span class="role-tag core">ядро</span></div></div>
+        <p class="desc">Диагностика одарённости (интеллект, креативность, мотивация), работа с тревожностью, перфекционизмом, кризисами, профориентация и поддержка соцадаптации.</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Психодиагностика одарённости</span><div class="sk-tr"><div class="sk-fi" style="width:90%"></div></div><span class="sk-vl">90%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Консультирование кризисов</span><div class="sk-tr"><div class="sk-fi" style="width:88%"></div></div><span class="sk-vl">88%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Развитие саморегуляции</span><div class="sk-tr"><div class="sk-fi" style="width:84%"></div></div><span class="sk-vl">84%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Профориентационное консультирование</span><div class="sk-tr"><div class="sk-fi" style="width:86%"></div></div><span class="sk-vl">86%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Работа с родителями</span><div class="sk-tr"><div class="sk-fi" style="width:80%"></div></div><span class="sk-vl">80%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Профстандарт 01.002 «Педагог-психолог» (№ 514н от 24.07.2015).</li>
+          <li>Распоряжение Минпросвещения № Р-193 от 28.12.2020 — адресная помощь целевым группам.</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>Стартовая диагностика (занятия 1–2), далее по запросу.</li>
+          <li>Признаки тревожности/дезадаптации/перфекционизма — обязательно.</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>Снижение тревожности по входной/выходной шкале.</li>
+          <li>Количество и качество кризисных сопровождений (без срывов).</li>
+          <li>Ранняя идентификация «дважды-исключительных» и рисков.</li>
+        </ul></div>
+        <div class="not"><div class="blk-h">Что НЕ делает</div><ul>
+          <li>Не проектирует учебное содержание ИУП.</li>
+          <li>Не подменяет клиническую помощь (при стойких расстройствах — передача в медслужбу).</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>Психолог лишь «пишет справки» без включения в маршрут — формализм.</li>
+          <li>Не синхронизирован с тьютором → противоречивые рекомендации.</li>
+        </ul></div>
+      </div>
+
+      <!-- КООРДИНАТОР / ЗАВУЧ -->
+      <div class="sp-card core" data-role="core" data-stage="upr">
+        <div class="top"><div class="ico">🗂️</div><div><h3>Координатор / завуч по УВР</h3><span class="role-tag core">ядро</span></div></div>
+        <p class="desc">Координация разработки ИОМ/ИУП, методическая поддержка, отчётность, связь с администрацией школы и юридическое оформление.</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Знание нормативки ИУП</span><div class="sk-tr"><div class="sk-fi" style="width:96%"></div></div><span class="sk-vl">96%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Управление процессами</span><div class="sk-tr"><div class="sk-fi" style="width:90%"></div></div><span class="sk-vl">90%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Методическое руководство</span><div class="sk-tr"><div class="sk-fi" style="width:88%"></div></div><span class="sk-vl">88%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Коммуникация с родителями</span><div class="sk-tr"><div class="sk-fi" style="width:84%"></div></div><span class="sk-vl">84%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Локальные положения «О работе с одарёнными детьми».</li>
+          <li>Письмо № 03-205: ИУП утверждается решением педсовета, перевод — приказом руководителя.</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>Этапы 9–10 класса (проект ИУП, согласование, защита).</li>
+          <li>Постоянно на уровне координации команды.</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>% ИУП, утверждённых без нарушений сроков и процедур.</li>
+          <li>Полнота комплекта документов на ученика (карта, ИУП, договорённости).</li>
+        </ul></div>
+        <div class="not"><div class="blk-h">Что НЕ делает</div><ul>
+          <li>Не ведёт личные встречи с учеником (это тьютор/психолог).</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>ИУП существует «на бумаге», а фактически ученик учится по общему плану.</li>
+          <li>Бюрократизация без связи с содержанием маршрута.</li>
+        </ul></div>
+      </div>
+
+    </div>
+
+    <!-- ================= РАСШИРЕНИЕ ================= -->
+    <div class="sector-title"><span class="n">2</span>Расширение — содержание, олимпиады, наука</div>
+    <div class="cards">
+
+      <!-- УЧИТЕЛЯ-ПРЕДМЕТНИКИ -->
+      <div class="sp-card extend" data-role="extend" data-stage="all">
+        <div class="top"><div class="ico">📚</div><div><h3>Учителя-предметники</h3><span class="role-tag extend">расширение</span></div></div>
+        <p class="desc">Содержание ИУП: углублённый уровень, элективы, индивидуальные траектории, дифференциация заданий в классе.</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Предметная глубина</span><div class="sk-tr"><div class="sk-fi" style="width:92%"></div></div><span class="sk-vl">92%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Дифференциация обучения</span><div class="sk-tr"><div class="sk-fi" style="width:78%"></div></div><span class="sk-vl">78%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Работа с одарёнными (спец. знания)</span><div class="sk-tr"><div class="sk-fi" style="width:65%"></div></div><span class="sk-vl">65%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Обратная связь «как исправить»</span><div class="sk-tr"><div class="sk-fi" style="width:80%"></div></div><span class="sk-vl">80%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Должностные инструкции; ФГОС СОО — профили, ≥2 предметов на углублённом уровне.</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>Весь маршрут; критично при выборе профиля и подготовке к ОГЭ/ЕГЭ.</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>Прирост предметных результатов одарённого (входной/выходной тест).</li>
+          <li>Доля заданий дифференцированных под одарённого в классе.</li>
+        </ul></div>
+        <div class="not"><div class="blk-h">Что НЕ делает</div><ul>
+          <li>Не заменяет тьютора в проектировании всей траектории.</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>«Учить как всех» — одарённый не получает ускорения/углубления (research-practice gap).</li>
+          <li>Отсутствие спец.подготовки по работе с одарёнными (системная проблема).</li>
+        </ul></div>
+      </div>
+
+      <!-- ОЛИМПИАДНЫЕ ТРЕНЕРЫ -->
+      <div class="sp-card extend" data-role="extend" data-stage="oge">
+        <div class="top"><div class="ico">🏆</div><div><h3>Олимпиадные тренеры</h3><span class="role-tag extend">расширение</span></div></div>
+        <p class="desc">Подготовка к ВсОШ и перечневым олимпиадам, сборные, интенсивные смены. Формальной должности в школах нет.</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Олимп. уровень предмета</span><div class="sk-tr"><div class="sk-fi" style="width:95%"></div></div><span class="sk-vl">95%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Подготовка к олимпиадам</span><div class="sk-tr"><div class="sk-fi" style="width:90%"></div></div><span class="sk-vl">90%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Работа со сборными</span><div class="sk-tr"><div class="sk-fi" style="width:85%"></div></div><span class="sk-vl">85%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Психологическая устойчивость</span><div class="sk-tr"><div class="sk-fi" style="width:70%"></div></div><span class="sk-vl">70%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Практика: Сириус, ЦПМ Москва (24 предмета), «Взлёт» МО, Ассоциация победителей олимпиад.</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>С 8–9 класса (олимпиадный трек), интенсивно перед этапами ВсОШ.</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>Результаты этапов ВсОШ/перечневых олимпиад.</li>
+          <li>Удержание мотивации при неудачах (снижение тревожности).</li>
+        </ul></div>
+        <div class="not"><div class="blk-h">Что НЕ делает</div><ul>
+          <li>Не несёт ответственность за общий ИУП и аттестованность.</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>Ориентация на «победу любой ценой» вместо развития (выгорание).</li>
+        </ul></div>
+      </div>
+
+      <!-- ВНЕШНИЕ НАСТАВНИКИ -->
+      <div class="sp-card extend" data-role="extend" data-stage="proj">
+        <div class="top"><div class="ico">🤝</div><div><h3>Внешние наставники (вузы, компании)</h3><span class="role-tag extend">расширение</span></div></div>
+        <p class="desc">Проектная и научная деятельность, олимпиадная подготовка, стажировки, профориентация талантливых.</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Экспертиза в домене</span><div class="sk-tr"><div class="sk-fi" style="width:92%"></div></div><span class="sk-vl">92%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Наставничество (методика)</span><div class="sk-tr"><div class="sk-fi" style="width:75%"></div></div><span class="sk-vl">75%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Проектное руководство</span><div class="sk-tr"><div class="sk-fi" style="width:85%"></div></div><span class="sk-vl">85%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Возрастная коммуникация</span><div class="sk-tr"><div class="sk-fi" style="width:72%"></div></div><span class="sk-vl">72%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Целевая модель наставничества № Р-145 от 25.12.2019 (формы «студент–ученик», «работодатель–ученик»).</li>
+          <li>Практики: «Сириус.Лето» (&gt;15,5 тыс. наставников), «Большие вызовы», НТО, «Наука в регионы» (МФТИ).</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>Проектная и научная деятельность (8–11 класс), выбор вуза.</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>Завершённые проекты, результаты конференций/олимпиад.</li>
+          <li>Исследовательская самостоятельность (рост без наставника).</li>
+        </ul></div>
+        <div class="not"><div class="blk-h">Что НЕ делает</div><ul>
+          <li>Не заменяет школьного тьютора в ежедневном сопровождении.</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>Отсутствие обучения наставников методике (эффект теряется).</li>
+          <li>Непроверенные внешние люди без скрининга безопасности.</li>
+        </ul></div>
+      </div>
+
+    </div>
+
+    <!-- ================= ЗАПАСНОЙ КОНТУР ================= -->
+    <div class="sector-title"><span class="n">3</span>Партнёры и запасной контур</div>
+    <div class="cards">
+
+      <!-- РОДИТЕЛИ -->
+      <div class="sp-card backup" data-role="backup" data-stage="all">
+        <div class="top"><div class="ico">👪</div><div><h3>Родители (законные представители)</h3><span class="role-tag backup">партнёры</span></div></div>
+        <p class="desc">Согласуют выбор профиля, участвуют в реализации маршрута, обеспечивают «академическую социализацию».</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Партнёрство со школой</span><div class="sk-tr"><div class="sk-fi" style="width:80%"></div></div><span class="sk-vl">80%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Академическая социализация</span><div class="sk-tr"><div class="sk-fi" style="width:85%"></div></div><span class="sk-vl">85%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Ограничение давления</span><div class="sk-tr"><div class="sk-fi" style="width:70%"></div></div><span class="sk-vl">70%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Ст. 44 273-ФЗ; право предлагать изменения к ИУП (№ 03-205).</li>
+          <li>В США — обязательные члены GIEP-команды.</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>Все этапы; формально — занятия 10, 18 (встреча с семьёй).</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>Участие в встречах, согласование решений без конфликтов.</li>
+          <li>Режим, эмоциональная поддержка (обратная связь от ученика).</li>
+        </ul></div>
+        <div class="not"><div class="blk-h">Что НЕ делает</div><ul>
+          <li>Давление на «окончательный выбор» (идентичность зреет до 16–20 лет).</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>Требование «решить в 9 классе», сравнение с другими детьми.</li>
+        </ul></div>
+      </div>
+
+      <!-- АДМИНИСТРАЦИЯ -->
+      <div class="sp-card backup" data-role="backup" data-stage="upr">
+        <div class="top"><div class="ico">🏫</div><div><h3>Администрация школы (директор, педсовет)</h3><span class="role-tag backup">партнёры</span></div></div>
+        <p class="desc">Утверждает ИУП (педсовет + приказ), вводит ставки специалистов, создаёт локальные акты.</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Нормативная грамотность</span><div class="sk-tr"><div class="sk-fi" style="width:95%"></div></div><span class="sk-vl">95%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Ресурсное планирование</span><div class="sk-tr"><div class="sk-fi" style="width:85%"></div></div><span class="sk-vl">85%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Управление командой</span><div class="sk-tr"><div class="sk-fi" style="width:88%"></div></div><span class="sk-vl">88%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Ст. 30, 34 273-ФЗ; письмо № 03-205.</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>Юридическое оформление ИУП, введение ставок, локальные акты.</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>Сроки утверждения, полнота пакета документов.</li>
+          <li>Наличие штатных ставок (тьютор, психолог) для одарённых.</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>Сопротивление ИУП «из-за бюрократии», отсутствие ставок.</li>
+        </ul></div>
+      </div>
+
+      <!-- КЛАССНЫЙ РУКОВОДИТЕЛЬ -->
+      <div class="sp-card backup" data-role="backup" data-stage="all">
+        <div class="top"><div class="ico">🧑‍🏫</div><div><h3>Классный руководитель</h3><span class="role-tag backup">запасной контур</span></div></div>
+        <p class="desc">В массовой школе — фактический «микро-тьютор»: координация индивидуальной работы, связь с предметниками, психологом, кружками, родителями.</p>
+        <div class="blk"><div class="blk-h">Профиль компетенций</div>
+          <div class="sk">
+            <div class="sk-row"><span class="sk-lbl">Организация и координация</span><div class="sk-tr"><div class="sk-fi" style="width:86%"></div></div><span class="sk-vl">86%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Связь с родителями</span><div class="sk-tr"><div class="sk-fi" style="width:88%"></div></div><span class="sk-vl">88%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Понимание одарённости</span><div class="sk-tr"><div class="sk-fi" style="width:58%"></div></div><span class="sk-vl">58%</span></div>
+            <div class="sk-row"><span class="sk-lbl">Тьюторские основы</span><div class="sk-tr"><div class="sk-fi" style="width:55%"></div></div><span class="sk-vl">55%</span></div>
+          </div>
+        </div>
+        <div class="blk"><div class="blk-h">Правовая база</div><ul>
+          <li>Письмо Минпросвещения № ВБ-1011/08 от 12.05.2020 — поддержка талантливых — инвариантная часть классного руководства.</li>
+          <li>РМЦ (напр., Тамбовской обл.): при отсутствии ставки тьютора полномочия — на классного руководителя или педагога.</li>
+        </ul></div>
+        <div class="blk"><div class="blk-h">Когда подключать</div><ul>
+          <li>Если ставки тьютора нет; между встречами тьютора; административная связка.</li>
+        </ul></div>
+        <div class="metrics"><div class="blk-h">Метрики результативности</div><ul>
+          <li>Своевременное информирование родителей и администрации.</li>
+          <li>Доля талантливых, вовлечённых в олимпиады/кружки/проекты.</li>
+        </ul></div>
+        <div class="not"><div class="blk-h">Что НЕ делает</div><ul>
+          <li>Не полноценный тьютор (нет проф. компетенций для ИОМ) — должен делегировать.</li>
+        </ul></div>
+        <div class="flags"><div class="blk-h">Красные флаги</div><ul>
+          <li>Совмещение ролей без специальной подготовки → формализм сопровождения.</li>
+        </ul></div>
+      </div>
+
+    </div>
+  </div>
+
+  <h2>Матрица задействования специалистов по этапам маршрута</h2>
+  <div class="table-wrap">
+    <table class="mat">
+      <thead><tr>
+        <th>Специалист</th><th>Диагностика (8 кл.)</th><th>Пробы (8–9 кл.)</th>
+        <th>ОГЭ/профиль (9 кл.)</th><th>Проект ИУП (9–10 кл.)</th><th>Олимпиады/ЕГЭ (10–11 кл.)</th><th>Наука/проекты (10–11 кл.)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><b>Тьютор</b></td><td class="y">ядро</td><td class="y">ядро</td><td class="y">ядро</td><td class="y">ядро</td><td class="y">ядро</td><td class="y">ядро</td></tr>
+        <tr><td><b>Психолог</b></td><td class="y">диагностика</td><td class="p">по запросу</td><td class="p">тревога/выбор</td><td class="p">по запросу</td><td class="p">стресс ЕГЭ</td><td class="n">редко</td></tr>
+        <tr><td><b>Учителя-предметники</b></td><td class="p">вовлечение</td><td class="p">пробы предметов</td><td class="y">углубление</td><td class="y">составление ИУП</td><td class="y">ЕГЭ/ВсОШ</td><td class="p">проекты</td></tr>
+        <tr><td><b>Олимпиадные тренеры</b></td><td class="n">отбор</td><td class="n">—</td><td class="p">старт трека</td><td class="p">—</td><td class="y">ВсОШ</td><td class="p">—</td></tr>
+        <tr><td><b>Координатор/завуч</b></td><td class="n">—</td><td class="n">—</td><td class="p">профили</td><td class="y">утверждение</td><td class="p">отчётность</td><td class="n">—</td></tr>
+        <tr><td><b>Внешние наставники</b></td><td class="n">—</td><td class="p">пробы</td><td class="n">—</td><td class="n">—</td><td class="p">олимп.</td><td class="y">проекты/наука</td></tr>
+        <tr><td><b>Родители</b></td><td class="p">согласие</td><td class="p">поддержка</td><td class="y">согласование</td><td class="y">подписание ИУП</td><td class="p">поддержка</td><td class="p">поддержка</td></tr>
+        <tr><td><b>Администрация</b></td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="y">утверждение</td><td class="n">—</td><td class="n">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.8rem;color:var(--muted)">Обозначения: <span class="y">ядро/обязательно</span> · <span class="p">по запросу/ситуативно</span> · <span class="n">не задействован</span>. Модельная матрица — на основе этапов курса «Я выбираю свою траекторию» и заключения 12.10.2026.</p>
+
+  <h2>Как собрать и вырастить команду</h2>
+  <div class="road">
+    <div class="step"><div class="n">1</div><h4>Аудит и назначение координатора</h4><p>Определите, кто есть в школе: тьютор/психолог/предметники; кто закрывает роль координатора.</p></div>
+    <div class="step"><div class="n">2</div><h4>Отбор и «школа тьюторов»</h4><p>Готовых специалистов на рынке почти нет: свой курс 32–72 ч + стажировка (модель МТА).</p></div>
+    <div class="step"><div class="n">3</div><h4>Супервизия и интервизия</h4><p>Разбор кейсов, рефлексивные дневники, портфолио — оценка компетентности, а не охвата.</p></div>
+    <div class="step"><div class="n">4</div><h4>Метрики с первого дня</h4><p>Входной/выходной тест, доза контакта, определённость выбора, отсев. Не только отчётность.</p></div>
+    <div class="step"><div class="n">5</div><h4>Внешний контур</h4><p>Вузы, компании, олимпиадные школы (Сириус, ЦПМ, «Взлёт») как ресурс наставников по проектам.</p></div>
+    <div class="step"><div class="n">6</div><h4>Юридическое оформление</h4><p>Локальный акт «Положение об ИОМ/ИУП» (по № 03-205), введение ставок, реестр команды на ученика.</p></div>
+  </div>
+
+  <footer>
+    <p>Основано на заключении «Специалисты в создании и реализации ИОМ / ИУП / ИОП для одарённых старшеклассников» (12.10.2026) и разделе «Команда специалистов» курса «Я выбираю свою траекторию». Уровни компетенций (проценты) — модельные оценки для планирования и отбора, не аттестационные нормы. Правовая база — по состоянию на 12.10.2026 (профстандарты 01.005, 01.002; письмо № 03-205 от 26.02.2021; ФГОС СОО № 414 от 11.06.2026). Документ не является юридической консультацией.</p>
+  </footer>
+</main>
+
+<script>
+  function fil(group, btn) {
+    var chips = document.querySelectorAll('.chip');
+    chips.forEach(function (c) { c.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+    document.querySelectorAll('.sp-card').forEach(function (card) {
+      card.style.display = (group === 'all' || card.getAttribute('data-role') === group) ? '' : 'none';
+    });
+  }
+  window.fil = fil;
+</script>
+</body>
+</html>

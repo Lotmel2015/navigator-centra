@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Заключение: специалисты сопровождения одарённых старшеклассников</title>
+<style>
+  :root {
+    --bg: #fbfaf6;
+    --ink: #23303b;
+    --muted: #5d6b7a;
+    --accent: #0f6e63;
+    --accent-soft: #e7f2ef;
+    --accent-ink: #0b4f47;
+    --blue: #2e5f8a;
+    --blue-soft: #e9f1f8;
+    --line: #e3e6e0;
+    --warn: #b45309;
+    --warn-soft: #fdf3e4;
+    --conflict: #b3382c;
+    --conflict-soft: #fbeeec;
+    --up: #1a7f4b;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 2.4rem 1.25rem 3rem; }
+  header { border-bottom: 3px solid var(--accent); padding-bottom: 1.1rem; }
+  .kicker { font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;
+            color: var(--accent-ink); font-weight: 700; margin: 0 0 .35rem; }
+  header h1 { font-size: 1.85rem; line-height: 1.22; margin: 0 0 .4rem; letter-spacing: -.01em; }
+  header .sub { font-size: 1rem; color: var(--muted); margin: 0 0 .6rem; max-width: 46em; }
+  .meta { font-size: .82rem; color: var(--muted); }
+  .meta code { background: #eef0ea; padding: 0 .35em; border-radius: 4px;
+               font-family: ui-monospace, Consolas, monospace; font-size: .9em; }
+
+  .tldr { background: var(--accent-soft); border-left: 4px solid var(--accent);
+          padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin: 1.6rem 0 0;
+          font-size: .98rem; }
+  .tldr b { color: var(--accent-ink); }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+          gap: .75rem; margin: 1.4rem 0 1.8rem; }
+  .kpi { border: 1px solid var(--line); border-radius: 10px; padding: .85rem 1rem;
+         background: #fff; box-shadow: 0 1px 2px rgba(35,48,59,.05); }
+  .kpi b { display: block; font-size: 1.5rem; font-variant-numeric: tabular-nums;
+           color: var(--ink); line-height: 1.15; }
+  .kpi small { display: block; color: var(--muted); font-size: .76rem; line-height: 1.35; margin-top: .2rem; }
+  .kpi .hl { color: var(--accent); }
+
+  section { margin: 2.2rem 0; }
+  h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .06em;
+       color: var(--accent-ink); border-bottom: 1px solid var(--line);
+       padding-bottom: .4rem; margin: 0 0 .9rem; }
+  h3 { font-size: 1rem; margin: 1.3rem 0 .45rem; color: var(--ink); }
+  p { margin: .55rem 0; }
+  ul, ol { margin: .5rem 0 .7rem; padding-left: 1.3rem; }
+  li { margin: .28rem 0; }
+  strong { color: var(--ink); }
+  a { color: var(--blue); text-decoration: none; border-bottom: 1px dotted var(--blue); }
+  a:hover { border-bottom-style: solid; }
+
+  .note { padding: .85rem 1rem; border-radius: 8px; margin: 1rem 0; font-size: .93rem; }
+  .note.warn { background: var(--warn-soft); border-left: 4px solid var(--warn); }
+  .note.warn b { color: var(--warn); }
+  .note.conflict { background: var(--conflict-soft); border-left: 4px solid var(--conflict); }
+  .note.conflict b { color: var(--conflict); }
+  .note.ok { background: var(--accent-soft); border-left: 4px solid var(--accent); }
+  .note.ok b { color: var(--accent-ink); }
+
+  /* Подпись-диаграмма: созвездие ролей */
+  .constellation { border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem;
+                   margin: 1.1rem 0; background: #fff; }
+  .constellation .hub-graph { display: grid; grid-template-columns: 1fr 1fr;
+                              gap: .9rem; align-items: center; margin: .9rem 0 .5rem; }
+  .constellation .hub { grid-column: 1 / -1; text-align: center; padding: .7rem;
+                        background: var(--accent); color: #fff; border-radius: 10px;
+                        font-weight: 700; font-size: .95rem; line-height: 1.3; }
+  .constellation .hub small { display: block; font-weight: 400; font-size: .78rem;
+                              opacity: .9; margin-top: .2rem; }
+  .role-card { border: 1px solid var(--line); border-radius: 9px; padding: .6rem .75rem;
+               background: var(--bg); }
+  .role-card b { display: block; font-size: .9rem; color: var(--accent-ink); }
+  .role-card span { font-size: .8rem; color: var(--muted); line-height: 1.35; display: block; }
+  .role-card.core { border-color: var(--accent); background: var(--accent-soft); }
+  .constellation figcaption { font-size: .78rem; color: var(--muted); text-align: center; }
+
+  .table-wrap { overflow-x: auto; margin: .8rem 0 1rem; border-radius: 8px;
+                border: 1px solid var(--line); }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; background: #fff; }
+  th, td { padding: .5rem .65rem; border-bottom: 1px solid var(--line);
+           text-align: left; vertical-align: top; }
+  th { background: #f4f5f0; color: var(--muted); font-weight: 600;
+       text-transform: uppercase; letter-spacing: .04em; font-size: .74rem; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.accent-row td { background: var(--accent-soft); }
+
+  .bars { margin: .8rem 0 .5rem; }
+  .bar-row { display: grid; grid-template-columns: 150px 1fr 64px; gap: .6rem;
+             align-items: center; margin: .45rem 0; font-size: .87rem; }
+  .bar-row .lbl { color: var(--muted); text-align: right; }
+  .bar-row .track { background: #eceee8; border-radius: 3px; height: .85rem; overflow: hidden; }
+  .bar-row .fill { height: 100%; border-radius: 3px; }
+  .bar-row .val { font-variant-numeric: tabular-nums; white-space: nowrap;
+                  font-family: ui-monospace, Consolas, monospace; }
+  .legend { font-size: .78rem; color: var(--muted); margin-top: .3rem; }
+  .swatch { display: inline-block; width: .7em; height: .7em; border-radius: 2px;
+            margin: 0 .25em 0 .9em; vertical-align: -1px; }
+
+  footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line);
+           margin-top: 2.6rem; padding-top: .9rem; }
+  footer h2 { font-size: .8rem; border: none; padding: 0; margin: 0 0 .4rem; color: var(--muted); }
+  details { margin: .5rem 0; }
+  summary { cursor: pointer; color: var(--blue); font-size: .85rem; }
+  ol.src { margin: .3rem 0; padding-left: 1.2rem; font-size: .78rem; }
+  ol.src li { margin: .18rem 0; overflow-wrap: anywhere; }
+
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.5rem; }
+    .bar-row { grid-template-columns: 112px 1fr 56px; font-size: .8rem; }
+    .bar-row .lbl { text-align: left; }
+  }
+  @media print {
+    body { background: #fff; font-size: 11.5pt; }
+    main { max-width: none; padding: 0; }
+    .kpi, table, .constellation, .note, .table-wrap { break-inside: avoid; }
+    .tldr { break-inside: avoid; }
+    a { color: inherit; border: none; }
+    details { display: block; }
+    details summary { display: none; }
+    details[open] > summary { display: none; }
+    dl, details > * { }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="kicker">Аналитическое заключение · сопровождение одарённых</p>
+    <h1>Специалисты в создании и реализации ИОМ / ИУП / ИОП для одарённых старшеклассников</h1>
+    <p class="sub">Роли, правовой статус, необходимость, компетентность и кадровый дефицит специалистов, работающих с талантливыми школьниками 8–11 классов в России и за рубежом.</p>
+    <p class="meta">12.10.2026 · на основе глубокого веб-исследования (8 тредов, 40+ источников) · категория — только одарённые дети</p>
+  </header>
+
+  <div class="tldr">
+    <b>Главное.</b> Вокруг одарённого старшеклассника в лучших практиках выстраивается команда из <b>шести ролей</b>: тьютор (ядро маршрута), педагог-психолог, учителя-предметники и олимпиадные тренеры, координатор/завуч, внешние наставники, родители и администрация. Необходимость каждой роли имеет доказательную опору, а главная проблема — <b>кадровая</b>: сертифицированных тьюторов на всю Россию всего ~40, обычные учителя системно не готовы к одарённым, единого правового императива «команды для одарённых» в законе нет.
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><b>6</b><small>ролей в команде сопровождения одарённого</small></div>
+    <div class="kpi"><b class="hl">~40</b><small>сертифицированных тьюторов МТА на всю Россию</small></div>
+    <div class="kpi"><b class="hl">250 тыс.</b><small>дефицит учителей в РФ (данные РАНХиГС)</small></div>
+    <div class="kpi"><b>1,8</b><small>ставки — средняя нагрузка на одного учителя</small></div>
+    <div class="kpi"><b>0,55 / 0,51</b><small>эффект ускорения / обогащения (d)</small></div>
+    <div class="kpi"><b>85,6–94,6 %</b><small>укомплектованность психологами и соцпедагогами</small></div>
+  </div>
+
+  <section id="team">
+    <h2>1. Кто входит в команду</h2>
+    <p>Модельные практики России («Сириус», СУНЦ, олимпиадные центры ЦПМ и «Взлёт») и развитых стран (GIEP-команда Пенсильвании, сингапурская программа GEP) сходятся в одном: одарённого сопровождает <strong>междисциплинарная команда, а не один учитель</strong>. Теоретический каркас — концепция тьюторства Т. М. Ковалёвой и М. Ю. Чередилиной: тьютор ведёт тьюторанта по трём векторам (социальному, культурно-предметному, антропологическому).</p>
+    <figure class="constellation">
+      <figcaption style="text-align:left; margin-bottom:.3rem;"><b>Состав команды вокруг одарённого ученика</b></figcaption>
+      <div class="hub-graph">
+        <div class="role-card core"><b>Тьютор — ядро</b><span>Проектирует и ведёт ИОМ: диагностика, цель, этапы, рефлексия. Профстандарт 01.005.</span></div>
+        <div class="hub">Одарённый старшеклассник<small>ИОП — программа · ИУП — юридический план · ИОМ — карта пути</small></div>
+        <div class="role-card"><b>Педагог-психолог</b><span>Диагностика одарённости, тревожность, перфекционизм, кризисы. Профстандарт 01.002.</span></div>
+        <div class="role-card"><b>Учителя и олимпиадные тренеры</b><span>Содержание ИУП: углубление, подготовка к ВсОШ, индивидуальные задания.</span></div>
+        <div class="role-card"><b>Координатор / завуч по УВР</b><span>Оформление ИУП: педсовет, приказ, отчётность, методическая поддержка.</span></div>
+        <div class="role-card"><b>Внешние наставники</b><span>Проекты и наука: вузы, компании, студенты. Целевая модель наставничества Р-145.</span></div>
+        <div class="role-card"><b>Родители и администрация</b><span>Согласование выбора, утверждение ИУП руководителем школы.</span></div>
+      </div>
+      <figcaption>Жирным выделено ядро команды; остальные роли дополняют его по запросу и по этапу маршрута.</figcaption>
+    </figure>
+  </section>
+
+  <section id="roles">
+    <h2>2. Роли, правовой статус и необходимость</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Специалист</th>
+            <th>Роль в ИОМ / ИУП / ИОП</th>
+            <th>Правовая база</th>
+            <th>Необходимость для одарённых</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="accent-row">
+            <td><strong>Тьютор</strong></td>
+            <td>Проектирует и сопровождает ИОМ: диагностика, индивидуальная цель, планирование, рефлексия. Ядро команды.</td>
+            <td>Профстандарт 01.005 (приказ Минтруда № 53н от 30.01.2023), ОТФ G «Тьюторское сопровождение»; письмо № 03-205 — «вносит важный вклад в составление ИУП»</td>
+            <td><b>Критична:</b> без сопровождения ИУП «сам по себе» результат не улучшает; высокая частота сессий в 15–20 раз эффективнее редких (Raposa 2019, DuBois 2011)</td>
+          </tr>
+          <tr>
+            <td><strong>Педагог-психолог</strong></td>
+            <td>Диагностика интеллекта, креативности, мотивации; работа с тревожностью, перфекционизмом, соцадаптацией; профориентация.</td>
+            <td>Профстандарт 01.002 (№ 514н от 24.07.2015); распоряжение № Р-193 от 28.12.2020 — адресная помощь целевым группам</td>
+            <td><b>Критична:</b> одарённость — фактор риска соцадаптации (Щебланова, Цой); эффект «большой рыбы в маленьком пруду» подтверждён на данных ВШЭ</td>
+          </tr>
+          <tr>
+            <td><strong>Учителя-предметники</strong></td>
+            <td>Содержание ИУП: углублённый уровень, элективы, индивидуальные траектории в рамках профиля.</td>
+            <td>Должностные инструкции; ФГОС СОО (профили, ≥2 предметов на углублённом уровне)</td>
+            <td>Высокая: носители предметного содержания маршрута</td>
+          </tr>
+          <tr>
+            <td><strong>Олимпиадные тренеры</strong></td>
+            <td>Подготовка к ВсОШ и перечневым олимпиадам, сборные, интенсивные смены.</td>
+            <td>Формальной должности в школах нет; практика: Сириус, ЦПМ, «Взлёт», АПО</td>
+            <td>Высокая для олимпиадного трека: в Москве — тренеры по всем 24 предметам ВсОШ</td>
+          </tr>
+          <tr>
+            <td><strong>Классный руководитель</strong></td>
+            <td>В массовой школе — фактический «микро-тьютор»: координация, связь с родителями и предметниками.</td>
+            <td>Письмо № ВБ-1011/08 от 12.05.2020: поддержка талантливых — инвариантная часть классного руководства</td>
+            <td>Замещающая при отсутствии ставки тьютора (подтверждено РМЦ Тамбовской области)</td>
+          </tr>
+          <tr>
+            <td><strong>Завуч по УВР / методист</strong></td>
+            <td>Координация разработки ИОМ/ИУП, методическая поддержка, отчётность.</td>
+            <td>Локальные положения «О работе с одарёнными детьми»</td>
+            <td>Высокая: без юридически валидного ИУП нет допуска к аттестации (ст. 59)</td>
+          </tr>
+          <tr>
+            <td><strong>Внешние наставники</strong></td>
+            <td>Проектная и научная деятельность, олимпиадная подготовка, профориентация талантливых.</td>
+            <td>Целевая модель наставничества (№ Р-145 от 25.12.2019): формы «студент–ученик», «работодатель–ученик»</td>
+            <td>Высокая: «Сириус.Лето» — более 15,5 тыс. студентов-наставников за 6 сезонов</td>
+          </tr>
+          <tr>
+            <td><strong>Администрация школы</strong></td>
+            <td>Утверждает ИУП (решение педсовета + приказ руководителя), вводит ставки.</td>
+            <td>Ст. 30, 34 273-ФЗ; письмо № 03-205 от 26.02.2021</td>
+            <td>Обязательное звено юридического оформления</td>
+          </tr>
+          <tr>
+            <td><strong>Родители</strong></td>
+            <td>Согласуют выбор профиля, участвуют в реализации маршрута.</td>
+            <td>Ст. 44 273-ФЗ; право предлагать изменения к ИУП (№ 03-205); в США — обязательные члены GIEP-команды</td>
+            <td>Высокая: партнёры команды, подписывают карту маршрута</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="legend">Дефектолог, логопед и тьютор по ст. 79 нужны только для «дважды-исключительных» одарённых с ОВЗ; к обычным одарённым они не применяются.</p>
+  </section>
+
+  <section id="practices">
+    <h2>3. Команды в модельных практиках России</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Практика</th><th>Кто работает с одарённым</th><th>Источник</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>«Сириус»</strong>, федеральная территория</td>
+            <td>Кураторы команд (линейка «вожатый → старший вожатый → воспитатель», сообщество &gt;1500 человек), психологическая служба, преподаватели и тренеры (члены жюри ВсОШ, тренеры сборных, студенты-победители), наставники проектов из науки и индустрии</td>
+            <td>sochisirius.ru, siriuskurator.ru</td>
+          </tr>
+          <tr>
+            <td><strong>СУНЦ НГУ</strong></td>
+            <td>Тьюторы, отдел психолого-педагогического сопровождения, научные руководители проектной деятельности</td>
+            <td>sesc.nsu.ru</td>
+          </tr>
+          <tr>
+            <td><strong>ЦПМ Москва, «Взлёт» МО</strong></td>
+            <td>Тренеры сборных по 24 предметам ВсОШ, методисты, преподаватели ведущих вузов высокая</td>
+            <td>mos.ru, cpm.moscow, vzlet.online</td>
+          </tr>
+          <tr>
+            <td><strong>«Школа будущего»</strong>, Б. Исаково (муниципальная)</td>
+            <td>Тьюторская служба старшей школы: не более 15 учеников на тьютора, ~200 сопровождаемых старшеклассников, ИОП включает профиль, элективы, соцпрактики</td>
+            <td>vogazeta.ru, сайт школы</td>
+          </tr>
+          <tr>
+            <td><strong>Школа ЦПМ</strong>, Москва (частная)</td>
+            <td>Старшие тьюторы, методисты, социальные педагоги-тьюторы; тьюторы прикреплены к классам 8–11 по корпусам</td>
+            <td>сайт школы</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Устойчиво повторяющийся набор ролей: <strong>тьютор + психолог + предметники/тренеры + методист/координатор</strong> — наблюдается во всех практиках независимо от типа организации.</p>
+  </section>
+
+  <section id="legal">
+    <h2>4. Правовая база и важная поправка</h2>
+    <p>Юридически закреплены только право на ИУП и должность тьютора; единого обязательного «комплекта специалистов для одарённых» закон не требует.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Положение</th><th>Что закреплено</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Ст. 2 п. 23, ст. 34 273-ФЗ</strong></td>
+            <td>Определение ИУП и право на обучение по ИУП, в том числе ускоренное; порядок — локальные акты школы</td>
+          </tr>
+          <tr>
+            <td><strong>Письмо Минпросвещения № 03-205 от 26.02.2021</strong></td>
+            <td>Действующий порядок ИУП для обычных (включая одарённых): заявление родителей → разработка за 2 недели → <strong>утверждение решением педсовета</strong> → приказ руководителя; плата не допускается</td>
+          </tr>
+          <tr>
+            <td><strong>ПП РФ № 1738 от 19.10.2023</strong></td>
+            <td>Правила выявления одарённых и сопровождения их развития; нацпроект «Успех каждого ребёнка», региональные центры</td>
+          </tr>
+          <tr>
+            <td><strong>ФГОС СОО, приказ № 414 от 11.06.2026</strong></td>
+            <td>Новый стандарт: профили, базовая/профильная траектория, ИУП в том числе для ускоренного обучения (п. 16); приём с 01.09.2027</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note warn">
+      <b>Поправка к распространённым ссылкам.</b> Письмо Минпросвещения от 24.11.2021 № ДГ-2121/07 — это документ <strong>об организации обучения на дому детей с ОВЗ</strong>, а не общий порядок согласования ИУП. Формула «согласовывается с родителями и утверждается руководителем» в нём есть (п. 15 разд. 2), но относится к ИУП/СИПР ребёнка с ОВЗ, обучающегося на дому. Письмо № 03-ПГ-МП-37416 от 20.11.2025 — о семейном образовании; № ОК-2425/07 от 29.08.2025 — об ИУП школьников с ОВЗ. Для общего порядка перехода на ИУП ссылаться нужно на <strong>№ 03-205 от 26.02.2021</strong>.
+    </div>
+    <div class="note ok">
+      <b>Отдельного механизма ППк именно для одарённых нет</b> — ст. 42 (психолого-педагогическая помощь) и ст. 79 (ОВЗ) их не выделяют; включение одарённого в контингент ППк — право и практика школы. Финансирование: отдельного норматива «за одарённость» в обычной школе нет — ставки вводятся в пределах подушевого норматива через штатное расписание.
+    </div>
+  </section>
+
+  <section id="evidence">
+    <h2>5. Необходимость специалистов — доказательная опора</h2>
+    <p>Компетенция специалистов — условие применения доказанных инструментов: международный обзор (Frontiers in Education, 2026; Visible Learning MetaX) фиксирует «разрыв между наукой и практикой» — ускорение остаётся недоиспользуемым именно из-за подготовки учителей.</p>
+    <div class="bars">
+      <div class="bar-row"><span class="lbl">Ускорение (acceleration)</span><div class="track"><div class="fill" style="width:100%; background:var(--accent)"></div></div><span class="val">d ≈ 0,55</span></div>
+      <div class="bar-row"><span class="lbl">Обогащение (enrichment)</span><div class="track"><div class="fill" style="width:93%; background:var(--accent)"></div></div><span class="val">d ≈ 0,51</span></div>
+      <div class="bar-row"><span class="lbl">Группирование</span><div class="track"><div class="fill" style="width:38%; background:var(--blue)"></div></div><span class="val">d ≈ 0,21</span></div>
+      <div class="bar-row"><span class="lbl">Целевой менторинг</span><div class="track"><div class="fill" style="width:36%; background:var(--blue)"></div></div><span class="val">≈ 2×</span></div>
+    </div>
+    <p class="legend"><span class="swatch" style="background:var(--accent)"></span>академические результаты одарённых<span class="swatch" style="background:var(--blue)"></span>меньший / сравнительный эффект · шкала в единицах d (размер эффекта)</p>
+    <ul>
+      <li><strong>Тьютор / сопровождение:</strong> ИУП без живого сопровождения результат не улучшает; высокочастотные короткие сессии (2–3 раза в неделю по 20–30 мин) в 15–20 раз эффективнее редких.</li>
+      <li><strong>Психолог:</strong> одарённость — фактор риска соцадаптации; тревожность и перфекционизм выше среднего; международный консенсус (Renzulli Center, обзор Springer 2026) — эффективное сопровождение требует интеграции академической и психологической поддержки.</li>
+      <li><strong>Учителя и тренеры:</strong> самые сильные доказанные эффекты — ускорение (0,55) и обогащение (0,51), но их применяют только подготовленные педагоги.</li>
+      <li><strong>Координатор:</strong> юридически валидный ИУП (педсовет + приказ) — условие допуска к промежуточной аттестации и ГИА (ст. 59).</li>
+    </ul>
+  </section>
+
+  <section id="staffing">
+    <h2>6. Компетентность, подготовка и дефицит кадров</h2>
+    <h3>Требования к компетенциям</h3>
+    <ul>
+      <li><strong>Тьютор:</strong> диагностические, проектировочные (ИОМ), коммуникативные, рефлексивные, организационные; для одарённых — владение подходами ускорения, углубления, обогащения, проблематизации; образование — высшее/СПО педагогическое + ДПО, переподготовка не реже 1 раза в 3 года.</li>
+      <li><strong>Международные стандарты:</strong> NAGC-CEC Teacher Preparation Standards (аккредитация CAEP), Delphi-консенсус о компетенциях учителя одарённых; модель Renzulli требует от педагога высокого интеллекта, широкого кругозора, толерантности к нестандартности.</li>
+    </ul>
+    <h3>Где готовят в России</h3>
+    <ul>
+      <li>Магистратуры: МГПУ «Тьюторство в сфере образования» (науч. рук. проф. Т. М. Ковалёва), «Психология одарённости и творчества»; МПГУ — кафедра индивидуализации и тьюторства, курсы ПК.</li>
+      <li>МТА: направление «Одарённые дети», курс «Тьюторское сопровождение одарённых детей» (24 ч), сертификация «Сертифицированный тьютор МТА» (членство + ≥2 года практики + пакет документов + стажировка).</li>
+      <li>Методы оценки готовности: супервизия и интервизия, рефлексивные дневники, кейсы, портфолио.</li>
+    </ul>
+    <h3>Дефицит кадров — системная проблема</h3>
+    <div class="bars">
+      <div class="bar-row"><span class="lbl">Учителя-предметники (~97 %)</span><div class="track"><div class="fill" style="width:97%; background:var(--accent)"></div></div><span class="val">97 %</span></div>
+      <div class="bar-row"><span class="lbl">Психологи (СПб)</span><div class="track"><div class="fill" style="width:95%; background:var(--blue)"></div></div><span class="val">94,6 %</span></div>
+      <div class="bar-row"><span class="lbl">Соцпедагоги, логопеды, дефектологи</span><div class="track"><div class="fill" style="width:86%; background:var(--blue)"></div></div><span class="val">85,6 %</span></div>
+    </div>
+    <p class="legend">Укомплектованность педагогическими кадрами по данным НИУ ВШЭ и Минпросвещения — специалисты сопровождения укомплектованы хуже, чем предметники.</p>
+    <ul>
+      <li>Общий дефицит учителей в РФ — <strong>~250 тыс.</strong> человек (РАНХиГС), средний учитель работает на <strong>1,8 ставки</strong> (ВШЭ).</li>
+      <li>Сертифицированных тьюторов МТА — <strong>~40 на всю страну</strong>, часть — именно в центрах одарённых (Удмуртия, фонд «Золотое сечение»).</li>
+      <li>Отдельной статистики «по специалистам для одарённых» не существует — она встроена в общий дефицит психологов, соцпедагогов и тьюторов.</li>
+      <li>Научный консенсус (российский и Frontiers 2026): обычные учителя <strong>системно не готовы</strong> к работе с одарёнными.</li>
+    </ul>
+    <div class="note conflict">
+      <b>Ключевой вывод.</b> Готовых «как из коробки» компетентных специалистов для одарённых на рынке практически нет. Системе нужно <strong>выращивать</strong> их: отбор → школа тьюторов (32–72 ч) → супервизия/интервизия → портфолио-оценка, с опорой на профстандарты и систему МТА.
+    </div>
+  </section>
+
+  <section id="open">
+    <h2>7. Разногласия и открытые вопросы</h2>
+    <div class="note conflict"><b>Англия vs Пенсильвания.</b> В Англии после закрытия национальной программы одарённых (2010) роль координатора G&T часто передаётся SENCo, что ослабляет специализацию. В Пенсильвании — наоборот, команда (родители + учитель одарённых + учителя + округ) жёстко закреплена законом в GIEP. Разные доктрины — российская практика занимает промежуточное положение.</div>
+    <div class="note warn"><b>Совмещение ролей в массовой школе.</b> Роль тьютора фактически выполняют классный руководитель или психолог; подтверждено региональными методическими центрами и локальными актами, но статистики такого совмещения нет.</div>
+    <ul>
+      <li><strong>Открыто:</strong> нет российских независимых измерений вклада каждого специалиста в результаты одарённых; нет данных о доле школ со ставкой тьютора; «Сириус» не публикует оценок добавленной стоимости против самоотбора.</li>
+      <li><strong>Требует проверки:</strong> реформа поддержки в Финляндии 2025 г. и данные по Китаю/Корее — по вторичным источникам.</li>
+      <li><strong>Не найдено:</strong> федерального норматива ставки тьютора «для одарённых»; должности «олимпиадный тренер» в штатном расписании школ.</li>
+    </ul>
+  </section>
+
+  <section id="next">
+    <h2>8. Рекомендации для проекта</h2>
+    <ol>
+      <li>Строить систему на ядре <strong>«тьютор + психолог + предметники/тренеры + координатор + родители»</strong>, расширяя внешними наставниками на этапе проектов и олимпиад.</li>
+      <li>Тьюторов <strong>выращивать</strong> через собственную школу: отбор → обучение 32–72 ч → супервизия; не рассчитывать на готовый рынок (~40 специалистов на страну).</li>
+      <li>Локальный акт «Положение об ИОМ/ИУП» строить по письму <strong>№ 03-205</strong> (педсовет + приказ руководителя), не приписывая письму ДГ-2121/07 общий порядок ИУП.</li>
+      <li>Заложить метрики компетентности с первого дня: супервизия/интервизия, рефлексивные дневники, кейсы; измеримые исходы (поступление, удержание, определённость выбора).</li>
+      <li>Предусмотреть роли для «дважды-исключительных» (одарённость + ОВЗ) — там нужны дефектолог и логопед по ст. 79.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <h2>Методология и источники</h2>
+    <p>Глубокое веб-исследование: 8 тредов × 1–2 раунда (включая два целевых углубления по атрибуции писем Минпросвещения), 40+ уникальных источников. Уровни подтверждения помечены в тексте: дополнительные факты, подтверждённые ≥2 независимыми источниками, приведены как достоверные; единичные данные (численность сертифицированных тьюторов МТА, норма нагрузки «Школы будущего») требуют осторожности. Значения d (0,55 / 0,51 / 0,21) — из umbrella-обзора Frontiers in Education (2026) и Visible Learning MetaX. Сформировано 12.10.2026 на основе отчёта «Заключение специалисты сопровождения одарённых старшеклассников 2026-10-12.md».</p>
+    <details>
+      <summary>Ключевые источники (выборка)</summary>
+      <ol class="src">
+        <li><a href="https://classinform.ru/profstandarty/01.005-spetcialist-v-oblasti-vospitaniia.html">Профстандарт 01.005 (classinform.ru)</a> — трудовая функция «Тьюторское сопровождение» (primary)</li>
+        <li><a href="https://docs.cntd.ru/document/420294037">Профстандарт 01.002 «Педагог-психолог» (docs.cntd.ru)</a> — приказ № 514н (primary)</li>
+        <li><a href="https://www.consultant.ru/document/cons_doc_LAW_140174/">273-ФЗ, ст. 2 и 34 (КонсультантПлюс)</a> — право на ИУП (primary)</li>
+        <li><a href="https://sudact.ru/law/pismo-minprosveshcheniia-rossii-ot-26022021-n-03-205">Письмо Минпросвещения № 03-205 от 26.02.2021 (СудАкт)</a> — порядок ИУП (primary)</li>
+        <li><a href="https://sudact.ru/law/pismo-minprosveshcheniia-rossii-ot-24112021-n-dg-212107">Письмо № ДГ-2121/07 от 24.11.2021 (СудАкт)</a> — надомное обучение ОВЗ (primary)</li>
+        <li><a href="http://publication.pravo.gov.ru/document/0001202310190047">ПП РФ № 1738 от 19.10.2023 (pravo.gov.ru)</a> — выявление и сопровождение одарённых (primary)</li>
+        <li><a href="http://publication.pravo.gov.ru/document/0001202609170017">ФГОС СОО, приказ № 414 от 11.06.2026 (pravo.gov.ru)</a> — новый стандарт (primary)</li>
+        <li><a href="https://sochisirius.ru/o-siriuse/obschaja-informatsija">«Сириус» — общая информация (sochisirius.ru)</a> — состав команды (primary)</li>
+        <li><a href="https://siriuskurator.ru/">Кураторы команд «Сириуса» (siriuskurator.ru)</a> — должностная модель (primary)</li>
+        <li><a href="https://sesc.nsu.ru/sveden/employees">СУНЦ НГУ — сведения об ОО (sesc.nsu.ru)</a> — тьюторы, отдел ППС (primary)</li>
+        <li><a href="https://files.eric.ed.gov/fulltext/ED562612.pdf">NAGC-CEC Teacher Preparation Standards (ERIC)</a> — подготовка педагогов одарённых (primary)</li>
+        <li><a href="https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2026.1925181/full">Frontiers in Education — umbrella review «What works for inclusive gifted education?» (2026)</a> — эффекты 0,55 / 0,51 / 0,21 (primary)</li>
+        <li><a href="https://thetutor.ru/expertise/o-professionalno-obshhestvennoj-sertifikacii-tjutorov-v-mta">МТА — сертификация тьюторов (thetutor.ru)</a> — требования и список (~40 специалистов) (primary)</li>
+        <li><a href="http://government.ru/news/51246">Правительство РФ — дефицит учителей (government.ru)</a> — 250 тыс., 1,8 ставки (primary)</li>
+        <li><a href="https://rmc.68edu.ru/archives/26253">РМЦ Тамбовской области</a> — совмещение ролей при отсутствии ставки тьютора (primary)</li>
+        <li><a href="https://psystudy.ru/index.php/num/article/download/676/356/363">Щебланова, Цой — одарённость как фактор риска адаптации (psystudy.ru)</a> (primary)</li>
+      </ol>
+    </details>
+    <p>Документ носит аналитический характер и не является юридической консультацией.</p>
+  </footer>
+</main>
+</body>
+</html>

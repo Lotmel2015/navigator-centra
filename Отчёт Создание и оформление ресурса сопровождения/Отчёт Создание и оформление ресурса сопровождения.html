@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Создание и оформление ресурса сопровождения старшеклассников</title>
+<style>
+  :root {
+    --bg: #fbfcfe; --ink: #16222e; --muted: #5c6b78;
+    --accent: #1f5c8c; --accent-soft: #e8f1f8;
+    --accent-2: #0e7c5b; --accent-2-soft: #e5f4ef;
+    --warn: #b3382c; --warn-soft: #fbeef0;
+    --mid: #9a6a00; --mid-soft: #fff4e0;
+    --line: #e3e8ee; --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+  header { padding: 2.5rem 0 1rem; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+             color: var(--accent-2); font-weight: 700; }
+  header h1 { font-size: 1.85rem; line-height: 1.15; margin: .35rem 0 .4rem; }
+  .meta { color: var(--muted); font-size: .875rem; }
+  .tldr { background: var(--accent-soft); border-left: 4px solid var(--accent);
+          padding: 1rem 1.2rem; border-radius: 0 6px 6px 0; margin: 1.75rem 0; }
+  .tldr b { color: var(--accent); }
+  .tldr-note { color: var(--muted); font-size: .9rem; margin-top: .4rem; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+          gap: .75rem; margin: 1.75rem 0; }
+  .kpi { border: 1px solid var(--line); border-radius: 10px; padding: .85rem 1rem; background: var(--card); }
+  .kpi b { display: block; font-size: 1.4rem; font-variant-numeric: tabular-nums; color: var(--accent); }
+  .kpi span { color: var(--muted); font-size: .82rem; }
+  .kpi small { color: var(--accent-2); font-size: .7rem; font-weight: 700; text-transform: uppercase; }
+  h2 { font-size: 1.18rem; border-bottom: 1px solid var(--line);
+       padding-bottom: .4rem; margin: 2.4rem 0 .8rem; }
+  h3 { font-size: 1rem; margin: 1.4rem 0 .45rem; color: var(--accent); }
+  p { margin: .6rem 0; }
+  ul { margin: .5rem 0 .9rem; padding-left: 1.2rem; }
+  li { margin: .35rem 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.2rem; margin: .9rem 0; }
+  .lead { font-weight: 600; color: var(--accent); }
+  table { border-collapse: collapse; width: 100%; font-size: .87rem; margin: .8rem 0; }
+  th, td { padding: .5rem .6rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: .82rem; background: #f6f8fa; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tag { display: inline-block; font-size: .72rem; font-weight: 700; text-transform: uppercase;
+         padding: .12rem .45rem; border-radius: 999px; }
+  .tag.yes { background: var(--accent-2-soft); color: var(--accent-2); }
+  .tag.mid { background: var(--mid-soft); color: var(--mid); }
+  .tag.no  { background: var(--warn-soft); color: var(--warn); }
+  .svgwrap { overflow-x: auto; }
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+  ol.steps > li { position: relative; padding-left: 2.2rem; margin: .55rem 0; }
+  ol.steps > li::before { counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: .1rem; width: 1.5rem; height: 1.5rem;
+    background: var(--accent); color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem; font-weight: 700; }
+  footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line);
+           margin-top: 3rem; padding-top: .9rem; }
+  footer h3 { color: var(--muted); margin-top: .5rem; }
+  @media (max-width: 560px) { header h1 { font-size: 1.5rem; } }
+  @media print {
+    main { max-width: none; padding: 0; }
+    .kpi, table, .card, .svgwrap { break-inside: avoid; }
+    header { padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Жизненный цикл ресурса: от идеи до устойчивой модели</div>
+    <h1>Создание, юридическое оформление и продвижение ресурса сопровождения старшеклассников</h1>
+    <p class="meta">Охват: Россия + зарубежье &nbsp;·&nbsp; 10 направлений &nbsp;·&nbsp; сформировано 27.09.2026</p>
+  </header>
+
+  <div class="tldr">
+    <b>Главное.</b> Путь строится по контуру «юр. оформление → технология → размещение → популяризация → авторитетность → финансирование». Лицензия нужна только при наёмных педагогах или выдаче аттестата (самозанятый тьютор освобождён по ч. 2 ст. 91 273-ФЗ). Нейросеть автоматизирует 60–75% черновой работы (контент, прототип, маркетинг), но человек-методист обязателен для качества и вовлечения. Финансирование делится на гранты (ФПГ, ПФКИ, ФСИ), госзаказ («Билет в будущее») и частные инвестиции.<br>
+    <span class="tldr-note">Ключевой урок из NBER-исследования Khanmigo: ученики просто не хотят пользоваться ИИ-тьютором — вовлечение (живой человек) дороже контента.</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><small>Юр. форма</small><b>ИП / ООО / АНО</b><span>ИП-тьютор без лицензии; АНО для грантов и аттестата</span></div>
+    <div class="kpi"><small>Автоматизация ИИ</small><b>60–75%</b><span>черновой работы (контент, прототип, маркетинг)</span></div>
+    <div class="kpi"><small>Старт платформы</small><b>от 5 900 ₽/мес</b><span>GetCourse, запуск за 1–2 дня</span></div>
+    <div class="kpi"><small>Локализация ПДн</small><b>с 01.07.2025</b><span>обязательный хостинг в РФ-ЦОД, штрафы до 18 млн ₽</span></div>
+    <div class="kpi"><small>Гранты для ООО/ИП</small><b>ПФКИ, ФСИ</b><span>от 700 тыс. до 5+ млн ₽</span></div>
+    <div class="kpi"><small>Кейс продвижения</small><b>ROMI 541%</b><span>25 учеников по 7 787 ₽ через VK</span></div>
+  </div>
+
+  <section>
+    <h2>Ключевые решения по этапам</h2>
+    <div class="svgwrap">
+    <table>
+      <thead><tr><th>Этап</th><th>Ключевое решение</th><th>Рекомендация</th></tr></thead>
+      <tbody>
+        <tr><td>Юр. форма</td><td>ИП / ООО / АНО</td><td>ИП-тьютор без лицензии; ООО при наёмных педагогах; АНО для грантов и школы с аттестатом</td></tr>
+        <tr><td>Лицензия</td><td>Нужна или нет</td><td>ч. 2 ст. 91: ИП непосредственно — не нужна; при сотрудниках или аттестате — нужна (ПП № 1490)</td></tr>
+        <tr><td>Платформа</td><td>SaaS vs своя разработка</td><td>Старт на GetCourse; своя разработка при &gt;10 тыс. учеников</td></tr>
+        <tr><td>ИИ</td><td>Что автоматизировать</td><td>60–75%: черновики, прототип, маркетинг; человек для качества и вовлечения</td></tr>
+        <tr><td>Размещение</td><td>Хостинг</td><td>Только РФ-ЦОД (152-ФЗ), домен .ru на рос. юрлицо</td></tr>
+        <tr><td>Продвижение</td><td>Каналы РФ</td><td>Яндекс Директ + VK + Telegram + SEO с E-E-A-T</td></tr>
+        <tr><td>Авторитетность</td><td>Сигналы доверия</td><td>Лицензия, партнёрства с вузами, публикации, рейтинги, отзывы</td></tr>
+        <tr><td>Финансирование</td><td>Гранты / госзаказ / инвесторы</td><td>ПФКИ и ФСИ открыты для ООО/ИП; ФПГ — для НКО; госзаказ через «Билет в будущее»</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Юридическое оформление</h2>
+
+    <h3>Россия: лицензия и оргформа</h3>
+    <div class="card">
+      <ul>
+        <li><b>Лицензия</b>: по ч. 2 ст. 91 273-ФЗ ИП, ведущий деятельность непосредственно, не получает лицензию. При наёмных педагогах и выдаче документа об образовании — обязательна. Действующее положение — ПП РФ № 1490 от 18.09.2020 (ред. 27.01.2026).</li>
+        <li>Для онлайн-формата ослаблены требования к помещениям и МТБ, но обязательно условие <b>ЭИОС</b> (электронной информационно-образовательной среды).</li>
+        <li><b>Модель без своей лицензии</b> (как Фоксфорд): платформа продаёт сопровождение, аттестат выдаёт лицензированная и аккредитованная школа-партнёр.</li>
+        <li><b>Лицензия ≠ аккредитация:</b> лицензия даёт право вести деятельность, аккредитация — право выдавать аттестаты гособразца.</li>
+      </ul>
+    </div>
+
+    <h3>США и ЕС: защита детей и лицензирование</h3>
+    <div class="card">
+      <ul>
+        <li><b>США:</b> COPPA защищает только детей &lt;13 лет; для 14–17 — штатные законы (CCPA и др.). FERPA применима, только если платформа работает с данными школы.</li>
+        <li><b>ЕС:</b> GDPR ст. 8 — для детей до 16 лет требуется parental consent (порог может быть снижен до 13); UK Children's Code — 15 стандартов age-appropriate design.</li>
+        <li>Ни в США, ни в ЕС нет единой обязательной лицензии на доп. онлайн-образование; аккредитация нужна только для дипломных программ.</li>
+        <li>Оргформы: США — LLC или 501(c)(3) nonprofit; ЕС — национальное юрлицо (единой европейской формы нет).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Технологическое создание</h2>
+    <div class="svgwrap">
+    <table>
+      <thead><tr><th>Вариант</th><th>Стоимость (2026, РФ)</th><th>Плюсы</th><th>Минусы</th></tr></thead>
+      <tbody>
+        <tr><td>GetCourse (SaaS, РФ)</td><td class="num">от 5 900 ₽/мес</td><td>запуск 1–2 дня, всё в одном, хранение в РФ</td><td>замкнутая экосистема</td></tr>
+        <tr><td>iSpring Learn</td><td class="num">от ~30 000 ₽/мес</td><td>мощные отчёты, SCORM, серверы РФ</td><td>дорого, под B2B</td></tr>
+        <tr><td>Moodle (open)</td><td class="num">0 + DevOps ~250 000 ₽/мес</td><td>полный контроль</td><td>нет платежей/CRM, дорогой DevOps</td></tr>
+        <tr><td>Своя разработка MVP</td><td class="num">400–900 тыс. ₽ / ~22 дня</td><td>полный контроль, инвестпривлекательность</td><td>долго, нужна команда</td></tr>
+        <tr><td>Свой полный продукт</td><td class="num">3–8 млн ₽ / 6–12 мес</td><td>масштаб, уникальные треки, IP</td><td>дорого, окупается при &gt;10 тыс. учеников</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Стек: Python/FastAPI или Node/Nest + React/Next.js + PostgreSQL + Redis + Yandex Cloud/Selectel (обязательно РФ-ЦОД для 152-ФЗ) + ЮKassa/Тинькофф + Yandex Cloud Video.</p>
+  </section>
+
+  <section>
+    <h2>Создание ресурса с помощью нейросетей</h2>
+    <div class="card">
+      <p class="lead">Оценка: нейросети автоматизируют 60–75% черновой работы, но не заменяют человека в критических точках.</p>
+      <div class="svgwrap">
+      <table>
+        <thead><tr><th>Задача</th><th>Может ли ИИ</th><th>Что нужно человеку</th></tr></thead>
+        <tbody>
+          <tr><td>Черновики текстов курсов</td><td>Да</td><td>методист: проверка фактов, ФГОС</td></tr>
+          <tr><td>Банк тестов ОГЭ/ЕГЭ</td><td><span class="tag mid">Да, но есть ошибки</span></td><td>эксперт-предметник: валидация</td></tr>
+          <tr><td>ИИ-тьютор/автопроверка</td><td>Да, технически</td><td>педагогический дизайн; проблема — вовлечение</td></tr>
+          <tr><td>Прототип платформы</td><td>Да, за часы–дни</td><td>разработчик для продакшена</td></tr>
+          <tr><td>Маркетинг</td><td>Да, почти полностью</td><td>бренд-голос, проверка фактов</td></tr>
+          <tr><td>Юридическая рамка</td><td><span class="tag no">Нет</span></td><td>юрист по авторскому праву и защите данных</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><b>Ключевой кейс — Khanmigo (NBER 2026):</b> 96% учеников попробовали ИИ-тьютора, но медианный использовал его только в 1/3 дней практики; ИИ не добавил прироста к результатам сверх обычной практики. Ошибки LLM в математике требуют валидации (arxiv 2025, МФТИ). Чистый ИИ-контент не защищён копирайтом (U.S. Copyright Office).</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Размещение и хостинг</h2>
+    <div class="card">
+      <ul>
+        <li><b>С 01.07.2025</b> обязательна локализация ПДн граждан РФ в стране (152-ФЗ; штрафы до 18 млн ₽ при повторе).</li>
+        <li><b>С 01.09.2026</b> домены .ru/.рф — только для российских юрлиц.</li>
+        <li>Для кабинета ученика — VPS/VDS или облако в РФ-ЦОД (Timeweb, Beget, Selectel, VK Cloud, Yandex Cloud).</li>
+        <li>Видео: платный закрытый доступ — собственное S3 + российский CDN; открытый — VK Видео / Rutube.</li>
+        <li>Обязательны: SSL, политика конфиденциальности, согласие родителей на обработку ПД несовершеннолетних, уведомление Роскомнадзору.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Популяризация и авторитетность</h2>
+    <div class="card">
+      <ul>
+        <li><b>Медиамикс РФ 2026:</b> Яндекс Директ + VK Реклама + Telegram (прогрев) + SEO с сигналами E-E-A-T/YMYL.</li>
+        <li><b>Кейс:</b> 272 заявки, средняя 715 ₽, 25 учеников по 7 787 ₽, ROMI 541% (через VK, 2026).</li>
+        <li>Образование — YMYL-тематика: нужны страницы преподавателей с ФИО/опытом, статьи от экспертов, лицензия на виду.</li>
+        <li><b>Авторитетность:</b> лицензия, партнёрства с вузами и «Сириусом», публикации, рейтинги (РБК Курсы), отзывы.</li>
+        <li><span class="tag no">Важно:</span> «средний балл 80+» — самоотчёты школ без независимого аудита; к ним относиться осторожно.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p><b>За рубежом:</b> ось авторитетности — E-E-A-T для YMYL. Авторство экспертов, оригинальные отчёты, ссылки с .edu/.org, дистрибуция через маркетплейсы (Outschool, Udemy, TPT), модель «снизу вверх» (ClassDojo), измерение Domain Authority и citation share в ответах ИИ-поисковиков. Trust-стек включает COPPA/FERPA-соответствие.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Финансирование</h2>
+    <div class="svgwrap">
+    <table>
+      <thead><tr><th>Источник</th><th>Кто может подать</th><th>Суммы</th><th>Применимость</th></tr></thead>
+      <tbody>
+        <tr><td>Фонд президентских грантов</td><td>только НКО/АНО</td><td class="num">средн. ~3 млн ₽</td><td>бесплатные части, профориентация</td></tr>
+        <tr><td>ПФКИ</td><td>НКО, ООО, ИП</td><td class="num">0,7–20+ млн ₽</td><td>обр./просветительские проекты</td></tr>
+        <tr><td>ФСИ «Старт»</td><td>физлица, малые ИТ</td><td class="num">до 5 млн ₽</td><td>разработка платформы как НИОКР</td></tr>
+        <tr><td>Росмолодёжь.Гранты</td><td>физлица 14–35 лет</td><td class="num">до 1 млн ₽</td><td>старт основателем</td></tr>
+        <tr><td>Сколково / EdTech SK</td><td>техностартапы</td><td class="num">налоговые льготы</td><td>IT-платформа</td></tr>
+        <tr><td>Госзаказ «Билет в будущее»</td><td>провайдеры программ</td><td class="num">контракты</td><td>профориентация как подрядчик</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><b>Стратегический выбор:</b> АНО открывает доступ к президентским грантам, но усложняет венчур; ООО/ИП удобнее для монетизации и инвесторов, а через ПФКИ и ФСИ всё равно получают доступ к грантам. Гибкая схема — АНО для грантовой части + ООО для платной подписки.</p>
+    <div class="card">
+      <p><b>Зарубежные финмодели:</b> freemium + подписка (Duolingo — выручка $1,04 млрд, 10,9 млн платящих), маркетплейс-комиссия (Outschool — оценка $3 млрд), гибрид B2C/B2B/степени (Coursera — $694,7 млн, вузы получают ~60%), некоммерческая 501(c)(3) (Khan Academy — донаты Gates/Google/Musk).</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Рекомендации: пошаговый план</h2>
+    <ol class="steps">
+      <li><b>Юрлицо:</b> зарегистрировать ИП или ООО; при фокусе на гранты — дополнительно АНО; развести грантовую и коммерческую части.</li>
+      <li><b>Старт на SaaS:</b> GetCourse закрывает 90% задач за 1–2 дня вместо 6–12 месяцев разработки.</li>
+      <li><b>Применить нейросети</b> для черновиков контента, прототипа и маркетинга, но держать методиста-предметника для валидации учебных материалов.</li>
+      <li><b>Разместить в РФ-ЦОД</b>, оформить домен .ru на юрлицо, получить согласия родителей и уведомить Роскомнадзор.</li>
+      <li><b>Продвигать</b> через связку Директ + VK + Telegram + SEO с E-E-A-T; собирать отзывы и кейсы.</li>
+      <li><b>Подать на гранты</b> по профилю оргформы (ПФКИ/ФСИ для ООО и ИП) и рассмотреть госзаказ через профминимум.</li>
+      <li><b>Измерять:</b> CAC, LTV, отсев, дозу контакта тьютора, прирост входного/выходного теста.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Достоверность и ограничения</h2>
+    <div class="card">
+      <p><b>Подтверждено (официальные источники):</b> нормы 273-ФЗ (ст. 91), ПП № 1490, 152-ФЗ, COPPA/GDPR, лицензионные правила.</p>
+      <p><b>Подтверждено (первичные исследования):</b> Khanmigo (NBER), ошибки LLM (arxiv), U.S. Copyright Office, метаанализы эффективности.</p>
+      <p><span class="tag mid">Ограничения:</span> часть зарубежных данных (финмодели, масштаб EdTech-VC) построена на прямой обходе страниц из-за неисправности поиска; комиссия Outschool ~30% не подтверждена первично; цены разработки (IT2BE) — коммерческие оценки вендора, не рыночный индекс.</p>
+    </div>
+  </section>
+
+  <footer>
+    <h3>Источники</h3>
+    <p>РФ-право: 273-ФЗ (ст. 16, 91, 92), ПП № 1490, 152-ФЗ и ФЗ-23 от 28.02.2025, 38-ФЗ «О рекламе», реестр Рособрнадзора · Международное право: COPPA (FTC), GDPR ст. 8, UK Children's Code (ICO), FERPA, U.S. Copyright Office · Технологии: IT2BE, edly.io, GetCourse, iSpring, Timeweb, Beget, Selectel, VK Cloud, Yandex Cloud · ИИ: NBER WP 35620, arxiv 2508.09932, МФТИ, HouseofMVPs, Futurepicker · Маркетинг: Monster Marketing, Skillbox Media, RAHVALSKIY TEAM, кейсы foxkuper, РБК Курсы, SEO.com, Brandmind · Финансирование: ФПГ, ПФКИ, ФСИ, Росмолодёжь, Сколково/EdTech SK, ИРИ, bvbinfo.ru, Smart Ranking, CNews/Forbes · Финмодели: Wikipedia (Khan Academy, Outschool, Duolingo, Coursera), Nickow (NBER).</p>
+    <p><b>Оговорка:</b> заявления об эффективности и ценах считаются недоказанными, пока нет первичного измерения или официального источника. Сформировано 27.09.2026 · Глубина: Exhaustive · Охват: РФ + зарубежье.</p>
+  </footer>
+<section>
+    <h2>Дополнение: когнитивный дизайн и «защита от ИИ» (01.10.2026)</h2>
+    <div class="card">
+      <p>Дополнение из исследования «Факторы, влияющие на образовательный результат старшеклассников» — компоненты, которые стоит заложить в дизайн ресурса, чтобы он реально повышал результат.</p>
+      <ul>
+        <li><b>Технический контент должен реализовать доказанные техники:</b> активное припоминание (+0.51 против перечитывания), распределённую/перемежающуюся практику, самообъяснение (g=0.55), полезную обратную связь. Не «видео + пассивное чтение».</li>
+        <li><b>ИИ-тьютор усиливать человеком.</b> Урок Khanmigo (NBER 2026): 96% попробовали ИИ, но медианный использовал его редко и без эффекта; вовлечение делает живой наставник. ИИ — вспомогательный слой, не замена.</li>
+        <li><b>Этические/когнитивные мифы не тиражировать.</b> «Стили обучения», «лево-право полушария», «10% мозга» — нейромифы (Dekker 2012); не использовать в маркетинге.</li>
+        <li><b>Измерять дозу контакта и результат:</b> входной/выходной тест, sleep/активность-контроль, career decidedness — с первого дня, т.к. именно доза и сопровождение коррелируют с эффектом (0.06 без сопровождения против 0.47 с ним).</li>
+      </ul>
+    </div>
+  </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khan Academy как модель создания ресурса сопровождения старшеклассников</title>
+<style>
+  :root {
+    --bg: #ffffff; --ink: #14171a; --muted: #5a6470;
+    --accent: #0e7c5b; --accent-soft: #e7f5f0;
+    --accent-2: #1f6feb; --accent-2-soft: #eaf1fd;
+    --warn: #c0392b; --warn-soft: #fbecea;
+    --mid: #b7791f; --mid-soft: #fdf3e2;
+    --line: #e4e8ec; --card: #f7f9fb;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15.5px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+  header { padding: 2.5rem 0 1rem; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+             color: var(--accent); font-weight: 700; }
+  header h1 { font-size: 1.9rem; line-height: 1.15; margin: .35rem 0 .4rem; }
+  .meta { color: var(--muted); font-size: .85rem; }
+  .tldr { background: var(--accent-soft); border-left: 4px solid var(--accent);
+          padding: 1rem 1.2rem; border-radius: 0 6px 6px 0; margin: 1.75rem 0; }
+  .tldr b { color: var(--accent); }
+  .tldr-note { color: var(--muted); font-size: .9rem; margin-top: .4rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--line);
+       padding-bottom: .4rem; margin: 2.4rem 0 .8rem; color: var(--accent); }
+  h3 { font-size: 1.02rem; margin: 1.4rem 0 .45rem; color: var(--ink); }
+  p { margin: .6rem 0; }
+  ul, ol { margin: .5rem 0 .9rem; padding-left: 1.3rem; }
+  li { margin: .35rem 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.2rem; margin: .9rem 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin: 1rem 0; }
+  @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+  .kpi { border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; background: #fff; }
+  .kpi small { display: block; color: var(--muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; margin-bottom: .2rem; }
+  .kpi b { display: block; font-size: 1.5rem; font-variant-numeric: tabular-nums; color: var(--accent); }
+  .kpi span { color: var(--muted); font-size: .82rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .87rem; margin: .8rem 0; }
+  th, td { padding: .5rem .6rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: .8rem; background: #f2f5f7; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tag { display: inline-block; font-size: .72rem; font-weight: 700; text-transform: uppercase;
+         padding: .12rem .45rem; border-radius: 999px; }
+  .tag.yes { background: var(--accent-soft); color: var(--accent); }
+  .tag.mid { background: var(--mid-soft); color: var(--mid); }
+  .tag.no  { background: var(--warn-soft); color: var(--warn); }
+  .bars .row { display: grid; grid-template-columns: 210px 1fr 60px; align-items: center; gap: .6rem; margin: .4rem 0; font-size: .9rem; }
+  .bars .track { background: var(--line); border-radius: 3px; height: 14px; overflow: hidden; }
+  .bars .fill { height: 14px; border-radius: 3px; background: var(--accent); }
+  .bars .lab { color: var(--muted); font-size: .85rem; }
+  .bars .val { font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; }
+  .legend { font-size: .8rem; color: var(--muted); margin: .3rem 0 .8rem; }
+  .svgwrap { overflow-x: auto; }
+  svg { max-width: 100%; height: auto; }
+  .tick { font-size: 10px; fill: var(--muted); }
+  footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line);
+           margin-top: 3rem; padding-top: .9rem; }
+  footer h3 { color: var(--muted); margin-top: .4rem; font-size: .95rem; }
+  .verdict { border-left: 4px solid var(--accent); background: var(--accent-soft);
+             padding: .9rem 1.1rem; border-radius: 0 6px 6px 0; margin: 1rem 0; }
+  @media print {
+    main { max-width: none; padding: 0; }
+    .kpi, table, .card, .svgwrap { break-inside: avoid; }
+    header { padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Модель создания собственного ресурса сопровождения</div>
+    <h1>Khan Academy как вариант создания ресурса сопровождения старшеклассников</h1>
+    <p class="meta">Бизнес-модель · доказательная эффективность · исследование Khanmigo (ИИ-тьютор) · финансирование &nbsp;·&nbsp; переносимость в РФ &nbsp;·&nbsp; 27.09.2026</p>
+  </header>
+
+  <div class="tldr">
+    <b>Главное.</b> Khan Academy — некоммерческая mastery-ориентированная платформа (501(c)(3), основана в 2008 Салманом Ханом): ядро бесплатно, монетизация через гранты, донаты и платный ИИ-тьютор Khanmigo ($4/мес). Это сильнейшая доказательная база в образовании: серия РКИ показывает прирост от 0.06 до 0.47 SD, но эффективность напрямую зависит от дозы использования и поддержки учителя. Ключевой урок для вашего проекта из исследования Khanmigo (NBER 2026): ученики просто не хотят пользоваться ИИ-тьютором — <b>вовлечение (живой человек) дороже контента.</b><br>
+    <span class="tldr-note">Что переносимо в ваш ресурс: бесплатное ядро как маркетинг + платный премиум (ИИ-тьютор/сертификаты); mastery-модель (освоение темы → переход вперёд); повышенная доза практики в сопровождении педагога/тьютора. Что не работает без человека: чистая ИИ-автоматизация без вовлечения.</span>
+  </div>
+
+  <section>
+    <h2>Ключевые цифры</h2>
+    <div class="kpi" style="margin:.75rem 0">
+      <small>Орг. форма</small><b>501(c)(3) некоммерческая</b>
+      <span>Основана 2008 сотрудником хедж-фонда Салманом Ханом; изначально видео на YouTube → платформа.</span>
+    </div>
+    <div class="bars">
+      <div class="row"><span class="lab">Эффект "обычное применение" (РКИ Теннесси)</span><div class="track"><div class="fill" style="width:12%"></div></div><span class="val">0.06–0.14</span></div>
+      <div class="row"><span class="lab">Эффект mastery-обучения (РКИ, 11 тыс. уч.)</span><div class="track"><div class="fill" style="width:20%"></div></div><span class="val">0.12–0.22</span></div>
+      <div class="row"><span class="lab">Индийское РКИ (1 ч/нед + лаборатория)</span><div class="track"><div class="fill" style="width:44%"></div></div><span class="val">0.44–0.47</span></div>
+      <div class="row"><span class="lab">SAT: +20 часов практики</span><div class="track"><div class="fill" style="width:34%"></div></div><span class="val">+115 баллов</span></div>
+    </div>
+    <div class="legend">Эффект в стандартных отклонениях (SD). Разброс определяется дозой использования и наличием поддержки учителя/лаборатории — «просто включить платформу» мало, а при сопровождении эффект кратно выше.</div>
+  </section>
+
+  <section>
+    <h2>Как устроена Khan Academy: модель и структура</h2>
+    <div class="card">
+      <h3>Принцип работы</h3>
+      <ul>
+        <li><b>Mastery (мастерство):</b> каждая тема осваивается до подтверждённого уровня знаний, только затем открывается следующая. Это «контрольная-с-прохождением», а не линейное продвижение по расписанию.</li>
+        <li><b>Персонализированные дорожки:</b> ученик проходит диагностику, система строит индивидуальный путь, закрывая пробелы.</li>
+        <li><b>Ядро не является ИИ-адаптивным в полном смысле:</b> адаптивность обеспечивает mastery-логика, а ИИ-тьютор (Khanmigo) — отдельный платный слой.</li>
+        <li><b>Типы контента:</b> короткие видеоуроки, практические задачи с мгновенной обратной связью, тесты, «пробуй, пока не получится».</li>
+      </ul>
+      <h3>Модель монетизации (некоммерческая)</h3>
+      <ul>
+        <li><b>Ядро — бесплатно</b> для всех пользователей мира (миссия «бесплатное образование мирового класса»).</li>
+        <li><b>Финансирование:</b> донаты и гранты фондов — выручка по IRS Form 990 $31 млн (2018) и $28 млн (2019).</li>
+        <li><b>Крупные гранты:</b> Google ~$2 млн (2010), Bill &amp; Melinda Gates Foundation суммарно &gt;$10 млн, Elon Musk Foundation $5 млн (2021), AT&amp;T $2,25 млн (2015).</li>
+        <li><b>Платный премиум:</b> ИИ-тьютор Khanmigo — $4/мес (или $44/год), запуск на начальном этапе ~65 тыс. студентов в 53 округах.</li>
+        <li>Сознательно отвергнута чисто коммерческая модель, чтобы сохранить доступность — в отличие от Duolingo и Coursera.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Доказательная эффективность: что подтверждено РКИ</h2>
+    <div class="svgwrap">
+    <table>
+      <thead><tr><th>Исследование</th><th>Выборка</th><th>Условия</th><th>Эффект</th></tr></thead>
+      <tbody>
+        <tr><td>Hamilton County, Tennessee (кластерное РКИ)</td><td>~6 900 учеников, 18 школ, 2 года</td><td>обычное применение</td><td class="num">+0.06 SD/год, до 0.14 SD при полном участии</td></tr>
+        <tr><td>Oreopoulos et al. (РКИ mastery)</td><td>~11 000 учеников 3–8 классов</td><td>mastery-обучение</td><td class="num">+0.12–0.22 SD</td></tr>
+        <tr><td>Индийское РКИ</td><td>~5 500 учеников, 74 школы</td><td>~1 ч/нед + лаборатория включения</td><td class="num">+0.44–0.47 SD</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><b>Вывод:</b> платформа даёт измеримый прирост, но он критически зависит от <b>дозы использования</b> и <b>поддержки учителя/лаборатории</b>. Это прямое подтверждение общего правила: ценность платформы раскрывается при сопровождении человеком, а не при пассивном «включил и забыл».</p>
+  </section>
+
+  <section>
+    <h2>Кейс Khanmigo: урок про ИИ-тьютора (NBER 2026)</h2>
+    <div class="card">
+      <p>Главный для вас урок — исследование <b>Oreopoulos &amp; Low (NBER WP 35620, двухлетнее кластерное РКИ в 18 школах Теннесси)</b> по ИИ-тьютору Khanmigo:</p>
+      <ul>
+        <li>ИИ-тьютор настроен как «тренер, а не просто даёт ответы» (Socratic-подход).</li>
+        <li><b>Khan Academy в целом улучшает успеваемость</b> (+1.3 перцентиля за триместр, 0.06–0.08 SD).</li>
+        <li><b>Но Khanmigo НЕ добавил прироста сверх обычной практики без ИИ</b> — то есть сам по себе ИИ-тьютор не дал преимущества.</li>
+        <li><b>Главный ограничитель — вовлечённость:</b> 96% учеников попробовали Khanmigo хотя бы раз, но медианный ученик писал ему только в 1/3 дней практики и лишь в 17% сессий после ошибки; сообщения часто были «голыми ответами».</li>
+      </ul>
+      <div class="verdict">Вывод для вашего проекта: ученики не хотят пользоваться ИИ-тьютором без вовлечения. Салм Хан подтвердил, что компания переработала Khanmigo (всплывающий после ошибки, «немногословный» до попытки). Это подтверждает ключевой тезис: <b>живой тьютор/наставник ценнее чистого ИИ</b>, а ИИ — вспомогательный слой, а не замена человека.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Финансовая модель устойчивости</h2>
+    <div class="card">
+      <ul>
+        <li><b>Источники:</b> донаты физлиц, гранты крупных фондов и корпораций (Gates, Google, Musk, AT&amp;T), платный премиум Khanmigo.</li>
+        <li><b>Плюсы некоммерческой модели:</b> налоговый статус 501(c)(3), налоговые вычеты дарителям, доступность как сигнал доверия («бесплатно для всех» укрепляет бренд), устойчивость миссии.</li>
+        <li><b>Минусы для коммерчески ориентированного проекта:</b> нет распределения прибыли, сильная зависимость от продолжения грантового финансирования и донатов, медленный рост платного сегмента.</li>
+        <li><b>Сопоставимая модель для РФ:</b> АНО (грантовая часть, бесплатное ядро) + ООО (платный премиум) — разделение, позволяющее совмещать гранты (ФПГ через АНО) и монетизацию (через ООО).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Что переносимо в ваш ресурс сопровождения (8–11 классы)</h2>
+    <div class="svgwrap">
+    <table>
+      <thead><tr><th>Элемент Khan Academy</th><th>Что можно взять</th><th>Ограничение/адаптация для РФ</th></tr></thead>
+      <tbody>
+        <tr><td>Mastery-модель</td><td>«Освоил тему → вперёд», закрытие пробелов по результатам диагностики</td><td>Хорошо накладывается на оценку сформированности УУД и ФГОС</td></tr>
+        <tr><td>Бесплатное ядро + платный премиум</td><td>Бесплатный базовый контент как маркетинг, платные ИИ-тьютор/сертификаты/куратор</td><td>Для окупаемости платной части нужен живой куратор/тьютор, а не только ИИ</td></tr>
+        <tr><td>Доза использования</td><td>Эффект растёт с регулярной практикой — заложить «высокую дозу» в дизайн (2–3 сессии/нед)</td><td>Доказано: без сопровождения эффект ~0.06, с сопровождением до 0.47</td></tr>
+        <tr><td>ИИ-тьютор (Khanmigo)</td><td>Socratic-подсказки, автопроверка</td><td><span class="tag no">Не заменяет человека</span> — вовлечение критично (NBER 2026)</td></tr>
+        <tr><td>Данные об эффективности</td><td>Публичные РКИ как доказательство качества → доверие и авторитет</td><td>Редкость для РФ-проектов; ваш шанс выделиться измеримой эффективностью</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Потенциальная схема вашего ресурса по модели Khan Academy</h2>
+    <div class="card">
+      <ol>
+        <li><b>Бесплатное ядро:</b> базовая библиотека уроков и тестов по ОГЭ/ЕГЭ (несколько тем бесплатно) — привлекает аудиторию и родителей.</li>
+        <li><b>Mastery-диагностика:</b> входной тест → личный трек закрытия пробелов по предметам.</li>
+        <li><b>Платный слой «сопровождение»:</b> живой тьютор/куратор (короткие сессии 20–30 мин) + ИИ-помощник как вспомогательный инструмент — основная монетизация.</li>
+        <li><b>Измерение дозы:</b> требовать минимум 2–3 сессии/нед, чтобы эффект был сопоставим с 0.2–0.4 SD.</li>
+        <li><b>Публичные данные эффективности:</b> входной/выходной тест, результаты учеников — как доказательство для родителей и партнёров.</li>
+        <li><b>Оргформа:</b> АНО (бесплатное ядро, гранты) + ООО (платные услуги) — по модели «разделения» для совмещения грантов и монетизации.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>Вывод: подходит ли Khan Academy как модель</h2>
+    <div class="verdict">
+      <b>Да — как архитектура контента и доказательной базы, но не как чистая ИИ-модель.</b> От Khan Academy стоит взять mastery-логику, бесплатное ядро как маркетинг и культуру публикации РКИ-данных (это даст вашему проекту беспрецедентную для РФ авторитетность). Однако главный урок комплексного исследования — <b>центр ресурса должен быть человеческим (тьютор), а ИИ — усиливающим слоем</b>. Эффект 0.47 SD достигается не «платформой», а platform + сопровождение + доза.
+    </div>
+  </section>
+
+  <footer>
+    <h3>Источники и оговорки</h3>
+    <p>Основные: Khan Academy (Wikipedia со ссылками на IRS Form 990 и пресс-релизы) — бизнес-модель, гранты, Khanmigo; <b>NBER WP 35620</b> Oreopoulos &amp; Low (2026) — двухлетнее РКИ Khanmigo в Теннесси; <b>The Hechinger Report</b> (21.09.2026) — подтверждение Салмана Хана о вовлечённости; сводка РКИ самого Khan Academy (2026) — эффекты 0.06–0.47 SD; данные о SAT (+20 часов → +115 баллов) — по опубликованным материалам Khan Academy.</p>
+    <p><b>Ограничения:</b> выручка ($31 млн в 2018, $28 млн в 2019) взята из IRS Form 990 через Wikipedia — актуальные цифры за 2024–2025 требуют проверки по отчётности Khan Academy. «Прототип за 2 часа» со стороны ИИ-агентов не относится к Khanmigo. Оценка переносимости в РФ — аналитическая, основана на доказанных фактах платформы.</p>
+  </footer>
+<section>
+    <h2>Дополнение: как усилить mastery-эффект (доказательные техники обучения, 01.10.2026)</h2>
+    <div class="card">
+      <p>Дополнение из исследования «Факторы, влияющие на образовательный результат старшеклассников». Mastery-логика Khan Academy максимально эффективна, если её «наполнить» доказанными когнитивными техниками.</p>
+      <ul>
+        <li><b>Mastery + активное припоминание.</b> Эффект платформы (0.06–0.47 SD) растёт, когда задания требуют именно припоминания, а не узнавания: закрытая тетрадь → пересказ, свободные ответы, а не только выбор варианта.</li>
+        <li><b>Распределённая и перемежающаяся практика.</b> Темы осваиваются лучше при повторении с промежутками и чередовании типов задач, чем при «добивании» одной темы подряд. Это усиливает mastery-модель.</li>
+        <li><b>Обратная связь — корень эффекта.</b> Сильнейший драйвер — полезная обратная связь (что исправить и как), а не просто «правильно/неправильно». Для ИИ-тьютора это критично.</li>
+        <li><b>Урок Khanmigo подтверждается нейронаукой.</b> Вовлечение (живой человек) важнее контента: дофаминергическая система подростка чувствительна к социальному вознаграждению, поэтому наставник — естественный усилитель использования платформы.</li>
+      </ul>
+    </div>
+  </section>
+  </main>
+</body>
+</html>

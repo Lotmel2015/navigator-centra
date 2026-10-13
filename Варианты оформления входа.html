@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Варианты оформления — Вход в маршрут</title>
+<style>
+  :root {
+    --blue: #2563eb;
+    --blue-light: #eef2ff;
+    --violet: #4f46e5;
+    --text: #111827;
+    --muted: #6b7280;
+    --line: #e2e8f0;
+    --soft: #f8fafc;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .page-head {
+    text-align: center;
+    padding: 2.5rem 1rem 1rem;
+  }
+  .page-head h1 { margin: 0 0 .3rem; font-size: 1.8rem; }
+  .page-head p { margin: 0; color: var(--muted); font-size: .95rem; }
+  .showcase {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 1rem 1rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .variant {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(15,23,42,.05);
+  }
+  .variant-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.4rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--soft);
+    flex-wrap: wrap;
+  }
+  .variant-num {
+    flex: 0 0 auto;
+    width: 2.1rem; height: 2.1rem;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--blue); color: #fff;
+    font-weight: 800; border-radius: 50%;
+  }
+  .variant-head h2 { margin: 0; font-size: 1.15rem; }
+  .variant-head p { margin: .15rem 0 0; color: var(--muted); font-size: .84rem; width: 100%; }
+  .variant-body {
+    padding: 2rem 1.4rem;
+    display: flex;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(37,99,235,.06) 1px, transparent 0) 0 0/24px 24px,
+      #f8fafc;
+  }
+  .tag {
+    display: inline-block;
+    font-size: .7rem; font-weight: 800;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--blue); background: var(--blue-light);
+    border-radius: 999px;
+    padding: .22rem .65rem;
+  }
+
+  /* ===== Общие стили полей ===== */
+  .field { margin-bottom: .9rem; }
+  .field label { display: block; font-size: .8rem; font-weight: 700; color: #374151; margin-bottom: .3rem; }
+  .field input,
+  .field select {
+    width: 100%;
+    border: 1.5px solid #d1d5db;
+    border-radius: 10px;
+    padding: .72rem .8rem;
+    font: 15px/1.4 system-ui, sans-serif;
+    background: #fff;
+    color: var(--text);
+    transition: .15s;
+  }
+  .field input:focus,
+  .field select:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.13);
+  }
+
+  /* =========================================================
+     ВАРИАНТ 1 — «Современный лёгкий» (стиль Яндекс Практикум)
+     ========================================================= */
+  .v1 {
+    width: 100%; max-width: 430px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(15,23,42,.08);
+    padding: 2rem 1.8rem;
+  }
+  .v1-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: .25rem;
+    margin: 1.2rem 0 1.5rem;
+  }
+  .v1-tabs button {
+    border: 0;
+    background: transparent;
+    padding: .6rem .5rem;
+    border-radius: 9px;
+    font: 700 14px/1.2 system-ui, sans-serif;
+    color: var(--muted);
+    cursor: pointer;
+    transition: .15s;
+  }
+  .v1-tabs button.active {
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 1px 4px rgba(15,23,42,.12);
+  }
+  .v1 .btn {
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    padding: .9rem 1rem;
+    font: 700 15px/1.2 system-ui, sans-serif;
+    background: var(--blue);
+    color: #fff;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: .4rem;
+  }
+  .v1 .btn:hover { background: #1d4ed8; }
+  .v1-note { text-align: center; color: #9ca3af; font-size: .8rem; margin-top: 1rem; }
+
+  /* =========================================================
+     ВАРИАНТ 2 — «Карточки с прогрессом» (онбординг)
+     ========================================================= */
+  .v2 {
+    width: 100%; max-width: 760px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(15,23,42,.08);
+  }
+  .v2-side {
+    background: linear-gradient(160deg, #2563eb, #4f46e5);
+    color: #fff;
+    padding: 1.8rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  .v2-side h3 { margin: .2rem 0 0; font-size: 1.25rem; }
+  .v2-side > p { margin: 0; font-size: .88rem; opacity: .85; }
+  .v2-steps { display: flex; flex-direction: column; gap: .9rem; margin-top: .5rem; }
+  .v2-step {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    opacity: .6;
+  }
+  .v2-step.done { opacity: 1; }
+  .v2-step .dot {
+    flex: 0 0 auto;
+    width: 1.6rem; height: 1.6rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,.25);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem; font-weight: 800;
+  }
+  .v2-step.done .dot { background: #fff; color: var(--blue); }
+  .v2-step b { display: block; font-size: .9rem; }
+  .v2-step span { font-size: .78rem; opacity: .85; }
+  .v2-main { padding: 1.8rem 1.6rem; }
+  .v2-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  @media (max-width: 640px) {
+    .v2 { grid-template-columns: 1fr; }
+    .v2-grid { grid-template-columns: 1fr; }
+  }
+  .v2-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    padding: .9rem 1rem;
+    font: 700 15px/1.2 system-ui, sans-serif;
+    background: linear-gradient(90deg, var(--blue), var(--violet));
+    color: #fff;
+    cursor: pointer;
+    margin-top: .4rem;
+  }
+
+  /* =========================================================
+     ВАРИАНТ 3 — «Две плитки, избранное» (доработанный текущий)
+     ========================================================= */
+  .v3 {
+    width: 100%; max-width: 530px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(15,23,42,.08);
+    padding: 2rem 1.8rem;
+  }
+  .v3-role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin: 1.2rem 0; }
+  @media (max-width: 480px) { .v3-role-grid { grid-template-columns: 1fr; } }
+  .v3-role {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35rem;
+    text-align: center;
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 1.2rem .8rem;
+    background: var(--soft);
+    cursor: pointer;
+    transition: .15s;
+    font: inherit;
+  }
+  .v3-role:hover { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+  .v3-role.active { border-color: var(--blue); background: var(--blue-light); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+  .v3-role .ico {
+    width: 2.8rem; height: 2.8rem;
+    display: flex; align-items: center; justify-content: center;
+    background: #fff;
+    border-radius: 50%;
+    font-size: 1.4rem;
+  }
+  .v3-role b { font-size: 1rem; }
+  .v3-role small { color: var(--muted); font-size: .78rem; line-height: 1.3; }
+  .v3-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    padding: .9rem 1rem;
+    font: 700 15px/1.2 system-ui, sans-serif;
+    background: var(--blue);
+    color: #fff;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: .4rem;
+  }
+  .v3-btn:hover { background: #1d4ed8; }
+
+  /* =========================================================
+     ВАРИАНТ 4 — «Единая карточка с переключателем» (Сферум)
+     ========================================================= */
+  .v4 {
+    width: 100%; max-width: 430px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(15,23,42,.08);
+    padding: 2rem 1.8rem;
+    text-align: center;
+  }
+  .v4-logo {
+    width: 3.4rem; height: 3.4rem;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    border-radius: 14px;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; font-weight: 800;
+  }
+  .v4 .seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: .25rem;
+    margin: 1.2rem 0 1.4rem;
+  }
+  .v4 .seg button {
+    border: 0;
+    background: transparent;
+    border-radius: 9px;
+    padding: .6rem .4rem;
+    font: 700 13.5px/1.2 system-ui, sans-serif;
+    color: var(--muted);
+    cursor: pointer;
+    transition: .15s;
+  }
+  .v4 .seg button.active {
+    background: var(--blue);
+    color: #fff;
+  }
+  .v4 .form-inner { text-align: left; }
+  .v4-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    padding: .9rem 1rem;
+    font: 700 15px/1.2 system-ui, sans-serif;
+    background: var(--blue);
+    color: #fff;
+    cursor: pointer;
+    margin-top: .4rem;
+  }
+  .v4-note { color: #9ca3af; font-size: .8rem; margin-top: 1rem; }
+
+  /* Бейдж «шагов» внутри варианта 2 */
+  .form-card-title { font-size: 1.05rem; font-weight: 800; margin: 0 0 .2rem; }
+  .form-card-sub { color: var(--muted); font-size: .85rem; margin: 0 0 1.1rem; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Варианты оформления «Вход в маршрут»</h1>
+  <p>Интерактивная демонстрация — нажимайте на роли, переключайте табы и заполняйте поля</p>
+</div>
+
+<div class="showcase">
+
+  <!-- ============ ВАРИАНТ 1 ============ -->
+  <div class="variant">
+    <div class="variant-head">
+      <div class="variant-num">1</div>
+      <h2>Современный лёгкий</h2>
+      <p>Стиль Яндекс Практикум: белая карточка, роли-табы сверху, поля в одну колонку, минимум украшений.</p>
+    </div>
+    <div class="variant-body">
+      <div class="v1">
+        <div style="text-align:center"><span class="tag">Твой личный навигатор</span></div>
+        <h2 style="font-size:1.5rem;text-align:center;margin:.7rem 0 .2rem">Вход в маршрут</h2>
+        <p style="text-align:center;color:var(--muted);font-size:.88rem;margin:0 0 1rem">Профиль хранится в этом браузере</p>
+
+        <div class="v1-tabs">
+          <button class="active" onclick="v1tab('shkolnik',this)" type="button">Ученик</button>
+          <button onclick="v1tab('tyutor',this)" type="button">Тьютор</button>
+        </div>
+
+        <div id="v1-sh">
+          <div class="field"><label>Имя и фамилия</label><input type="text" placeholder="Иванов Иван"></div>
+          <div class="field"><label>Класс</label>
+            <select><option>8 класс</option><option>9 класс</option><option>10 класс</option><option>11 класс</option></select>
+          </div>
+          <div class="field"><label>Школа</label><input type="text" placeholder="Где учишься?"></div>
+          <div class="field"><label>Мой тьютор</label>
+            <select><option>— выбери из списка —</option><option>Смирнова Анна Петровна</option></select>
+          </div>
+        </div>
+        <div id="v1-ty" style="display:none">
+          <div class="field"><label>ФИО</label><input type="text" placeholder="Смирнова Анна Петровна"></div>
+          <div class="field"><label>Организация</label><input type="text" placeholder="Школа / центр"></div>
+        </div>
+
+        <button class="btn" type="button">Открыть мой маршрут →</button>
+        <div class="v1-note">Всё сохраняется в браузере · данные не уходят в интернет</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ВАРИАНТ 2 ============ -->
+  <div class="variant">
+    <div class="variant-head">
+      <div class="variant-num">2</div>
+      <h2>Карточки с прогрессом</h2>
+      <p>Онбординг-стиль (как в мобильных приложениях): слева шаги и прогресс, справа форма выбранной роли.</p>
+    </div>
+    <div class="variant-body">
+      <div class="v2">
+        <div class="v2-side">
+          <div><span class="tag" style="background:rgba(255,255,255,.2);color:#fff">Твой личный навигатор</span></div>
+          <h3>Вход в маршрут</h3>
+          <p>30 секунд — и ты в своём профиле с маршрутом до старшей школы.</p>
+          <div class="v2-steps">
+            <div class="v2-step done"><div class="dot">✓</div><div><b>Роль</b><span>кто ты сегодня</span></div></div>
+            <div class="v2-step"><div class="dot">2</div><div><b>Профиль</b><span>имя и класс</span></div></div>
+            <div class="v2-step"><div class="dot">3</div><div><b>Готово</b><span>твой маршрут открыт</span></div></div>
+          </div>
+        </div>
+        <div class="v2-main">
+          <div style="display:flex;gap:.6rem;margin-bottom:.9rem">
+            <button class="v3-role" style="flex:1" onclick="v2tab('sh',this)" type="button">
+              <span class="ico">🎒</span><b>Ученик</b>
+            </button>
+            <button class="v3-role" style="flex:1" onclick="v2tab('ty',this)" type="button">
+              <span class="ico">🧭</span><b>Тьютор</b>
+            </button>
+          </div>
+          <div id="v2-sh">
+            <div class="form-card-title">Профиль ученика</div>
+            <div class="form-card-sub">Заполни — и маршрут откроется</div>
+            <div class="v2-grid">
+              <div class="field"><label>Имя и фамилия</label><input type="text" placeholder="Иванов Иван"></div>
+              <div class="field"><label>Класс</label>
+                <select><option>8 класс</option><option>9 класс</option><option>10 класс</option><option>11 класс</option></select>
+              </div>
+              <div class="field"><label>Школа</label><input type="text" placeholder="Где учишься?"></div>
+              <div class="field"><label>Мой тьютор</label>
+                <select><option>— выбери из списка —</option><option>Смирнова Анна Петровна</option></select>
+              </div>
+            </div>
+          </div>
+          <div id="v2-ty" style="display:none">
+            <div class="form-card-title">Профиль тьютора</div>
+            <div class="form-card-sub">Ты появишься в списке тьюторов для учеников</div>
+            <div class="field"><label>ФИО</label><input type="text" placeholder="Смирнова Анна Петровна"></div>
+            <div class="field"><label>Организация</label><input type="text" placeholder="Школа / центр"></div>
+          </div>
+          <button class="v2-btn" type="button">Открыть мой маршрут →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ВАРИАНТ 3 ============ -->
+  <div class="variant">
+    <div class="variant-head">
+      <div class="variant-num">3</div>
+      <h2>Две плитки — избранное</h2>
+      <p>Текущий подход, но доработанный: один выбор за раз (шаг 1), затем форма (шаг 2), чище и без наложений.</p>
+    </div>
+    <div class="variant-body">
+      <div class="v3">
+        <div style="text-align:center">
+          <span class="tag">Твой личный навигатор</span>
+          <h2 style="font-size:1.5rem;margin:.7rem 0 .2rem">Вход в маршрут</h2>
+          <p style="color:var(--muted);font-size:.88rem;margin:0">Кто ты сегодня? Выбери роль</p>
+        </div>
+
+        <div id="v3-roles" class="v3-role-grid">
+          <button class="v3-role" onclick="v3pick('sh')" type="button">
+            <span class="ico">🎒</span><b>Я — школьник</b>
+            <small>веду маршрут, отмечаю этапы, выбираю предметы и экзамены</small>
+          </button>
+          <button class="v3-role" onclick="v3pick('ty')" type="button">
+            <span class="ico">🧭</span><b>Я — тьютор</b>
+            <small>веду учеников, подтверждаю этапы, оставляю заметки</small>
+          </button>
+        </div>
+
+        <div id="v3-form" style="display:none">
+          <button style="border:0;background:none;color:var(--blue);font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;padding:0;margin:0 0 .9rem" onclick="v3back()" type="button">← Назад к ролям</button>
+
+          <div id="v3-sh-form">
+            <div class="field"><label>Имя и фамилия</label><input type="text" placeholder="Иванов Иван"></div>
+            <div class="v3-role-grid" style="grid-template-columns:1fr 1fr">
+              <div class="field"><label>Класс</label>
+                <select><option>8 класс</option><option>9 класс</option><option>10 класс</option><option>11 класс</option></select>
+              </div>
+              <div class="field"><label>Мой тьютор</label>
+                <select><option>— выбери —</option><option>Смирнова Анна Петровна</option></select>
+              </div>
+            </div>
+            <div class="field"><label>Школа</label><input type="text" placeholder="Где учишься?"></div>
+          </div>
+
+          <div id="v3-ty-form" style="display:none">
+            <div class="field"><label>ФИО</label><input type="text" placeholder="Смирнова Анна Петровна"></div>
+            <div class="field"><label>Организация</label><input type="text" placeholder="Школа / центр"></div>
+          </div>
+
+          <button class="v3-btn" type="button">Открыть мой маршрут →</button>
+        </div>
+
+        <div class="v3-note" style="text-align:center;color:#9ca3af;font-size:.8rem;margin-top:1rem" id="v3-note">Прогресс сохраняется в браузере</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ВАРИАНТ 4 ============ -->
+  <div class="variant">
+    <div class="variant-head">
+      <div class="variant-num">4</div>
+      <h2>Единая карточка с переключателем</h2>
+      <p>Стиль Сферум / «Моя школа»: одна карточка, роли — сегментированный переключатель, поля сразу ниже; без двух шагов.</p>
+    </div>
+    <div class="variant-body">
+      <div class="v4">
+        <div class="v4-logo">М</div>
+        <h2 style="font-size:1.4rem;margin:0 0 .2rem">Вход в маршрут</h2>
+        <p style="color:var(--muted);font-size:.88rem;margin:0 0 .4rem">Работает офлайн · сохраняется в браузере</p>
+
+        <div class="seg">
+          <button class="active" onclick="v4tab('sh',this)" type="button">Ученик</button>
+          <button onclick="v4tab('ty',this)" type="button">Тьютор</button>
+        </div>
+
+        <div class="form-inner">
+          <div id="v4-sh">
+            <div class="field"><label>Имя и фамилия</label><input type="text" placeholder="Иванов Иван"></div>
+            <div class="field"><label>Класс</label>
+              <select><option>8 класс</option><option>9 класс</option><option>10 класс</option><option>11 класс</option></select>
+            </div>
+            <div class="field"><label>Школа</label><input type="text" placeholder="Где учишься?"></div>
+            <div class="field"><label>Мой тьютор</label>
+              <select><option>— выбери из списка —</option><option>Смирнова Анна Петровна</option></select>
+            </div>
+          </div>
+          <div id="v4-ty" style="display:none">
+            <div class="field"><label>ФИО</label><input type="text" placeholder="Смирнова Анна Петровна"></div>
+            <div class="field"><label>Организация</label><input type="text" placeholder="Школа / центр"></div>
+          </div>
+          <button class="v4-btn" type="button">Войти</button>
+        </div>
+        <div class="v4-note">Данные не покидают твой браузер</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  /* Вариант 1 — табы */
+  window.v1tab = function (role, btn) {
+    var wrap = btn.parentElement;
+    wrap.querySelectorAll("button").forEach(function (b) { b.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById("v1-sh").style.display = role === "shkolnik" ? "block" : "none";
+    document.getElementById("v1-ty").style.display = role === "tyutor" ? "block" : "none";
+  };
+
+  /* Вариант 2 — плитки ученик/тьютор */
+  window.v2tab = function (role, btn) {
+    var cols = btn.parentElement;
+    cols.querySelectorAll("button").forEach(function (b) {
+      b.classList.remove("active");
+      b.style.borderColor = "#e2e8f0"; b.style.background = "#f8fafc";
+    });
+    btn.classList.add("active");
+    btn.style.borderColor = "#2563eb"; btn.style.background = "#eef2ff";
+    document.getElementById("v2-sh").style.display = role === "sh" ? "block" : "none";
+    document.getElementById("v2-ty").style.display = role === "ty" ? "block" : "none";
+  };
+
+  /* Вариант 3 — два шага: плитки → форма */
+  var v3role = null;
+  window.v3pick = function (role) {
+    v3role = role;
+    document.getElementById("v3-roles").style.display = "none";
+    document.getElementById("v3-form").style.display = "block";
+    document.getElementById("v3-sh-form").style.display = role === "sh" ? "block" : "none";
+    document.getElementById("v3-ty-form").style.display = role === "ty" ? "block" : "none";
+  };
+  window.v3back = function () {
+    document.getElementById("v3-roles").style.display = "grid";
+    document.getElementById("v3-form").style.display = "none";
+  };
+
+  /* Вариант 4 — сегментированный переключатель */
+  window.v4tab = function (role, btn) {
+    var seg = btn.parentElement;
+    seg.querySelectorAll("button").forEach(function (b) { b.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById("v4-sh").style.display = role === "sh" ? "block" : "none";
+    document.getElementById("v4-ty").style.display = role === "ty" ? "block" : "none";
+  };
+</script>
+</body>
+</html>
