@@ -509,8 +509,7 @@
       <div class="field"><label>Имя и фамилия</label><input type="text" id="sh-fio" placeholder="Иванов Иван" autocomplete="off"></div>
       <div class="auth-grid2">
         <div class="field"><label>Класс</label>
-          <select id="sh-klass">
-            <option value="8">8 класс</option>
+          <select id="sh-klass" onchange="fillTutorSelect()"><option value="8">8 класс</option>
             <option value="9">9 класс</option>
             <option value="10">10 класс</option>
             <option value="11">11 класс</option>
@@ -524,6 +523,7 @@
       </div>
       <div class="field"><label>Мой наставник</label>
         <select id="sh-tutor"><option value="">— выбери из списка —</option></select>
+        <div id="sh-tutor-hint" style="font-size:.78rem;color:var(--muted);margin-top:.3rem"></div>
       </div>
       <div class="screen-box" style="margin-top:.9rem;background:var(--bg,#f6f8fb);border:1px dashed var(--line,#dfe5ec);border-radius:10px;padding:.8rem .9rem">
         <div class="scrn-h" style="font-size:.82rem;font-weight:800;color:var(--navy,#1f3a5f);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.45rem">Пара слов о себе (быстрый отбор)</div>
@@ -537,7 +537,7 @@
           <select id="sc-time"><option value="">— выбери —</option><option>1–2 часа</option><option>3–5 часов</option><option>6–10 часов</option><option>Больше 10 часов</option></select>
         </div>
         <div class="field"><label>Насколько сам готов двигаться по маршруту?</label>
-          <select id="sc-auto"><option value="">— выбери —</option><option>Нужен постоянный контроль и подсказки</option><option>Могу сам, если есть чёткий план</option><option>Полностью сам, хочу только советы и разборы</option></select>
+          <select id="sc-auto" onchange="fillTutorSelect()"><option value="">— выбери —</option><option>Нужен постоянный контроль и подсказки</option><option>Могу сам, если есть чёткий план</option><option>Полностью сам, хочу только советы и разборы</option></select>
         </div>
       </div>
       <button class="btn-enter" onclick="registerShkolnik()">Открыть мой маршрут →</button>
@@ -551,6 +551,15 @@
       <div class="auth-grid2">
         <div class="field"><label>Электронная почта</label><input type="email" id="t-email" placeholder="you@mail.ru" autocomplete="off"></div>
         <div class="field"><label>Пароль</label><input type="password" id="t-pass" placeholder="Придумай пароль" autocomplete="off"></div>
+      </div>
+      <div class="field"><label>Формат сопровождения (как вы работаете с учеником)</label>
+        <select id="t-format">
+          <option value="">— выбери —</option>
+          <option value="opeka">Опекун / ведущий за руку (для 8–9 кл., нужно больше контроля)</option>
+          <option value="ravny">Равный наставник (для 10–11 кл., поощряю самостоятельность)</option>
+          <option value="subject">Предметник / тренер (фокус на предмет, олимпиады, экзамены)</option>
+          <option value="any">Любой формат — подстроюсь под ученика</option>
+        </select>
       </div>
       <button class="btn-enter" onclick="registerTyutor()">Открыть панель сопровождения →</button>
       <div class="authmsg">После входа ты появишься в списке наставников — определяющиеся смогут тебя выбрать.</div>
@@ -1841,21 +1850,46 @@
     else if (role === "tyutor") { shForm.style.display = "none"; tyForm.style.display = "block"; }
   };
 
-  /* Заполнить список наставников в форме определяющегося */
+  /* Заполнить список наставников в форме определяющегося (с авто-матчингом) */
+  function tutorScore(t, klass, auto) {
+    var needOpeka = parseInt(klass, 10) <= 9 || auto === "Нужен постоянный контроль и подсказки";
+    var needRavny = parseInt(klass, 10) >= 10 && auto !== "Нужен постоянный контроль и подсказки";
+    if (t.format === "opeka") return needOpeka ? 3 : (needRavny ? 1 : 2);
+    if (t.format === "ravny") return needRavny ? 3 : (needOpeka ? 1 : 2);
+    if (t.format === "subject") return 2;
+    return 2; /* "any" и нет формата — условно подходит всем */
+  }
+  function tutorFormatLabel(f) {
+    if (f === "opeka") return "опекун";
+    if (f === "ravny") return "равный наставник";
+    if (f === "subject") return "предметник/тренер";
+    if (f === "any") return "любой формат";
+    return f || "формат не указан";
+  }
   function fillTutorSelect() {
     var sel = el("sh-tutor");
+    var klass = el("sh-klass").value || "8";
+    var auto = el("sc-auto").value || "";
     var tyr = getUsers().filter(function (u) { return u.role === "tyutor"; });
     sel.innerHTML = "";
     var opt0 = document.createElement("option");
     opt0.value = "";
     opt0.textContent = tyr.length ? "— выбери из списка —" : "Пока нет зарегистрированных наставников";
     sel.appendChild(opt0);
-    tyr.forEach(function (t) {
+    var sorted = tyr.slice().sort(function (a, b) { return tutorScore(b, klass, auto) - tutorScore(a, klass, auto); });
+    sorted.forEach(function (t) {
       var o = document.createElement("option");
       o.value = t.login;
-      o.textContent = t.fio + (t.ou ? " · " + t.ou : "");
+      o.textContent = t.fio + (t.ou ? " · " + t.ou : "") + " · " + tutorFormatLabel(t.format);
       sel.appendChild(o);
     });
+    var hint = el("sh-tutor-hint");
+    var needOpeka = (parseInt(klass, 10) <= 9) || (auto === "Нужен постоянный контроль и подсказки");
+    var needRavny = (parseInt(klass, 10) >= 10) && (auto !== "Нужен постоянный контроль и подсказки");
+    if (hint) {
+      var def = needOpeka ? "Лучше наставник-опекун (больше контроля и подсказок)." : (needRavny ? "Лучше равный наставник (сам прокладывает путь)." : "Подойдёт наставник под ваши цели.");
+      hint.textContent = "Совет по подбору: " + def + " Наставники отсортированы по совпадению. " + (auto === "" ? "Заполните последний вопрос анкеты — подбор станет точнее." : "");
+    }
   }
 
   /* Регистрация определяющегося */
@@ -1901,7 +1935,7 @@
     if (emailTaken) { el("errS").textContent = "Эта почта уже зарегистрирована. Войдите под ней."; return; }
     var login = uid("ty");
     var users = getUsers();
-    users.push({ login: login, role: "tyutor", fio: fio, ou: ou, email: email, pass: pass, created: new Date().toISOString() });
+    users.push({ login: login, role: "tyutor", fio: fio, ou: ou, email: email, pass: pass, format: el("t-format").value || "", created: new Date().toISOString() });
     saveUsers(users);
     setSession({ login: login, role: "tyutor" });
     el("errS").textContent = "";
@@ -3179,6 +3213,7 @@
   }
 
   renderApp();
+  try { fillTutorSelect(); } catch (e) { }
   try { injectFillNow(); } catch (e) { }
   try { initDocs(); } catch (e) { }
   try { initCollapse(); } catch (e) { }
