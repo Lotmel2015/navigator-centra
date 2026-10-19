@@ -946,6 +946,11 @@
       <div id="ps-tutor" style="color:var(--muted);margin-top:.2rem"></div>
     </div>
     <p class="stage-goal" style="font-size:.9rem"><b>Что дальше.</b> Изучай этапы ниже и отмечай пройденные. Каждый этап откроется после предыдущего — это работает как твой личный навигатор. Данные маршрута сохраняются в этом браузере.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0">
+      <button class="btn small" onclick="openDiag()">Пройти диагностику →</button>
+      <button class="btn small ghost" onclick="viewDiagResult()">Мой профиль (результат диагностики)</button>
+    </div>
+    <div id="diag-summary" style="font-size:.85rem;color:var(--muted)"></div>
   </section>
 
 <section id="dash-tutor">
@@ -1804,6 +1809,13 @@
 <div class="doc-modal" id="docModal" onclick="if(event.target===this)closeDoc()">
   <div class="dm-panel"></div>
 </div>
+<div class="doc-modal" id="diagModal" onclick="if(event.target===this)closeDiag()">
+  <div class="dm-panel" style="max-width:640px">
+    <h2>Входная диагностика</h2>
+    <p style="color:var(--muted);font-size:.85rem">Это не экзамен и не оценка: отвечай как есть, а не «как надо». По ответам портал соберёт твой профиль интересов и подскажет, на что опереться. Результат увидите ты и твой тьютор.</p>
+    <div id="diag-body"></div>
+  </div>
+</div>
 <script>
 (function () {
   var LS_USERS = "iop_users";
@@ -2019,6 +2031,7 @@
     el("ps-ou").textContent = us.ou ? "ОУ: " + us.ou : "ОУ: —";
     var ty = getUsers().find(function (u) { return u.login === us.tutorId; });
     el("ps-tutor").textContent = "Тьютор: " + (ty ? (ty.fio + (ty.ou ? " · " + ty.ou : "")) : "не назначен — можно выбрать позже");
+    try { renderDiagSummary(); } catch (e) {}
   }
 
   function renderSession() {
@@ -2137,7 +2150,7 @@
         "<textarea rows='2' onchange='saveNote(\"" + key + "\", this.value)' placeholder='Что проверил, что поддержать на следующем этапе…'>" + esc(getNotes(login)[key] || "") + "</textarea>" +
         "</div>";
     });
-    el("tutor-stages").innerHTML = scrBox + tnoteBar + docLinks + box;
+    el("tutor-stages").innerHTML = scrBox + diagTutorBox(login) + tnoteBar + docLinks + box;
   };
 
   window.saveTNote = function (v) {
@@ -3210,6 +3223,144 @@
         head.appendChild(ch2);
       }
     });
+  }
+
+  /* ===== Входная диагностика (пакет с автоподсчётом) ===== */
+  var DIAG_Q = [
+    { t: "Р", q: "Разбирать, как устроены машины, механизмы и гаджеты" },
+    { t: "И", q: "Проводить опыты и искать ответы на «почему» в науке" },
+    { t: "А", q: "Придумывать и создавать что-то красивое: рисовать, писать, снимать" },
+    { t: "С", q: "Помогать другим людям, объяснять, поддерживать" },
+    { t: "П", q: "Организовывать людей, вести проекты, быть лидером" },
+    { t: "К", q: "Наводить порядок в таблицах, цифрах и данных" }
+  ];
+  var DIAG_ANX = [
+    "Я часто волнуюсь перед контрольными и экзаменами",
+    "Мне трудно расслабиться: я думаю о том, что может пойти не так",
+    "Я боюсь не оправдать ожидания взрослых"
+  ];
+  var DIAG_EFF = [
+    "Если я ставлю цель, я обычно дохожу до результата",
+    "Я умею учиться сам, даже когда рядом нет подсказки",
+    "Я верю, что справлюсь с трудностями, которые сейчас кажутся большими"
+  ];
+  var DIAG_TYPES = { Р: "Техника и руки", И: "Наука и исследования", А: "Творчество и искусство", С: "Люди и помощь", П: "Организация и дело", К: "Данные и порядок" };
+  var DIAG_OPTS = { 1: "совсем не про меня", 2: "скорее нет", 3: "и да и нет", 4: "скорее да", 5: "точно про меня" };
+
+  function diagRadio(name, text) {
+    var html = "<div style='padding:.5rem 0;border-bottom:1px solid var(--line)'><div style='font-size:.9rem'>" + esc(text) + "</div><div style='display:flex;gap:.5rem;margin-top:.35rem;flex-wrap:wrap'>";
+    for (var i = 1; i <= 5; i++) {
+      html += "<label style='font-size:.74rem;display:flex;align-items:center;gap:.25rem;cursor:pointer'><input type='radio' name='" + name + "' value='" + i + "'> " + i + " " + DIAG_OPTS[i] + "</label>";
+    }
+    html += "</div></div>";
+    return html;
+  }
+  function diagVal(name) {
+    var els = document.getElementsByName(name);
+    for (var i = 0; i < els.length; i++) { if (els[i].checked) return parseInt(els[i].value, 10); }
+    return 0;
+  }
+
+  window.openDiag = function () {
+    var box = el("diagModal"); if (!box) return;
+    var b = el("diag-body");
+    var html = "<div style='background:var(--teal-soft);padding:.6rem .8rem;border-radius:8px;font-size:.85rem;margin-bottom:.6rem'><b>Часть 1 · Интересы.</b> Насколько это про тебя?</div>";
+    DIAG_Q.forEach(function (item, i) { html += diagRadio("dgi" + i, item.q); });
+    html += "<div style='background:var(--gold-soft);padding:.6rem .8rem;border-radius:8px;font-size:.85rem;margin:.8rem 0 .6rem'><b>Часть 2 · Состояние.</b> Как часто это про тебя?</div>";
+    DIAG_ANX.forEach(function (item, i) { html += diagRadio("dga" + i, item.q); });
+    html += "<div style='background:var(--navy-soft);padding:.6rem .8rem;border-radius:8px;font-size:.85rem;margin:.8rem 0 .6rem'><b>Часть 3 · Уверенность.</b> Как часто это про тебя?</div>";
+    DIAG_EFF.forEach(function (item, i) { html += diagRadio("dge" + i, item.q); });
+    html += "<div style='margin-top:.9rem'><button class='btn small' onclick='submitDiag()'>Узнать мой профиль →</button> <button class='btn small ghost' onclick='closeDiag()'>Отмена</button></div>";
+    b.innerHTML = html;
+    box.style.display = "block";
+  };
+
+  function computeDiag() {
+    var res = { interests: {}, anxiety: null, efficacy: null, done: new Date().toISOString() };
+    var sums = {}; var counts = {};
+    DIAG_Q.forEach(function (item, i) { var v = diagVal("dgi" + i); if (v) { sums[item.t] = (sums[item.t] || 0) + v; counts[item.t] = (counts[item.t] || 0) + 1; } });
+    var typeScores = [];
+    Object.keys(DIAG_TYPES).forEach(function (t) {
+      var n = counts[t] || 0;
+      var s = n ? Math.round((sums[t] || 0) / n * 10) / 10 : 0;
+      typeScores.push({ t: t, label: DIAG_TYPES[t], s: s });
+    });
+    typeScores.sort(function (a, b) { return b.s - a.s; });
+    res.interests.top = typeScores[0] && typeScores[0].s > 0 ? typeScores[0] : null;
+    res.interests.second = typeScores[1] && typeScores[1].s > 0 ? typeScores[1] : null;
+    var anx = 0, an = 0;
+    DIAG_ANX.forEach(function (q, i) { var v = diagVal("dga" + i); if (v) { anx += v; an++; } });
+    res.anxiety = an ? Math.round(anx / an * 10) / 10 : null;
+    var ef = 0, en = 0;
+    DIAG_EFF.forEach(function (q, i) { var v = diagVal("dge" + i); if (v) { ef += v; en++; } });
+    res.efficacy = en ? Math.round(ef / en * 10) / 10 : null;
+    return res;
+  }
+
+  function diagLevelName(scale, val) {
+    if (scale === "anxiety") {
+      if (val <= 2.8) return "низкая тревожность";
+      if (val <= 3.6) return "умеренная тревожность";
+      return "повышенная тревожность — обсудить с психологом/тьютором";
+    }
+    if (scale === "efficacy") {
+      if (val >= 3.8) return "высокая уверенность";
+      if (val >= 3.0) return "средняя уверенность";
+      return "уверенность нуждается в поддержке";
+    }
+    return "";
+  }
+
+  window.submitDiag = function () {
+    var sess = getSession(); if (!sess) return;
+    var res = computeDiag();
+    try { localStorage.setItem("iop_diag_" + sess.login, JSON.stringify(res)); } catch (e) {}
+    el("diag-body").innerHTML = diagResultHtml(res) + "<div style='margin-top:1rem'><button class='btn small ghost' onclick='closeDiag()'>Закрыть</button></div>";
+    renderDiagSummary();
+  };
+
+  function loadDiag(login) { try { return JSON.parse(localStorage.getItem("iop_diag_" + (login || ""))) || null; } catch (e) { return null; } }
+
+  function diagResultHtml(res) {
+    if (!res) return "<p style='color:var(--muted)'>Диагностика ещё не пройдена.</p>";
+    var h = "";
+    if (res.interests && res.interests.top) h += "<p><b>Твои главные направления:</b> «" + esc(res.interests.top.label) + "»" + (res.interests.second ? ", «" + esc(res.interests.second.label) + "»" : "") + ".</p>";
+    h += "<p><b>Тревожность:</b> " + (res.anxiety === null ? "—" : res.anxiety.toFixed(1) + " · " + diagLevelName("anxiety", res.anxiety)) + ".</p>";
+    h += "<p><b>Уверенность в себе:</b> " + (res.efficacy === null ? "—" : res.efficacy.toFixed(1) + " · " + diagLevelName("efficacy", res.efficacy)) + ".</p>";
+    h += "<p style='font-size:.8rem;color:var(--muted)'>Это стартовая точка, а не приговор: профиль может меняться. Пройдено: " + new Date(res.done).toLocaleDateString("ru-RU") + ".</p>";
+    return "<div style='background:var(--ok-soft);border-left:4px solid var(--ok);padding:.9rem 1.1rem;border-radius:0 8px 8px 0'>" + h + "</div>";
+  }
+
+  window.viewDiagResult = function () {
+    var sess = getSession(); if (!sess) return;
+    var box = el("diagModal"); if (!box) return;
+    var res = loadDiag(sess.login);
+    el("diag-body").innerHTML = diagResultHtml(res) + "<div style='margin-top:1rem'><button class='btn small' onclick='openDiag()'>Пройти заново</button> <button class='btn small ghost' onclick='closeDiag()'>Закрыть</button></div>";
+    box.style.display = "block";
+  };
+
+  window.closeDiag = function () { var box = el("diagModal"); if (box) box.style.display = "none"; };
+
+  function renderDiagSummary() {
+    var elm = el("diag-summary"); if (!elm) return;
+    var sess = getSession(); if (!sess) { elm.innerHTML = ""; return; }
+    var res = loadDiag(sess.login);
+    if (!res) { elm.innerHTML = "<span style='color:var(--muted)'>Диагностика ещё не пройдена — она поможет понять свои интересы и состояние.</span>"; return; }
+    var t = res.interests && res.interests.top ? res.interests.top.label : "—";
+    elm.innerHTML = "<span style='color:var(--ok);font-weight:700'>Диагностика пройдена ✓</span> · направления: <b>" + esc(t) + "</b> · тревожность: <b>" + (res.anxiety ? " " + res.anxiety.toFixed(1) : "—") + "</b> · уверенность: <b>" + (res.efficacy ? " " + res.efficacy.toFixed(1) : "—") + "</b>";
+  }
+
+  function diagTutorBox(login) {
+    var res = loadDiag(login);
+    if (!res) return "<div style='color:var(--muted);font-size:.82rem;margin:.4rem 0'><b style='color:var(--navy)'>Диагностика (вход)</b> — не пройдена.</div>";
+    var t = res.interests && res.interests.top ? res.interests.top.label : "—";
+    return "<div style='background:var(--navy-soft);border:1px solid var(--navy);border-radius:10px;padding:.7rem .9rem;margin:.6rem 0'>" +
+      "<b style='color:var(--navy);font-size:.9rem'>Диагностика (вход)</b>" +
+      "<table style='width:100%;border-collapse:collapse;font-size:.84rem;margin-top:.4rem'>" +
+      "<tr><td style='padding:.28rem .5rem .28rem 0;color:var(--muted);width:46%'>Направления</td><td style='padding:.28rem .5rem'><b>" + esc(t) + "</b></td></tr>" +
+      "<tr><td style='padding:.28rem .5rem .28rem 0;color:var(--muted)'>Тревожность</td><td style='padding:.28rem .5rem'><b>" + (res.anxiety ? " " + res.anxiety.toFixed(1) + " · " + diagLevelName("anxiety", res.anxiety) : "—") + "</b></td></tr>" +
+      "<tr><td style='padding:.28rem .5rem .28rem 0;color:var(--muted)'>Уверенность</td><td style='padding:.28rem .5rem'><b>" + (res.efficacy ? " " + res.efficacy.toFixed(1) + " · " + diagLevelName("efficacy", res.efficacy) : "—") + "</b></td></tr>" +
+      "</table></div>";
   }
 
   renderApp();
