@@ -24,12 +24,6 @@
   .tldr { background: var(--teal-soft); border-left: 4px solid var(--teal);
           padding: .95rem 1.15rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
   .tldr b { color: var(--teal); }
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-          gap: .7rem; margin: 1.4rem 0 2rem; }
-  .kpi { border: 1px solid var(--line); border-top: 3px solid var(--navy);
-         border-radius: 8px; padding: .75rem .95rem; background: var(--card); }
-  .kpi b { display: block; font-size: 1.3rem; font-variant-numeric: tabular-nums; color: var(--navy); }
-  .kpi span { color: var(--muted); font-size: .78rem; }
 
   /* nav */
   nav.toc { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.2rem 0 2rem; }
@@ -387,6 +381,14 @@
   .doctbl td input, .doctbl td select, .doctbl td textarea { width: 100%; border: 1px solid var(--line); border-radius: 6px;
     padding: .35rem .5rem; font: 14px/1.3 system-ui, sans-serif; background: #fff; box-sizing: border-box; }
   .addrow-btn { margin: .3rem 0 .5rem; }
+  .sendwork { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: .9rem 0 .2rem;
+    background: #eef3fa; border: 1px solid #c9d8ee; border-left: 4px solid var(--navy);
+    border-radius: 10px; padding: .75rem 1rem; }
+  body:not(.role-shkolnik) .sendwork { display: none; }
+  .sendwork-txt { flex: 1 1 260px; }
+  .sendwork-txt b { display: block; color: var(--navy); font-size: .92rem; }
+  .sendwork-txt small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.4; margin-top: .15rem; }
+  .docs-wrap .docs-form-label { color: var(--muted); font-size: .84rem; margin: .9rem 0 .5rem; line-height: 1.5; }
   .doc-savebar { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-top: .9rem;
     padding-top: .8rem; border-top: 1px dashed var(--line); }
   .doc-savebar .doc-status { font-size: .82rem; color: var(--muted); flex: 1 1 200px; }
@@ -416,7 +418,7 @@
 <main>
 <header>
     <h1>Я выбираю свою траекторию</h1>
-    <p class="meta">Личный практикум по ИОМ / ИОП / ИУП для школьников 7–11 классов. Войди в профиль — и откроется твой маршрут: 4 этапа и 20 занятий по осознанному выбору экзаменов, профиля и будущего. Всё сохраняется в браузере.</p>
+    <p class="meta">Выбирай предметы и экзамены осознанно — и поступай туда, куда хочешь. Личный практикум по ИОМ / ИОП / ИУП для школьников 7–11 классов: 4 этапа и 20 занятий вместе с наставником. Войди в профиль — откроется твой маршрут. Всё сохраняется в браузере.</p>
   </header>
 
   <section id="landing">
@@ -525,6 +527,8 @@
         <select id="sh-tutor"><option value="">— выбери из списка —</option></select>
         <div id="sh-tutor-hint" style="font-size:.78rem;color:var(--muted);margin-top:.3rem"></div>
       </div>
+      <button class="btn-enter" onclick="registerShkolnik()">Открыть мой маршрут →</button>
+      <div class="authmsg">Наставник — из списка зарегистрированных. Нет его — войди без, назначим позже.</div>
       <div class="screen-box" style="margin-top:.9rem;background:var(--bg,#f6f8fb);border:1px dashed var(--line,#dfe5ec);border-radius:10px;padding:.8rem .9rem">
         <div class="scrn-h" style="font-size:.82rem;font-weight:800;color:var(--navy,#1f3a5f);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.45rem">Пара слов о себе (быстрый отбор)</div>
         <div class="field"><label>Что тебя сейчас больше всего интересует?</label>
@@ -540,8 +544,6 @@
           <select id="sc-auto" onchange="fillTutorSelect()"><option value="">— выбери —</option><option>Нужен постоянный контроль и подсказки</option><option>Могу сам, если есть чёткий план</option><option>Полностью сам, хочу только советы и разборы</option></select>
         </div>
       </div>
-      <button class="btn-enter" onclick="registerShkolnik()">Открыть мой маршрут →</button>
-      <div class="authmsg">Наставник — из списка зарегистрированных. Нет его — войди без, назначим позже.</div>
     </div>
 
     <!-- Форма помогающего -->
@@ -566,7 +568,7 @@
     </div>
 
     <div class="authmsg" id="errS"></div>
-    <div class="auth-hint">Всё сохраняется в браузере · данные не уходят в интернет</div>
+    <div class="auth-hint"><b>Работает без интернета:</b> данные хранятся в твоём браузере и не уходят в сеть. Можно заниматься дома, в школе и даже в дороге.</div>
   </div>
 </div>
 
@@ -944,6 +946,9 @@
       <div id="ps-klass" style="color:var(--muted)"></div>
       <div id="ps-ou" style="color:var(--muted)"></div>
       <div id="ps-tutor" style="color:var(--muted);margin-top:.2rem"></div>
+      <div style="margin-top:.6rem;border-top:1px solid var(--line);padding-top:.6rem">
+        <button class="btn ghost small" onclick="logout()">Выйти из профиля и войти под другим аккаунтом</button>
+      </div>
     </div>
     <p class="stage-goal" style="font-size:.9rem"><b>Что дальше.</b> Изучай этапы ниже и отмечай пройденные. Каждый этап откроется после предыдущего — это работает как твой личный навигатор. Данные маршрута сохраняются в этом браузере.</p>
     <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0">
@@ -954,7 +959,10 @@
   </section>
 
 <section id="dash-tutor">
-    <h3>Панель тьютора: подтверждение этапов учеников</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between;margin-bottom:.4rem">
+      <h3 style="margin:0">Панель тьютора: подтверждение этапов учеников</h3>
+      <button class="btn ghost small" onclick="logout()">Выйти из профиля</button>
+    </div>
     <h2 style="margin-top:1rem">Роли тьютора: три взгляда на одно занятие</h2>
     <p>Молодому тьютору полезно удерживать три «шляпы». В начале практики редко получается всё сразу — осваивайте по одной: сначала методист (структура), затем психолог (контакт и состояние), затем педагог (техники обучения). К этому добавляются базовые принципы этики (профстандарт 01.005) и психологии доверия.</p>
     <div class="roles">
@@ -1358,6 +1366,11 @@
   <section class="docs-wrap" id="docs">
     <h2>Мои документы курса</h2>
     <p class="docs-sub">Заполняй документы прямо здесь — они сохраняются в твой профиль (в этом браузере). Под каждым шаблоном появляется ссылка «Открыть мой документ»: по ней можно в любой момент посмотреть сохранённое, распечатать или скачать.</p>
+    <div class="sendwork" id="sendWorkWrap">
+      <div class="sendwork-txt"><b>Показать выполненную работу тьютору</b><small>Когда закончишь заполнять документы занятия — собери их в один файл и пришли тьютору (в мессенджер или на почту). Он увидит твою работу и сможет проверить её, даже если вы работаете в дистанте.</small></div>
+      <button class="btn small teal" onclick="buildWorkPackage()">Собрать мою работу для тьютора →</button>
+    </div>
+    <p class="docs-form-label">Документы заполняются на занятиях с тьютором: он видит разметку «твоя цель» и этапы, помогает и проверяет. Работу за занятие удобно собрать кнопкой выше — так тьютор получит её, даже если проверяет позже.</p>
 
     <div class="docs-tabs">
       <button class="active" onclick="showDoc('dreflex',this)">Входная рефлексия</button>
@@ -3054,6 +3067,87 @@
       var first = document.querySelector('#docModal .dm-body .fld[style*="block"], #docModal .dm-body .fld');
       if (first) first.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  };
+  /* ===== Собрать выполненную работу школьника для отправки тьютору ===== */
+  window.buildWorkPackage = function () {
+    var sess = getSession();
+    var us = sess ? getUsers().find(function (u) { return u.login === sess.login; }) : null;
+    var lines = [];
+    lines.push("ПОРТАЛ «Я выбираю свою траекторию» — работа обучающегося");
+    lines.push((us ? us.fio || "" : "") + (us && us.klass ? ", " + us.klass + " класс" : "") + (us && us.ou ? ", " + us.ou : ""));
+    lines.push("Когда заполнено: " + new Date().toLocaleString("ru-RU"));
+    lines.push("");
+    var any = false;
+    DOCS.forEach(function (doc) {
+      var data = loadDocData(doc);
+      var filled = Object.keys(data).filter(function (k) { return data[k] && String(data[k]).trim() !== ""; }).length;
+      if (!filled) return;
+      any = true;
+      lines.push("=== " + (DOC_TITLES[doc] || doc) + " ===");
+      Object.keys(data).forEach(function (k) {
+        if (k.indexOf("_") === 0) return;
+        var v = String(data[k] || "").trim();
+        if (!v) return;
+        lines.push((docFieldLabel(doc, k) || k) + ": " + v);
+      });
+      var arrKey = doc === "proby" ? "_probas" : doc === "nabl" ? "_nabls" : doc === "plan" ? "_plans" : doc === "mate" ? "_mates" : doc === "stress" ? "_stresses" : null;
+      if (arrKey && Array.isArray(data[arrKey])) {
+        data[arrKey].forEach(function (rec, ri) {
+          var has = Object.keys(rec).some(function (k) { return rec[k] && String(rec[k]).trim() !== ""; });
+          if (!has) return;
+          lines.push("— карточка №" + (ri + 1) + " —");
+          Object.keys(rec).forEach(function (k) {
+            var v = String(rec[k] || "").trim();
+            if (!v) return;
+            var base = (doc === "proby" ? "proby_" : doc === "nabl" ? "nabl_" : doc === "plan" ? "plan_" : doc === "mate" ? "mate_" : "stress_") + k;
+            lines.push((docFieldLabel(doc, base) || k) + ": " + v);
+          });
+        });
+      }
+      lines.push("");
+    });
+    var headTxt = lines.join("\n");
+    if (!any) headTxt += "Документы ещё не заполнены. Заполни формы и собери работу снова.";
+    var modal = document.getElementById("workModal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "workModal";
+      modal.className = "doc-modal";
+      modal.onclick = function (e) { if (e.target === modal) closeWorkModal(); };
+      modal.innerHTML = "<div class='dm-panel' style='max-width:760px'><h2>Твоя работа для тьютора</h2>" +
+        "<p style='color:var(--muted);font-size:.86rem'>Скопируй текст ниже целиком и пришли тьютору (в мессенджер или на почту). Он увидит заполненные тобой документы и сможет проверить их — даже если проверяет позже, в дистанте.</p>" +
+        "<textarea id='workPackageTxt' readonly rows='16' style='width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:.8rem;font:13px/1.5 monospace;background:#f8fafb'></textarea>" +
+        "<div class='dm-actions'><button class='btn small teal' onclick='copyWorkPackage()'>Скопировать</button>" +
+        "<button class='btn small ghost' onclick='closeWorkModal()'>Закрыть</button></div>" +
+        "</div>";
+      document.body.appendChild(modal);
+    }
+    var ta = document.getElementById("workPackageTxt");
+    ta.value = "\ufeff".replace("\ufeff","") + headTxt;
+    ta.style.height = "auto";
+    ta.style.height = Math.min(ta.scrollHeight, 480) + "px";
+    modal.style.display = "block";
+    try { ta.removeAttribute("readonly"); ta.setSelectionRange(0, 0); ta.readOnly = true; } catch (e) {}
+  };
+  window.copyWorkPackage = function () {
+    var ta = document.getElementById("workPackageTxt");
+    if (!ta) return;
+    ta.removeAttribute("readonly");
+    ta.select();
+    try { navigator.clipboard.writeText(ta.value).then(function () { flashWorkBtn(); }); }
+    catch (e) { try { document.execCommand("copy"); flashWorkBtn(); } catch (e2) {} }
+    ta.readOnly = true;
+  };
+  function flashWorkBtn() {
+    var b = document.querySelector('#sendWorkWrap .btn');
+    if (!b) return;
+    var old = b.textContent;
+    b.textContent = "Скопировано ✓";
+    setTimeout(function () { b.textContent = old; }, 1600);
+  }
+  window.closeWorkModal = function () {
+    var m = document.getElementById("workModal");
+    if (m) m.style.display = "none";
   };
   window.downloadDoc = function (doc, login) {
     var data = loadDocData(doc, login);
