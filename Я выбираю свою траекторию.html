@@ -954,6 +954,7 @@
     <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0">
       <button class="btn small" onclick="openDiag()">Пройти диагностику →</button>
       <button class="btn small ghost" onclick="viewDiagResult()">Мой профиль (результат диагностики)</button>
+      <button class="btn small teal" onclick="openCert()">Мой сертификат →</button>
     </div>
     <div id="diag-summary" style="font-size:.85rem;color:var(--muted)"></div>
   </section>
@@ -2003,9 +2004,16 @@
           b.textContent = getDone(sess.login)[key] ? "Этап пройден ✓ (снять отметку)" : "Отметить этап пройденным";
           b.onclick = function () {
             var d = getDone(sess.login);
+            var was = !!d[key];
             if (d[key]) delete d[key]; else d[key] = true;
             setDone(sess.login, d);
             renderApp();
+            if (!was) {
+              var sNext = stageEl(key);
+              var tNext = sNext ? (sNext.querySelector(".stage-head h2") || { textContent: "" }).textContent : "";
+              var more = (ORDER.indexOf(key) < ORDER.length - 1) ? " Дальше — следующий этап." : " Весь маршрут пройден!";
+              alert("Отлично, этап отмечен!" + more);
+            }
           };
           row.appendChild(b);
         } else {
@@ -2081,8 +2089,17 @@
       if (dashTut) dashTut.style.display = "none";
       var d = getDone(sess.login);
       var n = ORDER.filter(function (k) { return d[k]; }).length;
-      el("prog-label").textContent = "Мой маршрут: пройдено " + n + " из " + ORDER.length + " этапов";
-      el("prog-fill").style.width = Math.round(n / ORDER.length * 100) + "%";
+      var nLess = 0, totalLess = 0;
+      ORDER.forEach(function (k) {
+        var s = stageEl(k);
+        if (!s) return;
+        var c = s.querySelectorAll(".lesson").length;
+        totalLess += c;
+        if (d[k]) nLess += c;
+      });
+      if (!totalLess) totalLess = ORDER.length * 5;
+      el("prog-label").textContent = "Мой маршрут: пройдено " + nLess + " из " + totalLess + " занятий (" + n + " из " + ORDER.length + " этапов)";
+      el("prog-fill").style.width = totalLess ? Math.round(nLess / totalLess * 100) + "%" : "0%";
       prog.style.display = "block";
     } else {
       if (dashSh) dashSh.style.display = "none";
@@ -3033,6 +3050,31 @@
   window.closeDoc = function () {
     var box = document.getElementById("docModal");
     if (box) box.style.display = "none";
+  };
+  window.openCert = function () {
+    var sess = getSession();
+    var us = sess ? getUsers().find(function (u) { return u.login === sess.login; }) : null;
+    if (!us) return;
+    var n = ORDER.filter(function (k) { return getDone(sess.login)[k]; }).length;
+    var ty = getUsers().find(function (u) { return u.login === us.tutorId; });
+    var html = "<div style='text-align:center;padding:1.8rem 1.2rem'>" +
+      "<div style='font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:700'>Сертификат</div>" +
+      "<h2 style='color:var(--navy);margin:.5rem 0 .2rem'>«Я выбираю свою траекторию»</h2>" +
+      "<div style='color:var(--muted)'>о прохождении маршрута осознанного выбора предметов, экзаменов и профиля</div>" +
+      "<div style='border-top:2px solid var(--navy);max-width:420px;margin:1.2rem auto'></div>" +
+      "<div style='font-size:1.15rem;font-weight:700;color:var(--navy)'>" + esc(us.fio || "") + "</div>" +
+      "<div style='color:var(--muted);margin-top:.2rem'>" + (us.klass ? us.klass + " класс" : "") + (us.ou ? " · " + esc(us.ou) : "") + "</div>" +
+      "<div style='margin:1rem 0;font-size:.95rem'>Пройдено этапов маршрута: <b>" + n + " из " + ORDER.length + "</b></div>" +
+      "<div style='color:var(--muted);font-size:.85rem'>Документы маршрута заполнены и сохранены в этом браузере." + (ty ? "<br>Тьютор: " + esc(ty.fio) : "") + "</div>" +
+      "<div style='margin-top:1.4rem;color:var(--muted);font-size:.9rem'>" + new Date().toLocaleDateString("ru-RU") + "</div>" +
+      "</div>";
+    html += "<div class='dm-actions'>" +
+      "<button class='btn small' onclick='window.print()'>Печать / PDF</button>" +
+      "<button class='btn small ghost' onclick='closeDoc()'>Закрыть</button></div>";
+    var box = document.getElementById("docModal");
+    if (!box) return;
+    box.querySelector(".dm-panel").innerHTML = html;
+    box.style.display = "block";
   };
   window.docGo = function (group) {
     /* Подсветка полей карты маршрута по группам: diag, cel, res */
