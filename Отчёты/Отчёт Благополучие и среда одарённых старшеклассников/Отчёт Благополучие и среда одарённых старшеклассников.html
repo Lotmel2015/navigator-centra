@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Отчёт: психологическое благополучие и образовательная среда одарённых старшеклассников</title>
+<style>
+  :root {
+    --bg:#fbfcfe; --ink:#16222e; --muted:#5c6b78; --accent:#1f6feb; --accent-soft:#eaf1fd;
+    --ok:#0e7c5b; --ok-soft:#e5f4ef; --warn:#b7791f; --warn-soft:#fdf3e2; --line:#e3e8ee; --card:#fff;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:980px; margin:0 auto; padding:2rem 1.25rem 3rem; }
+  header { padding:1.8rem 0 1rem; border-bottom:2px solid var(--accent); }
+  .eyebrow { font-size:.76rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:700; }
+  header h1 { font-size:1.7rem; line-height:1.2; margin:.3rem 0 .5rem; }
+  .meta { color:var(--muted); font-size:.85rem; }
+  .tldr { background:var(--accent-soft); border-left:4px solid var(--accent); padding:.95rem 1.2rem;
+          border-radius:0 6px 6px 0; margin:1.5rem 0; }
+  .tldr b { color:var(--accent); }
+  h2 { font-size:1.15rem; color:var(--accent); border-bottom:1px solid var(--line); padding-bottom:.35rem; margin:2.1rem 0 .7rem; }
+  h3 { font-size:1rem; margin:1.4rem 0 .4rem; }
+  p { margin:.55rem 0; }
+  ul,ol { margin:.4rem 0 .7rem; padding-left:1.4rem; }
+  li { margin:.25rem 0; }
+  table { border-collapse:collapse; width:100%; font-size:.85rem; margin:.8rem 0; }
+  th,td { border:1px solid var(--line); padding:.45rem .6rem; text-align:left; vertical-align:top; }
+  th { background:#f2f5f7; color:var(--muted); font-size:.76rem; }
+  .note { background:var(--warn-soft); border-left:4px solid var(--warn); border-radius:0 6px 6px 0;
+          padding:.7rem .95rem; margin:1rem 0; font-size:.9rem; }
+  .note b { color:var(--warn); }
+  .oknote { background:var(--ok-soft); border-left:4px solid var(--ok); border-radius:0 6px 6px 0;
+            padding:.7rem .95rem; margin:1rem 0; font-size:.9rem; }
+  .oknote b { color:var(--ok); }
+  .kpi { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:.7rem; margin:1.2rem 0; }
+  .kpi .k { border:1px solid var(--line); border-radius:8px; padding:.7rem .9rem; background:var(--card); }
+  .kpi .k b { display:block; color:var(--accent); font-size:1.35rem; }
+  .kpi .k span { color:var(--muted); font-size:.78rem; }
+  a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
+  footer { color:var(--muted); font-size:.78rem; border-top:1px solid var(--line); margin-top:2.5rem; padding-top:.8rem; }
+  @media print { body{background:#fff} main{max-width:none;padding:0} h2{page-break-after:avoid} table{font-size:8.5pt} }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Отчёт · исследования серии «Сопровождение старшеклассников»</div>
+    <h1>Психологическое благополучие и образовательная среда одарённых старшеклассников</h1>
+    <p class="meta">Глубокое исследование · 14.10.2026 · категория: одарённые 8–11 классов · русскоязычные + международные источники</p>
+  </header>
+
+  <div class="tldr"><b>Главное.</b> Одарённость сама по себе <b>не является фактором психологической уязвимости</b> — метаанализ М. Нейхарт (>120 работ) и др. показывают, что одарённые подростки адаптируются не хуже, а по ряду показателей и лучше сверстников. Реальные, подтверждённые риски узкие и модифицируемые: дезадаптивный перфекционизм, «синдром самозванца», стигма «ботаник/гений», эффект «большой рыбы в маленьком пруду» (снижение академической самооценки в сильной группе, подтверждён и в РФ), пик социальной тревожности ~13 лет. Защищают: поддерживающие взрослые, честная обратная связь, среда единомышленников, тренинг саморегуляции и психообразование. Доказательная база (SEL, mindfulness) по одарённым пока ограничена — центр должен измерять благополучие самостоятельно (проверенные шкалы см. в разделе 5).</div>
+
+  <div class="kpi">
+    <div class="k"><b>~0,2 SD</b><span>эффект наставничества на психосоциальные исходы (Raposa 2019, N=25 286)</span></div>
+    <div class="k"><b>g=0,33</b><span>выше перфекционистские «устремления» у одарённых, чем опасения (‑0,12) — перфекционизм не патология</span></div>
+    <div class="k"><b>d=0,18</b><span>эффект mindfulness на тревожность у подростков (Dunning 2019, RCT)</span></div>
+    <div class="k"><b>85 центров</b><span>«Мини-Сириус» + ~20 тыс. «Точек роста» (среда одарённых)</span></div>
+  </div>
+
+  <h2>1. Одарённость и благополучие: что подтверждено, а что миф</h2>
+  <p>Ключевой вывод современной науки: <b>одарённость не детерминирует ни уязвимость, ни устойчивость</b>. По метаанализу Нейхарт (Neihart, 1999), благополучие определяется тремя взаимодействующими факторами: <b>типом одарённости × соответствием образовательной среды × личностными характеристиками</b>. [1][2]</p>
+  <ul>
+    <li><b>Опровергнутый миф</b> — «одарённые дети всегда психологически уязвимы». Метаанализ Я-концепции (Litster &amp; Roberts, 2011): одарённые подростки выше оценивают академическую и поведенческую компетентность, «одарённость может работать как защитный фактор самооценки». Российские лонгитюды (Ясюкова, Белавина; Щебланова) также не подтверждают стереотип о социальной неадекватности. [1][2]</li>
+    <li><b>Подтверждённый риск №1 — «ярлык одарённости»</b>: завышенные ожидания взрослых и групповая ценность «не на учёбу» ведут к стигматизации, попыткам скрывать способности, чувству «инаковости». [2]</li>
+    <li><b>Подтверждённый риск №2 — патологический перфекционизм</b>: у старшеклассников «тревожность» значимо связана именно с «патологическим» перфекционизмом («завышенные барьеры»), что открывает путь коррекции тревоги через нормализацию перфекционизма. [3]</li>
+    <li><b>Подтверждённый риск №3 — синдром самозванца</b>: негативно предсказывает вовлечённость и связан с дистрессом (гендерно: у девушек дистресс выше). [4]</li>
+    <li><b>Асинхрония и гипервозбудимость (Домбровски)</b> — реальные, но не универсальные феномены; уязвимость усиливается неблагоприятной средой. [2][5]</li>
+  </ul>
+
+  <h2>2. Эффект «большой рыбы в маленьком пруду» (BFLPE)</h2>
+  <p>Переход в сильный класс/специализированный центр — типичный сценарий для одарённого. Эффект социального сравнения (Марш): <b>одинаково способный ученик имеет тем ниже академическую самооценку, чем сильнее его окружение</b>. Это прямо подтверждено на российских данных:</p>
+  <ul>
+    <li>Российское исследование на данных TIMSS/PISA (Ю. Кузьмина, ВШЭ, n=2803): негативный эффект среднего балла класса на математическую самооценку, оценки по алгебре и планы поступления в вуз — значим. Математическая самооценка — более сильный предиктор выбора углублённой математики/STEM, чем прежние достижения. [6]</li>
+    <li>Международные исследования: эффект устойчив по предметам и культурам, сохраняется после школы, растёт с длительностью пребывания в сильном классе. [7]</li>
+    <li><b>Важно для центра:</b> эффект «славы» сильной школы перекрывается негативным BFLPE → критичны адаптационные мероприятия при поступлении и поддержка академической самооценки.</li>
+  </ul>
+
+  <h2>3. Возрастные и гендерные особенности</h2>
+  <ul>
+    <li><b>Пик социальной тревожности ~13 лет</b> (Щебланова, Петрова): тревога — фактор-медиатор, а не следствие одарённости; может вести к изоляции и снижению успеваемости. [5]</li>
+    <li><b>8 класс vs 10–11 класс:</b> отдельного «одарённого» деления в источниках нет, но тревожная оценка перспектив будущего у 15–17 лет (n=422, СПб/НН) снижает благополучие через самопринятие/автономность, при этом в нормативном диапазоне связана с личностным ростом — тревога о будущем в старших классах имеет «мобилизующую» составляющую. [8]</li>
+    <li><b>Гендер:</b> у девушек выше дистресс при самозванце и маладаптивном перфекционизме; есть данные о барьерах стереотипов «nerd/genius» в STEM для девочек. [4][9]</li>
+  </ul>
+
+  <h2>4. Образовательная среда: компоненты и психологическая безопасность</h2>
+  <p>Среда — решаемый фактор благополучия. Российские модели дают готовую рамку:</p>
+  <ul>
+    <li><b>Векторная модель Ясвина:</b> 4 компонента среды (пространственно-предметный, социальный, психосоциальный, организационно-методический); тип среды по осям «Свобода—Зависимость» и «Активность—Пассивность». Для одарённых желателен вектор «свобода + активность» (творческая/свободная среда). [10][11]</li>
+    <li><b>Психологическая безопасность (Баева)</b>: защищённость от психологического насилия + удовлетворённость потребности в личностно-доверительном общении + референтная значимость среды. Интегральные показатели — <b>удовлетворённость, референтность, защищённость</b>. Методика оценивает отношение к среде (по интервалам 61–80, 81–100 …), удовлетворённость (по 5-балльной шкале 1–1,9 низкий … 5 очень высокий) и защищённость от насилия. [12][13][14]</li>
+    <li><b>Климат → результат:</b> положительный школьный климат (высокие ожидания + качественные отношения «учитель—ученик») связан с более высокими достижениями и вовлечённостью (Wang &amp; Degol, 2016; EEF; ERIC). [15][16]</li>
+  </ul>
+
+  <h2>5. Что реально помогает (инструменты и метрики для центра)</h2>
+  <h3>Проверенные практики</h3>
+  <ul>
+    <li><b>Наставничество</b> — самый проверенный инструмент: метаанализ Raposa (70 исследований, N=25 286) даёт умеренный эффект ~0,2 SD на психосоциальные, академические и карьерные исходы. [17]</li>
+    <li><b>SEL (CASEL)</b> — рамка из 5 компетенций (самосознание, самоуправление, социальная осведомлённость, навыки отношений, ответственное решение); данных об эффективности именно у одарённых пока мало — пробел. [18][19]</li>
+    <li><b>Консультирование перфекционизма</b>: одарённые выше по «устремлениям» (g=0,33), но не по «опасениям» (−0,12) — мишень не устранение перфекционизма, а работа с его здоровой формой (CBT-подходы, Kennedy &amp; Farley). [20][21]</li>
+    <li><b>Mindfulness</b>: у подростков эффект на тревожность достоверен, но мал (d=0,18 против активного контроля; Dunning 2019); у одарённых отдельно почти не измерено. [22]</li>
+  </ul>
+  <h3>Модельные практики среды</h3>
+  <ul>
+    <li><b>«Сириус»</b>: кураторы команд — ключевая фигура, призванная сделать пребывание комфортным; ребёнка встречает куратор. [23][24]</li>
+    <li><b>СУНЦ НГУ</b> (топ-10 школ РФ): профильное обучение + Летняя школа + интернат; тьюторы и отдел психолого-педагогического сопровождения. [25]</li>
+    <li><b>85 центров «Мини-Сириус»</b>, ~20 тыс. «Точек роста» — расчётная среда сопровождения. [26]</li>
+  </ul>
+  <h3>Метрики вход/выход (для дашборда центра, рабочий набор)</h3>
+  <div class="twrap" style="overflow-x:auto">
+  <table>
+    <thead><tr><th>Что измеряем</th><th>Шкала / инструмент</th><th>Доступность на русском</th></tr></thead>
+    <tbody>
+      <tr><td>Личностная тревожность</td><td>STAI-T (Спилбергер)</td><td>Есть валидизация 2025 (PsyJournals, ВГПУ), girls выше [27]</td></tr>
+      <tr><td>Перфекционизм у подростков</td><td>CAPS (Child-Adolescent Perfectionism Scale)</td><td>Англ. версия + ключи Hewitt Lab [28]</td></tr>
+      <tr><td>Благополучие (удовлетворённость жизнью)</td><td>SWLS (Diener)</td><td>Адаптации есть [29]</td></tr>
+      <tr><td>Определённость карьерного выбора</td><td>Career Decidedness Scale</td><td>В связке CDS+SWLS+HOPE [29]</td></tr>
+      <tr><td>Безопасность среды</td><td>Методика Баевой (3 части)</td><td>Рус., оригинал [13][14]</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note"><b>Ограничение:</b> Сириус/онлайн-платформы открыто не публикуют психометрику благополучия → эталонных бенчмарков нет, центр должен вести собственные замеры вход/выход. Доказательная база именно по одарённым (SEL, mindfulness) ограничена — эффекты переносятся с подростковой популяции с оговоркой.</div>
+
+  <h2>Практические рекомендации для центра</h2>
+  <ol>
+    <li><b>Не «инвалидизировать» одарённость</b>: вести коммуникацию «одарённость = ресурс + особенности, требующие поддержки», а не патологию.</li>
+    <li><b>Управлять BFLPE</b>: при зачислении/переходе в сильные группы — адаптационный модуль (знакомство, единомышленники, работа с академической самооценкой), замер до/после.</li>
+    <li><b>Маршрутизировать риски</b>: ежемесячный экспресс-скрининг (тревога, мотивация, перфекционизм) с порогом передачи психологу; при выявлении патологического перфекционизма — CBT-фокус.</li>
+    <li><b>Встроить метрики благополучия в дашборд</b>: STAI-T, CAPS, SWLS, CDS, методика Баевой — вход/середина/выход.</li>
+    <li><b>Опираться на проверенное</b>: наставничество (доза контакта), группы единомышленников, психообразование, честная обратная связь; mindfulness — как дополнение с реалистичными ожиданиями.</li>
+  </ol>
+
+  <h2>Источники</h2>
+  <ol class="src" style="font-size:.8rem">
+    <li>Neihart M. The impact of giftedness on psychological well-being. Roeper Review, 1999 — ERIC: <a href="https://eric.ed.gov/?id=EJ595001">EJ595001</a></li>
+    <li>Лактионова Е.Б. и др. Подходы к проблеме изучения психологического благополучия одарённых учащихся. Педагогический ИМИДЖ, 2019 — <a href="https://cyberleninka.ru/article/n/podhody-k-probleme-izucheniya-psihologicheskogo-blagopoluchiya-odaryonnyh-uchaschihsya-v-obrazovatelnoy-srede">КиберЛенинка</a></li>
+    <li>Тревожность, уровень перфекционизма и привязанность у старшеклассников и студентов — <a href="https://cyberleninka.ru/article/n/trevozhnost-uroven-perfektsionizma-i-privyazannost-u-starsheklassnikov-i-studentov">КиберЛенинка</a></li>
+    <li>Перфекционизм и феномен самозванца как предикторы вовлечённости. Психологический журнал — <a href="https://psy.jes.su/s020595920020498-3-1">psy.jes.su</a></li>
+    <li>Щебланова Е.И., Петрова Е.А. Современные зарубежные исследования тревожности интеллектуально одарённых школьников. Современная зарубежная психология, 2021 — <a href="https://psyjournals.ru/journals/jmfp/archive/2021_n4/jmfp_2021_n4_Shcheblanova_Petrova.pdf">PsyJournals PDF</a></li>
+    <li>Кузьмина Ю.В. Эффект «Большой лягушки в маленьком пруду». Психология. Журнал ВШЭ, 2016 — <a href="https://cyberleninka.ru/article/n/effekt-bolshoy-lyagushki-v-malenkom-prudu-vsegda-li-horosho-esli-rebenok-obuchaetsya-v-silnom-klasse">КиберЛенинка</a></li>
+    <li>The Big-Fish–Little-Pond Effect on the Four Facets of Academic Self-Concept. Frontiers in Psychology, 2018 — <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2018.01247/full">Frontiers</a></li>
+    <li>Воробьёва и др. «Тревожная оценка перспектив» и психологическое благополучие одарённых подростков. Вестник ТГУ, n=422 — <a href="https://vital.lib.tsu.ru/vital/access/manager/Repository/koha:000721642">ТГУ</a></li>
+    <li>That's not me: pSTEM nerd-genius stereotypes. Springer, 2023 — <a href="https://link.springer.com/article/10.1007/s11218-023-09851-6">Springer</a></li>
+    <li>Ясвин В.А. Векторное моделирование образовательной среды — <a href="http://yasvinlab.com/Content/pdfs/lab/2_Komplementarnost.pdf">yasvinlab.com</a></li>
+    <li>Ясвин В.А. Учебные материалы (ВИРО) — <a href="https://viro36.ru">viro36.ru</a></li>
+    <li>Баева И.А. Психологическая безопасность образовательной среды (автореф. дисс., 2002) — <a href="http://irbis.gnpbu.ru/Aref_2002/Baeva_I_A_2002.pdf">gnpbu.ru</a></li>
+    <li>Описание методики «Психологическая безопасность ОС школы» — <a href="https://cppmsp52.ru/assets/mgr/files/doc/mediaciya/metodikapsihologicheskayabezopasnostobrazovatelnojsredyshkoly.pdf">cppmsp52.ru</a></li>
+    <li>Баева И.А. Психологическая безопасность образовательной среды. PsyJournals, 2024 — <a href="https://psyjournals.ru/journals/epps/archive/2024_n3/Baeva">PsyJournals</a></li>
+    <li>Wang M.-T., Degol J.L. School Climate: Review of the Construct, Measurement, and Impact. Educ. Psychol. Rev., 2016 — <a href="https://link.springer.com/article/10.1007/s10648-015-9319-1">Springer</a></li>
+    <li>School Climate, Student Engagement, Achievement — <a href="https://files.eric.ed.gov/fulltext/EJ1201175.pdf">ERIC EJ1201175</a></li>
+    <li>Raposa E. et al. The Effects of Youth Mentoring Programs: A Meta-analysis, 2019 — <a href="https://pure.uva.nl/ws/files/52287310/Raposa2019_Article_TheEffectsOfYouthMentoringProg.pdf">UvA-DARE</a></li>
+    <li>CASEL — Social and Emotional Learning — <a href="https://casel.org/">casel.org</a></li>
+    <li>Effect of an SEL-Based Program on gifted kindergarten students (pilot) — <a href="https://www.researchgate.net/publication/344327336">ResearchGate</a></li>
+    <li>Intellectual Giftedness and Multidimensional Perfectionism. Educational Psychology Review — <a href="https://link.springer.com/article/10.1007/s10648-019-09504-1">Springer</a></li>
+    <li>Kennedy &amp; Farley. Counseling Gifted Students: School-Based Considerations and Strategies, 2018 — <a href="https://digitalcommons.chapman.edu/cgi/viewcontent.cgi?article=1204&context=education_articles">Chapman</a></li>
+    <li>Dunning et al. Effects of mindfulness-based interventions. JCPP, 2019 — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6546608">PMC</a></li>
+    <li>Кураторы Сириуса — <a href="https://siriuskurator.ru/">siriuskurator.ru</a></li>
+    <li>Памятка для родителей (Сириус) — <a href="https://sochisirius.ru/kak-popast/pamjatka-dlja-roditelej">sochisirius.ru</a></li>
+    <li>СУНЦ НГУ — <a href="https://sesc.nsu.ru/">sesc.nsu.ru</a></li>
+    <li>Нацпроект «Образование» — центры «Мини-Сириус» (по отчёту невозможности финансирования) — <a href="https://объясняем.рф">объясняем.рф</a></li>
+    <li>Адаптация STAI-T на русском (2025) — <a href="https://psyjournals.ru/en/journals/vspu_psychology/archive/2025_n4/Tikhomirova_Pavlova_et_al">PsyJournals</a></li>
+    <li>CAPS (Child-Adolescent Perfectionism Scale, Hewitt Lab) — <a href="https://hewittlab.sites.olt.ubc.ca/files/2022/01/CAPS_Flett_2016.pdf">UBC PDF</a></li>
+    <li>Career Decidedness and Subjective Wellbeing — <a href="https://files.eric.ed.gov/fulltext/EJ1317385.pdf">ERIC EJ1317385</a></li>
+  </ol>
+
+  <footer>
+    <p>Отчёт «Психологическое благополучие и образовательная среда одарённых старшеклассников» · сформирован 14.10.2026 · чат «Исследования и отчёты» · на основе глубокого исследования (3 треда). Эффекты: наставничество ~0,2 SD (Raposa 2019); перфекционизм g=0,33/−0,12 (Springer); mindfulness d=0,18 (Dunning 2019). Ограничения: часть данных по BFLPE/климату из выдержек (PDF бинарные); evidence по SEL у одарённых ограничен. Достоверность помечена в тексте.</p>
+  </footer>
+</main>
+</body>
+</html>

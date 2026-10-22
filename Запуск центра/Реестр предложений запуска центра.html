@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Реестр предложений запуска центра</title>
+<style>
+  :root {
+    --bg:#f6f8fb; --card:#ffffff; --ink:#22303c; --muted:#5c6a77;
+    --navy:#1f3a5f; --navy-soft:#e7eef7;
+    --teal:#0f6f69; --teal-soft:#e1efed;
+    --gold:#9a6a1f; --gold-soft:#f6eeda;
+    --warn:#b3382c; --warn-soft:#f9e9e6;
+    --ok:#1a7f4b; --ok-soft:#dcefe3;
+    --purple:#5b4a9e; --purple-soft:#edeaf8;
+    --line:#e0e5ec;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:1280px; margin:0 auto; padding:2rem 1.25rem 3rem; }
+  header { padding:1.4rem 0 1rem; border-bottom:2px solid var(--navy); }
+  .eyebrow { font-size:.76rem; letter-spacing:.13em; text-transform:uppercase; color:var(--teal); font-weight:700; }
+  header h1 { font-size:1.72rem; line-height:1.28; margin:.3rem 0 .4rem; color:var(--navy); }
+  .meta { color:var(--muted); font-size:.85rem; }
+  .tldr { background:var(--navy-soft); border-left:4px solid var(--navy); padding:.95rem 1.15rem;
+          border-radius:0 8px 8px 0; margin:1.6rem 0; }
+  .tldr b { color:var(--navy); }
+  h2 { font-size:1.2rem; color:var(--navy); margin:2.4rem 0 .6rem; }
+
+  .filters { display:flex; flex-wrap:wrap; gap:.6rem; margin:1.1rem 0; }
+  .filters select, .filters button { font:inherit; font-size:.85rem; padding:.45rem .75rem;
+      border:1px solid var(--line); border-radius:9px; background:var(--card); color:var(--ink); cursor:pointer; }
+  .filters label { font-size:.8rem; font-weight:700; color:var(--muted); text-transform:uppercase;
+      letter-spacing:.05em; align-self:center; }
+  .filters button { background:var(--navy-soft); border-color:var(--navy); color:var(--navy); font-weight:700; }
+  .filters button:hover { background:var(--navy); color:#fff; }
+
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.7rem; margin:1.1rem 0; }
+  .stats .st { border:1px solid var(--line); border-radius:12px; background:var(--card); padding:.7rem .85rem; text-align:center; }
+  .stats .st .n { font-size:1.3rem; font-weight:800; color:var(--navy); }
+  .stats .st .t { font-size:.74rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+
+  .twrap { overflow-x:auto; margin:1.1rem 0; border:1px solid var(--line); border-radius:12px; background:var(--card); }
+  table.t { border-collapse:collapse; width:100%; font-size:.82rem; }
+  .t th,.t td { border:1px solid var(--line); padding:.5rem .6rem; text-align:left; vertical-align:top; }
+  .t th { background:var(--navy-soft); color:var(--navy); font-size:.7rem; text-transform:uppercase; letter-spacing:.04em;
+          position:sticky; top:0; z-index:2; }
+  .t td b { color:var(--navy); }
+  .t tr:hover td { background:var(--bg); }
+  .t .num { font-weight:800; color:var(--teal); white-space:nowrap; }
+  .t tr.group td { background:var(--navy-soft); color:var(--navy); font-weight:800; font-size:.76rem;
+                   text-transform:uppercase; letter-spacing:.05em; }
+
+  .tag { display:inline-block; font-size:.66rem; font-weight:800; text-transform:uppercase; border-radius:999px;
+         padding:.15rem .5rem; margin-right:.15rem; white-space:nowrap; }
+  .tag.a { background:var(--teal-soft); color:var(--teal); }
+  .tag.b { background:var(--navy-soft); color:var(--navy); }
+  .tag.c { background:var(--purple-soft); color:var(--purple); }
+  .tag.w { background:var(--gold-soft); color:var(--gold); }
+
+  .pri-s { color:var(--ok); font-weight:800; } .pri-m { color:var(--gold); font-weight:800; } .pri-l { color:var(--muted); font-weight:700; }
+
+  .st-dot { display:inline-block; width:.6rem; height:.6rem; border-radius:50%; margin-right:.3rem; vertical-align:1px; }
+  .st-new { background:#8a97a5; } .st-work { background:var(--gold); } .st-test { background:var(--teal); }
+  .st-done { background:var(--ok); } .st-hang { background:var(--warn); }
+  .status { font-size:.78rem; white-space:nowrap; }
+  .status select { font:inherit; font-size:.76rem; padding:.2rem .4rem; border:1px solid var(--line); border-radius:7px; }
+
+  footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--line); margin-top:3rem; padding-top:.8rem; }
+  @media print { body{background:#fff} main{max-width:none;padding:0} .filters,.stats{display:none} table{font-size:.72rem} }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Запуск центра · единый реестр предложений</p>
+    <h1>Реестр предложений запуска центра</h1>
+    <p class="meta">Подразделение по работе с одарёнными детьми и талантливой молодёжью · 14.10.2026 · 32 предложения от 7 сотрудников · интерактивное зеркало «Реестр предложений запуска центра.md» (зона «Запуск центра»)</p>
+  </header>
+
+  <div class="tldr"><b>Как пользоваться.</b> Единый источник правды по 32 предложениям из «Оптимизации запуска центра предложения и маршрут внедрения». Принцип «автор — владелец»: каждый сотрудник ведёт свою инициативу, обновляет статус перед штабом (15 минут, понедельник). Статусы: <b>новое → в работе → на тесте → готово</b> (или <b>зависло</b> — 2 недели без апдейта → эскалация руководителю). «Высокие» приоритеты — в первые 4 недели, «средние» — за 2–4 месяца, «условный запуск» — параллельно (внешний юрист). Волны: <b>Волна 1</b> — вход (недели 1–2), <b>Волна 2</b> — сопровождение (недели 3–4), <b>Волна 3</b> — результат (недели 5–6). Эталон нумерации и статусов — файл «Реестр предложений запуска центра.md».</div>
+
+  <!-- Сводка -->
+  <h2>Сводка</h2>
+  <div class="stats" id="stats">
+    <div class="st"><div class="n" id="cTotal">32</div><div class="t">предложений</div></div>
+    <div class="st"><div class="n">7</div><div class="t">авторов</div></div>
+    <div class="st"><div class="n" id="cNew">32</div><div class="t">новых</div></div>
+    <div class="st"><div class="n" id="cWork">0</div><div class="t">в работе</div></div>
+    <div class="st"><div class="n" id="cDone">0</div><div class="t">готово</div></div>
+    <div class="st"><div class="n" id="cHang">0</div><div class="t">зависло</div></div>
+  </div>
+
+  <!-- Фильтры -->
+  <div class="filters">
+    <label>Фильтры:</label>
+    <select id="fAuthor" onchange="applyFilters()">
+      <option value="">Все авторы</option>
+      <option>Тьютор</option><option>Психолог</option><option>Учитель</option>
+      <option>Тренер</option><option>Координатор</option><option>Наставник</option>
+      <option>Кл. руководитель</option>
+    </select>
+    <select id="fStage" onchange="applyFilters()">
+      <option value="">Все стадии</option>
+      <option value="вход">Вход</option><option value="сопровождение">Сопровождение</option><option value="результат">Результат</option>
+    </select>
+    <select id="fPri" onchange="applyFilters()">
+      <option value="">Все приоритеты</option>
+      <option value="Высокий">Высокий</option><option value="Средний">Средний</option><option value="Условный запуск">Условный запуск</option>
+    </select>
+    <select id="fStatus" onchange="applyFilters()">
+      <option value="">Все статусы</option>
+      <option value="новое">Новое</option><option value="в работе">В работе</option><option value="на тесте">На тесте</option>
+      <option value="готово">Готово</option><option value="зависло">Зависло</option>
+    </select>
+    <select id="fWave" onchange="applyFilters()">
+      <option value="">Все волны</option>
+      <option value="1">Волна 1 (вход, нед. 1–2)</option><option value="2">Волна 2 (сопровождение, нед. 3–4)</option>
+      <option value="3">Волна 3 (результат, нед. 5–6)</option>
+    </select>
+    <button onclick="resetFilters()">Сбросить</button>
+  </div>
+
+  <!-- Таблица -->
+  <div class="twrap">
+  <table class="t" id="tbl">
+    <thead>
+      <tr>
+        <th>№</th><th>Предложение</th><th>Сотрудник</th><th>Стадия</th><th>Приоритет</th>
+        <th>Срок</th><th>Трудозатраты</th><th>Волна</th><th>Статус</th><th>Кого просит помочь</th><th>Критерий «готово»</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+
+      <tr class="group" data-group="1"><td colspan="11">Тьютор (5) · ядро команды · профстандарт 01.005</td></tr>
+      <tr data-wave="1" data-author="Тьютор" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">1</td><td><b>Онлайн-анкета-скрининг</b><br><span style="color:var(--muted);font-size:.74rem">короткая анкета (мотивация, интересы, время, ожидания) отсеивает ~30% нецелевых заявок без очных встреч</span></td>
+        <td>Тьютор</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>1 нед</td><td>2 ч</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Анкета работает, собрано 10 заявок</td>
+      </tr>
+      <tr data-wave="1" data-author="Тьютор" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">2</td><td><b>Автоматизированный матчинг</b><br><span style="color:var(--muted);font-size:.74rem">возраст × самостоятельность × цель → тип тьютора/интенсивность (8 кл. — опекун, 10–11 — равный наставник)</span></td>
+        <td>Тьютор</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>1 нед</td><td>3 ч</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>психолог</td><td>Подбор пары за 1 день</td>
+      </tr>
+      <tr data-wave="2" data-author="Тьютор" data-stage="сопровождение" data-pri="Высокий" data-status="новое">
+        <td class="num">3</td><td><b>Единая цифровая карта маршрута</b><br><span style="color:var(--muted);font-size:.74rem">0.1→1.0→2.0→финал: заметки, цели, контрольные точки; экономия до 2 ч/нед на тьютора</span></td>
+        <td>Тьютор</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-s">Высокий</td><td>2 нед</td><td>1 день</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Карты 0.1 у 100% учеников</td>
+      </tr>
+      <tr data-wave="2" data-author="Тьютор" data-stage="сопровождение" data-pri="Высокий" data-status="новое">
+        <td class="num">4</td><td><b>Ежеквартальный чек-пойнт целей</b><br><span style="color:var(--muted);font-size:.74rem">ревизия карты раз в 4 недели: что получилось, что скорректировать, куда движемся</span></td>
+        <td>Тьютор</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-s">Высокий</td><td>2 нед</td><td>0,5 дня</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>100% учеников прошли первый чек-пойнт</td>
+      </tr>
+      <tr data-wave="3" data-author="Тьютор" data-stage="результат" data-pri="Средний" data-status="новое">
+        <td class="num">5</td><td><b>«Дорожная карта результата»</b><br><span style="color:var(--muted);font-size:.74rem">желаемый результат (поступление/олимпиада/проект/профиль) → шаги → портфолио для защиты и школы</span></td>
+        <td>Тьютор</td><td><span class="tag c">результат</span></td><td class="pri pri-m">Средний</td><td>1 мес</td><td>1 день</td>
+        <td><span class="tag w">В3</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Каждый ученик завершает год с портфолио</td>
+      </tr>
+
+      <tr class="group" data-group="2"><td colspan="11">Педагог-психолог (5) · профстандарт 01.002</td></tr>
+      <tr data-wave="1" data-author="Психолог" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">6</td><td><b>Единый пакет диагностик + автоподсчёт профиля</b><br><span style="color:var(--muted);font-size:.74rem">RIASEC, сильные стороны, тревожность, самоэффективность, самостоятельность; обработка 40→5 мин</span></td>
+        <td>Психолог</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>1 нед</td><td>0,5 дня</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Профиль по пакету без ручной обработки</td>
+      </tr>
+      <tr data-wave="1" data-author="Психолог" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">7</td><td><b>Протокол двойной диагностики (40 мин)</b><br><span style="color:var(--muted);font-size:.74rem">«ресурс + состояние» в одной встрече — полный профиль без двух визитов</span></td>
+        <td>Психолог</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>2 нед</td><td>1 день</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>тьютор</td><td>Профиль за 40 мин на волонтёре</td>
+      </tr>
+      <tr data-wave="2" data-author="Психолог" data-stage="сопровождение" data-pri="Высокий" data-status="новое">
+        <td class="num">8</td><td><b>Ежемесячный экспресс-скрининг состояния</b><br><span style="color:var(--muted);font-size:.74rem">3–5 вопросов (тревога, мотивация, нагрузка) в конце месяца — раннее выявление риска отсева</span></td>
+        <td>Психолог</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-s">Высокий</td><td>2 нед</td><td>1 день</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Скрининг прошёл пилот из 3 учеников</td>
+      </tr>
+      <tr data-wave="2" data-author="Психолог" data-stage="сопровождение" data-pri="Средний" data-status="новое">
+        <td class="num">9</td><td><b>Реестр «второго шанса»</b><br><span style="color:var(--muted);font-size:.74rem">отказники и «тихо вышедшие»: повторный вход через 6 месяцев, автонапоминание</span></td>
+        <td>Психолог</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-m">Средний</td><td>1 мес</td><td>0,5 дня</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Автонапоминание формирует повторное приглашение</td>
+      </tr>
+      <tr data-wave="3" data-author="Психолог" data-stage="результат" data-pri="Средний" data-status="новое">
+        <td class="num">10</td><td><b>Метрика благополучия и career decidedness</b><br><span style="color:var(--muted);font-size:.74rem">измерение вход / середина / выход — не только баллы, но и снижение тревожности и определённость выбора</span></td>
+        <td>Психолог</td><td><span class="tag c">результат</span></td><td class="pri pri-m">Средний</td><td>1 мес</td><td>1 день</td>
+        <td><span class="tag w">В3</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>координатор</td><td>3 точки замера на пилоте</td>
+      </tr>
+
+      <tr class="group" data-group="3"><td colspan="11">Учитель-предметник (4) · профстандарт «Педагог» · 544н</td></tr>
+      <tr data-wave="1" data-author="Учитель" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">11</td><td><b>Банк входных предметных диагностик по уровням</b><br><span style="color:var(--muted);font-size:.74rem">база / углубление / олимпиадка, автопроверка первой части</span></td>
+        <td>Учитель</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>2 нед</td><td>2 дня</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>тренер</td><td>Диагностика по уровням готова к входу</td>
+      </tr>
+      <tr data-wave="2" data-author="Учитель" data-stage="сопровождение" data-pri="Средний" data-status="новое">
+        <td class="num">12</td><td><b>Библиотека дифференцированных заданий</b><br><span style="color:var(--muted);font-size:.74rem">«уровень → тема → задание», 2–3 уровня сложности, видимый прогресс</span></td>
+        <td>Учитель</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-m">Средний</td><td>2–3 мес</td><td>5 дней</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Библиотека наполнена по 2 темам/предмет</td>
+      </tr>
+      <tr data-wave="2" data-author="Учитель" data-stage="сопровождение" data-pri="Средний" data-status="новое">
+        <td class="num">13</td><td><b>Индивидуальный учебный контур внутри предмета</b><br><span style="color:var(--muted);font-size:.74rem">персональный перечень тем и задач до следующего чек-пойнта</span></td>
+        <td>Учитель</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-m">Средний</td><td>1–2 мес</td><td>2 дня</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Контур заполнен у 100% учеников предмета</td>
+      </tr>
+      <tr data-wave="3" data-author="Учитель" data-stage="результат" data-pri="Средний" data-status="новое">
+        <td class="num">14</td><td><b>Пробники с прогнозом балла</b><br><span style="color:var(--muted);font-size:.74rem">прогноз целевого балла к ЕГЭ/ОГЭ и план коррекции</span></td>
+        <td>Учитель</td><td><span class="tag c">результат</span></td><td class="pri pri-m">Средний</td><td>1 мес</td><td>2 дня</td>
+        <td><span class="tag w">В3</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Прогноз у 100% готовящихся к экзаменам</td>
+      </tr>
+
+      <tr class="group" data-group="4"><td colspan="11">Олимпиадный тренер (5) · модель компетенции (2026)</td></tr>
+      <tr data-wave="1" data-author="Тренер" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">15</td><td><b>Шаблон входного олимпиадного тура</b><br><span style="color:var(--muted);font-size:.74rem">автопроверка первой части, чек-лист второй</span></td>
+        <td>Тренер</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>2 нед</td><td>2 дня</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Тур прошёл 3 волонтёра</td>
+      </tr>
+      <tr data-wave="2" data-author="Тренер" data-stage="сопровождение" data-pri="Высокий" data-status="новое">
+        <td class="num">16</td><td><b>ИОМ олимпиадника с контрольными точками</b><br><span style="color:var(--muted);font-size:.74rem">пробные туры каждые 4–6 недель, разбор по шаблону</span></td>
+        <td>Тренер</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-s">Высокий</td><td>2 нед</td><td>1 день</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Траектория видна тренеру, ученику, родителям</td>
+      </tr>
+      <tr data-wave="2" data-author="Тренер" data-stage="сопровождение" data-pri="Средний" data-status="новое">
+        <td class="num">17</td><td><b>Пул наставников-студентов (призёры олимпиад)</b><br><span style="color:var(--muted);font-size:.74rem">групповые разборы и часть сессий, дешевле штатных в 2–3 раза</span></td>
+        <td>Тренер</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-m">Средний</td><td>1–2 мес</td><td>3 дня</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>партнёры</td><td>Пул ≥ 5 студентов-наставников</td>
+      </tr>
+      <tr data-wave="3" data-author="Тренер" data-stage="результат" data-pri="Высокий" data-status="новое">
+        <td class="num">18</td><td><b>Календарь олимпиадного сезона с целями по этапам</b><br><span style="color:var(--muted);font-size:.74rem">целевые этапы ВсОШ/перечневых, выход в финалы, дипломы и приросты баллов</span></td>
+        <td>Тренер</td><td><span class="tag c">результат</span></td><td class="pri pri-s">Высокий</td><td>до старта сезона</td><td>1 день</td>
+        <td><span class="tag w">В3</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Цели по этапам у каждого олимпиадника</td>
+      </tr>
+      <tr data-wave="3" data-author="Тренер" data-stage="результат" data-pri="Средний" data-status="новое">
+        <td class="num">19</td><td><b>Траектория «поступление без ЕГЭ»</b><br><span style="color:var(--muted);font-size:.74rem">связка дипломов с условиями вузов: БВИ / приоритет</span></td>
+        <td>Тренер</td><td><span class="tag c">результат</span></td><td class="pri pri-m">Средний</td><td>1–2 мес</td><td>2 дня</td>
+        <td><span class="tag w">В3</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>вузы</td><td>Справочник БВИ по вузам</td>
+      </tr>
+
+      <tr class="group" data-group="5"><td colspan="11">Координатор / завуч по УВР (5) · письмо № 03-205 · локальные акты</td></tr>
+      <tr data-wave="1" data-author="Координатор" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">20</td><td><b>Регламент жизненного цикла (SOP)</b><br><span style="color:var(--muted);font-size:.74rem">этапы «вход → сопровождение → результат», сроки, ответственные, формы</span></td>
+        <td>Координатор</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>2–3 нед</td><td>2–3 дня</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>все</td><td>Регламент подписан руководителем</td>
+      </tr>
+      <tr data-wave="1" data-author="Координатор" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">21</td><td><b>CRM с дашбордом всех стадий</b><br><span style="color:var(--muted);font-size:.74rem">статус заявки → этап маршрута → активность → контрольные точки → результат</span></td>
+        <td>Координатор</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>2–3 нед</td><td>2–3 дня</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Дашборд заполняется с первого зачисления</td>
+      </tr>
+      <tr data-wave="2" data-author="Координатор" data-stage="сопровождение" data-pri="Высокий" data-status="новое">
+        <td class="num">22</td><td><b>Дашборд рисков отсева</b><br><span style="color:var(--muted);font-size:.74rem">автосигналы: пропуски, падение результатов, скрининги → маршрутизация за 48 ч</span></td>
+        <td>Координатор</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-s">Высокий</td><td>1 мес</td><td>2 дня</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>тьютор, психолог</td><td>Дашборд выдаёт сигналы по данным</td>
+      </tr>
+      <tr data-wave="2" data-author="Координатор" data-stage="сопровождение" data-pri="Средний" data-status="новое">
+        <td class="num">23</td><td><b>Метрики качества на всех стадиях</b><br><span style="color:var(--muted);font-size:.74rem">конверсия, удержание, прирост теста, decidedness, тревожность — единый KPI-дашборд</span></td>
+        <td>Координатор</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-m">Средний</td><td>1–2 мес</td><td>2 дня</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>KPI-дашборд заполняется ежемесячно</td>
+      </tr>
+      <tr data-wave="3" data-author="Координатор" data-stage="результат" data-pri="Средний" data-status="новое">
+        <td class="num">24</td><td><b>Мета-отчёт «результаты» для руководства и школ</b><br><span style="color:var(--muted);font-size:.74rem">годовой отчёт по фактическим исходам: поступление, дипломы, удержание, благополучие</span></td>
+        <td>Координатор</td><td><span class="tag c">результат</span></td><td class="pri pri-m">Средний</td><td>к концу учебного года</td><td>2 дня</td>
+        <td><span class="tag w">В3</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Мета-отчёт подписан</td>
+      </tr>
+
+      <tr class="group" data-group="6"><td colspan="11">Внешний наставник (вуз, компания) (4) · целевая модель наставничества · Р-145</td></tr>
+      <tr data-wave="1" data-author="Наставник" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">25</td><td><b>Каталог готовых проектов от партнёров («витрина»)</b><br><span style="color:var(--muted);font-size:.74rem">5–10 реальных задач от вузов/компаний; старт проектного трека без поиска задачи</span></td>
+        <td>Наставник</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>3 нед</td><td>2 дня</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>партнёры</td><td>«Витрина» ≥ 5 проектов</td>
+      </tr>
+      <tr data-wave="1" data-author="Наставник" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">26</td><td><b>Стандарт наставника (1 страница)</b><br><span style="color:var(--muted);font-size:.74rem">слушать, ставить цель, давать обратную связь, поддерживать автономию</span></td>
+        <td>Наставник</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>2 нед</td><td>0,5 дня</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Стандарт принят наставниками</td>
+      </tr>
+      <tr data-wave="2" data-author="Наставник" data-stage="сопровождение" data-pri="Средний" data-status="новое">
+        <td class="num">27</td><td><b>Этапные вехи проекта (до завершения)</b><br><span style="color:var(--muted);font-size:.74rem">фазы с дедлайнами и чек-поинтами; наставник ведёт до конца</span></td>
+        <td>Наставник</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-m">Средний</td><td>1 мес</td><td>1 день</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Нет «брошенных» проектов</td>
+      </tr>
+      <tr data-wave="3" data-author="Наставник" data-stage="результат" data-pri="Средний" data-status="новое">
+        <td class="num">28</td><td><b>Выход на вуз/индустрию и «демодень»</b><br><span style="color:var(--muted);font-size:.74rem">защиты с партнёрами, стажировки, поручительства, целевое поступление</span></td>
+        <td>Наставник</td><td><span class="tag c">результат</span></td><td class="pri pri-m">Средний</td><td>2–4 мес</td><td>3 дня</td>
+        <td><span class="tag w">В3</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>вузы, компании</td><td>≥ 2 вуза и ≥ 3 компании согласованы</td>
+      </tr>
+
+      <tr class="group" data-group="7"><td colspan="11">Классный руководитель (3+1) · письмо Минпросвещения № ВБ-1011/08</td></tr>
+      <tr data-wave="1" data-author="Кл. руководитель" data-stage="вход" data-pri="Высокий" data-status="новое">
+        <td class="num">29</td><td><b>Бланк рекомендации от школы + 1-страничник для школ</b><br><span style="color:var(--muted);font-size:.74rem">форма за 5 минут; «центр дополняет школу» — снимает страх переманивания</span></td>
+        <td>Кл. руководитель</td><td><span class="tag a">вход</span></td><td class="pri pri-s">Высокий</td><td>1–2 нед</td><td>1 день</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Бланк заполняется школами без вопросов</td>
+      </tr>
+      <tr data-wave="2" data-author="Кл. руководитель" data-stage="сопровождение" data-pri="Средний" data-status="новое">
+        <td class="num">30</td><td><b>Двусторонний канал школа ↔ центр</b><br><span style="color:var(--muted);font-size:.74rem">центр → школе триместровый отчёт; школа → центру динамика ученика</span></td>
+        <td>Кл. руководитель</td><td><span class="tag b">сопровождение</span></td><td class="pri pri-m">Средний</td><td>1 мес</td><td>1 день</td>
+        <td><span class="tag w">В2</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>школы</td><td>Отчёт отправлен в 3 школы</td>
+      </tr>
+      <tr data-wave="3" data-author="Кл. руководитель" data-stage="результат" data-pri="Средний" data-status="новое">
+        <td class="num">31</td><td><b>Поддержка ключевых переходов и информирование о результатах</b><br><span style="color:var(--muted);font-size:.74rem">сопровождение решения о профиле, переход в 10–11, информирование о поступлении</span></td>
+        <td>Кл. руководитель</td><td><span class="tag c">результат</span></td><td class="pri pri-m">Средний</td><td>1 мес</td><td>1 день</td>
+        <td><span class="tag w">В3</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>—</td><td>Результаты возвращаются в школы</td>
+      </tr>
+      <tr data-wave="1" data-author="Координатор" data-stage="вход" data-pri="Условный запуск" data-status="новое">
+        <td class="num">32</td><td><b>Лицензирование ДО и «Положение об ИОМ/ИУП»</b><br><span style="color:var(--muted);font-size:.74rem">правовая рамка центра, идёт параллельно — внешний юрист</span></td>
+        <td>Координатор</td><td><span class="tag a">вход</span></td><td class="pri pri-l">Условный запуск</td><td>параллельно</td><td>внешний юрист</td>
+        <td><span class="tag w">В1</span></td>
+        <td class="status"><span class="st-dot st-new"></span><select onchange="setStatus(this)"><option value="новое" selected>новое</option><option value="в работе">в работе</option><option value="на тесте">на тесте</option><option value="готово">готово</option><option value="зависло">зависло</option></select></td>
+        <td>юрист</td><td>Документы поданы / лицензия получена</td>
+      </tr>
+
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:.8rem;color:var(--muted)">Журнал изменений ведётся в строках реестра; статусы обновляются перед штабом (понедельник, 15 минут). Все 32 предложения приняты решением руководителя (13.10.2026); бюджет первых 4 недель — 0 ₽. Эталонные данные — «Реестр предложений запуска центра.md»; интерактивные колонки «Кого просит помочь» и «Критерий „готово"» — из «Системы запуска и внедрения предложений».</p>
+
+  <footer>
+    <p>Рабочий реестр подразделения по работе с одарёнными детьми и талантливой молодёжью · создан 14.10.2026 на основе «Оптимизации запуска центра предложения и маршрут внедрения» (13.10.2026) и «Системы запуска и внедрения предложений» (13.10.2026). Интерактивное зеркало «Реестр предложений запуска центра.md» (зона «Запуск центра»).</p>
+  </footer>
+</main>
+
+<script>
+  function applyFilters() {
+    var a = document.getElementById('fAuthor').value;
+    var s = document.getElementById('fStage').value;
+    var p = document.getElementById('fPri').value;
+    var st = document.getElementById('fStatus').value;
+    var w = document.getElementById('fWave').value;
+    var rows = document.querySelectorAll('#tbody tr');
+    var groupVisible = {};
+    rows.forEach(function (tr) {
+      if (tr.dataset.group) { return; }
+      var show = (!a || tr.dataset.author === a) &&
+                 (!s || tr.dataset.stage === s) &&
+                 (!p || tr.dataset.pri === p) &&
+                 (!st || tr.dataset.status === st) &&
+                 (!w || tr.dataset.wave === w);
+      tr.style.display = show ? '' : 'none';
+      if (show) groupVisible[tr.dataset.author] = true;
+    });
+    rows.forEach(function (tr) {
+      if (!tr.dataset.group) return;
+      var author = null;
+      if (tr.dataset.group === '1') author = 'Тьютор';
+      if (tr.dataset.group === '2') author = 'Психолог';
+      if (tr.dataset.group === '3') author = 'Учитель';
+      if (tr.dataset.group === '4') author = 'Тренер';
+      if (tr.dataset.group === '5') author = 'Координатор';
+      if (tr.dataset.group === '6') author = 'Наставник';
+      if (tr.dataset.group === '7') author = 'Кл. руководитель';
+      tr.style.display = (!a || author === a || tr.dataset.group === '7') ? '' : 'none';
+      if (tr.dataset.group === '7' && a && a !== 'Кл. руководитель') tr.style.display = 'none';
+    });
+    updStats();
+  }
+  function resetFilters() {
+    ['fAuthor','fStage','fPri','fStatus','fWave'].forEach(function (id) { document.getElementById(id).value = ''; });
+    applyFilters();
+  }
+  function setStatus(sel) {
+    var tr = sel.closest('tr');
+    tr.dataset.status = sel.value;
+    tr.querySelector('.st-dot').className = 'st-dot ' + (sel.value === 'новое' ? 'st-new' : sel.value === 'в работе' ? 'st-work' : sel.value === 'на тесте' ? 'st-test' : sel.value === 'готово' ? 'st-done' : 'st-hang');
+    updStats();
+  }
+  function updStats() {
+    var rows = document.querySelectorAll('#tbody tr');
+    var n=0, w=0, d=0, h=0, vis=0;
+    rows.forEach(function (tr) {
+      if (tr.dataset.group) return;
+      if (tr.style.display === 'none') return;
+      vis++;
+      if (tr.dataset.status === 'новое') n++;
+      if (tr.dataset.status === 'в работе') w++;
+      if (tr.dataset.status === 'готово') d++;
+      if (tr.dataset.status === 'зависло') h++;
+    });
+    document.getElementById('cTotal').textContent = vis;
+    document.getElementById('cNew').textContent = n;
+    document.getElementById('cWork').textContent = w;
+    document.getElementById('cDone').textContent = d;
+    document.getElementById('cHang').textContent = h;
+  }
+</script>
+</body>
+</html>
