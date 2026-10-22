@@ -225,8 +225,8 @@
   .authpanel .btn-enter:hover { background:#0f6f69; transform:translateY(-1px); }
   .authmsg { color:#b3382c; font-size:.85rem; margin-top:.5rem; line-height:1.4; }
   .authpanel .auth-hint { text-align:center; color:#8b97a4; font-size:.8rem; margin-top:1rem; }
-  @media (max-width: 520px) { .auth-grid2 { grid-template-columns:1fr; } }
-  @media (max-width: 480px) { .authpanel { padding: 1.6rem 1.2rem 1.3rem; } }
+  @media (max-width: 520px) { .auth-grid2 { grid-template-columns:1fr; } .v3-role .role-tt small { font-size:.78rem; } .v3-role { padding:.55rem .7rem; } .authpanel .btn-enter { padding:1.05rem 1rem; font-size:16px; } }
+  @media (max-width: 480px) { .authpanel { padding: 1.6rem 1.2rem 1.3rem; } .v3-role .role-tt b { font-size:.92rem; } }
 
   /* Весь маршрут ниже панели входа скрыт, пока пользователь не вошёл */
   #route { display: none; }
@@ -1818,6 +1818,37 @@
         <button class="btn small teal" onclick="downloadDoc('pamyatka')">Скачать .txt</button>
       </div>
     </div>
+</section>
+
+<section id="partners-section" style="margin:2.4rem 0 1rem">
+  <div class="th-head">
+    <h2>Партнёры и доказательная база</h2>
+    <span class="th-badge">проверено</span>
+  </div>
+  <p class="th-sub">Портал опирается на государственные стандарты, официальные сервисы профориентации и результаты исследований. Все ссылки проверены и открываются из России.</p>
+  <div class="th-grid">
+    <div class="th-card">
+      <h4>Правовая основа</h4>
+      <p>Закон «Об образовании» (ст. 2, 17, 34), ФГОС СОО, письмо № 03-205 — право на ИОМ, ИУП и индивидуальную траекторию.</p>
+      <a href="http://www.consultant.ru/document/cons_doc_LAW_140174/" target="_blank" rel="noopener">273-ФЗ · открыть →</a>
+    </div>
+    <div class="th-card">
+      <h4>Государственная профориентация</h4>
+      <p>«Билет в будущее» и «Россия — мои горизонты» — госпроекты ранней профориентации школьников.</p>
+      <a href="https://bvbinfo.ru/" target="_blank" rel="noopener">bvbinfo.ru →</a>
+    </div>
+    <div class="th-card">
+      <h4>Мир профессий</h4>
+      <p>Атлас новых профессий — карта востребованных и новых направлений и навыков.</p>
+      <a href="https://atlas100.ru/" target="_blank" rel="noopener">atlas100.ru →</a>
+    </div>
+    <div class="th-card">
+      <h4>Выбор вуза и шансы</h4>
+      <p>«Поступи онлайн» — проходные баллы, направления и калькулятор шансов поступления.</p>
+      <a href="https://postupi.online/" target="_blank" rel="noopener">postupi.online →</a>
+    </div>
+  </div>
+  <p class="th-sub" style="margin-top:.6rem">Доказательная база и источники — в разделе «Отчёты и исследования» выше и в «Библиотеке источников тьютора» («Методички»).</p>
 </section>
 </main>
 <div class="doc-modal" id="docModal" onclick="if(event.target===this)closeDoc()">
