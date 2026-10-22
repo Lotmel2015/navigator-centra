@@ -956,6 +956,7 @@
       <button class="btn small" onclick="openDiag()">Пройти диагностику →</button>
       <button class="btn small ghost" onclick="viewDiagResult()">Мой профиль (результат диагностики)</button>
       <button class="btn small teal" onclick="openCert()">Мой сертификат →</button>
+      <button class="btn small navy" onclick="openSubjectTest()">Предметные тесты →</button>
     </div>
     <div id="diag-summary" style="font-size:.85rem;color:var(--muted)"></div>
   </section>
@@ -1869,6 +1870,13 @@
     <div id="proto-body"></div>
   </div>
 </div>
+<div class="doc-modal" id="testModal" onclick="if(event.target===this)closeTest()">
+  <div class="dm-panel" style="max-width:680px">
+    <h2>Предметные тесты</h2>
+    <p style="color:var(--muted);font-size:.85rem">Входные предметные диагностики по уровням: база / углубление / олимпиадка. Выбери предмет и уровень — ответы проверятся автоматически. Это помогает выбрать глубину изучения, а не «поставить оценку».</p>
+    <div id="test-body"></div>
+  </div>
+</div>
 <script>
 (function () {
   var LS_USERS = "iop_users";
@@ -2229,6 +2237,7 @@
     var docLinks = "<div style='margin:.5rem 0'><b style='font-size:.9rem;color:var(--navy)'>Документы ученика (заполненные им формы):</b>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='viewDoc(\"iom\",\"" + login + "\")'>Карта маршрута</button>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='openProto(\"" + login + "\")'>Протокол двойной диагностики</button>" +
+      "<button class='btn small ghost' style='margin:.2rem' onclick='openSubjectTest()'>Предметные тесты</button>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='viewDoc(\"reflex\",\"" + login + "\")'>Входная рефлексия</button>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='viewDoc(\"proby\",\"" + login + "\")'>Таблица проб</button>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='viewDoc(\"plan\",\"" + login + "\")'>План подготовки</button>" +
@@ -2253,7 +2262,7 @@
         "<textarea rows='2' onchange='saveNote(\"" + key + "\", this.value)' placeholder='Что проверил, что поддержать на следующем этапе…'>" + esc(getNotes(login)[key] || "") + "</textarea>" +
         "</div>";
     });
-    el("tutor-stages").innerHTML = scrBox + diagTutorBox(login) + protoStatusLine(login) + tnoteBar + docLinks + box;
+    el("tutor-stages").innerHTML = scrBox + diagTutorBox(login) + protoStatusLine(login) + subjTestStatusLine(login) + tnoteBar + docLinks + box;
   };
 
   window.saveTNote = function (v) {
@@ -3625,6 +3634,124 @@
       "<span style='float:right'><button class='btn small ghost' style='font-size:.76rem' onclick='openProto(\"" + login + "\")'>Открыть / заполнить</button></span>" +
       "<div style='font-size:.8rem;margin-top:.2rem'>Заполнено: " + filled + " из " + PROTO_FIELDS.length + (d._save ? " · обновлён " + new Date(d._save).toLocaleDateString("ru-RU") : "") + "</div>" +
       "</div>";
+  }
+
+  /* ===== Банк входных предметных диагностик по уровням ===== */
+  var SUBJ_TESTS = {
+    algebra: {
+      title: "Математика",
+      levels: {
+        base: { label: "База", qs: [
+          { q: "Вычислите: 15 − 7 · 2", a: "1", opts: ["1", "16", "4", "11"] },
+          { q: "Решите уравнение: 2x + 3 = 11", a: "4", opts: ["4", "7", "5", "18"] },
+          { q: "Сколько процентов составляет 3 от 12?", a: "25%", opts: ["25%", "36%", "4%", "30%"] }
+        ]},
+        pro: { label: "Углубление", qs: [
+          { q: "Упростите: (x²)³", a: "x⁶", opts: ["x⁶", "x⁵", "x⁹", "2x³"] },
+          { q: "Решите неравенство: −2x < 6", a: "x > −3", opts: ["x > −3", "x < −3", "x > 3", "x < 3"] },
+          { q: "Найдите корни: x² − 5x + 6 = 0", a: "2 и 3", opts: ["2 и 3", "−2 и 3", "2 и −3", "5 и 6"] }
+        ]},
+        olim: { label: "Олимпиадка", qs: [
+          { q: "Произведение двух последовательных чётных чисел равно 48. Найдите меньшее из них.", a: "6", opts: ["6", "4", "8", "12"] },
+          { q: "Сумма цифр двузначного числа равна 9. Если число разделить на разность его цифр, получится 12. Найдите число.", a: "36", opts: ["36", "27", "45", "63"] },
+          { q: "Сколько существует трёхзначных чисел, в записи которых все цифры различны?", a: "648", opts: ["648", "720", "900", "504"] }
+        ]}
+      }
+    },
+    russian: {
+      title: "Русский язык",
+      levels: {
+        base: { label: "База", qs: [
+          { q: "В каком слове ударение падает на первый слог?", a: "Торты", opts: ["Торты", "Катало́г", "Догово́р", "Звони́т"] },
+          { q: "В каком слове пишется буква И?", a: "Цирк", opts: ["Цирк", "Цыган", "Цыплёнок", "Цыц"] },
+          { q: "Выберите правильное окончание: «… остановки» (нет чего?)", a: "около", opts: ["около", "у", "из-за", "в"] }
+        ]},
+        pro: { label: "Углубление", qs: [
+          { q: "В каком ряду во всех словах пропущена одна и та же буква?", a: "ра...чёт, бе...чувственный", opts: ["ра...чёт, бе...чувственный", "и...пользовать, ра...писание", "пр...образовать, пр...града", "о...бросить, на...писать"] },
+          { q: "Укажите слово с чередующейся гласной в корне", a: "Загорать", opts: ["Загорать", "Гора", "Загарный", "Горевать"] },
+          { q: "В каком предложении НЕ пишется раздельно?", a: "Он (не)рад встрече", opts: ["Он (не)рад встрече", "(Не)доумевающий взгляд", "(Не)решённая задача", "Дом (не)построен"] }
+        ]},
+        olim: { label: "Олимпиадка", qs: [
+          { q: "Сколько грамматических основ в предложении: «Мне казалось, что в саду было тихо, хотя ветер шумел в кронах»", a: "3", opts: ["3", "2", "4", "5"] },
+          { q: "Укажите пример с нарушением нормы управления", a: "оплатить за проезд", opts: ["оплатить за проезд", "приехать из Москвы", "гордиться успехами", "отзыв о книге"] },
+          { q: "В каком слове количество букв и звуков совпадает?", a: "Ель", opts: ["Ель", "Яблоко", "Съезд", "Юла"] }
+        ]}
+      }
+    }
+  };
+  var SUBJ_KEYS = ["algebra", "russian"];
+
+  function testKey(login) { return "iop_subjtest_" + (login || ""); }
+  function loadSubjTests(login) { try { return JSON.parse(localStorage.getItem(testKey(login))) || {}; } catch (e) { return {}; } }
+  function saveSubjTests(login, d) { try { localStorage.setItem(testKey(login), JSON.stringify(d)); } catch (e) {} }
+
+  window.openSubjectTest = function () {
+    var box = el("testModal"); if (!box) return;
+    var html = "<div style='margin:.6rem 0'><b>Выбери предмет и уровень:</b></div>";
+    SUBJ_KEYS.forEach(function (sKey) {
+      var subj = SUBJ_TESTS[sKey];
+      html += "<div style='margin:.5rem 0'><b>" + esc(subj.title) + "</b> ";
+      Object.keys(subj.levels).forEach(function (lKey) {
+        var lv = subj.levels[lKey];
+        html += "<button class='btn small ghost' style='margin:.2rem' onclick='runSubjectTest(\"" + sKey + "\",\"" + lKey + "\")'>" + esc(lv.label) + " (3 задания)</button>";
+      });
+      html += "</div>";
+    });
+    html += "<div style='margin-top:.8rem'><button class='btn small ghost' onclick='closeTest()'>Закрыть</button></div>";
+    el("test-body").innerHTML = html;
+    box.style.display = "block";
+  };
+
+  window.runSubjectTest = function (sKey, lKey) {
+    var subj = SUBJ_TESTS[sKey]; if (!subj) return;
+    var lv = subj.levels[lKey]; if (!lv) return;
+    var html = "<div style='background:var(--navy-soft);padding:.6rem .8rem;border-radius:8px;font-size:.9rem;margin-bottom:.6rem'><b>" + esc(subj.title) + " · " + esc(lv.label) + "</b></div>";
+    lv.qs.forEach(function (item, i) {
+      html += "<div style='padding:.55rem 0;border-bottom:1px solid var(--line)'><div style='font-size:.9rem'><b>" + (i + 1) + ".</b> " + esc(item.q) + "</div><div style='display:flex;gap:.5rem;margin-top:.3rem;flex-wrap:wrap'>";
+      item.opts.forEach(function (o) {
+        html += "<label style='font-size:.8rem;display:flex;align-items:center;gap:.25rem;cursor:pointer'><input type='radio' name='stq_" + sKey + "_" + lKey + "_" + i + "' value='" + esc(o) + "'> " + esc(o) + "</label>";
+      });
+      html += "</div></div>";
+    });
+    html += "<div style='margin-top:.9rem'><button class='btn small' onclick='submitSubjectTest(\"" + sKey + "\",\"" + lKey + "\")'>Проверить →</button> <button class='btn small ghost' onclick='openSubjectTest()'>← К выбору</button></div>";
+    el("test-body").innerHTML = html;
+  };
+
+  window.submitSubjectTest = function (sKey, lKey) {
+    var sess = getSession(); if (!sess) return;
+    var subj = SUBJ_TESTS[sKey]; var lv = subj.levels[lKey];
+    var score = 0, total = lv.qs.length;
+    lv.qs.forEach(function (item, i) {
+      var sel = document.querySelector('input[name="stq_' + sKey + '_' + lKey + '_' + i + '"]:checked');
+      if (sel && sel.value === item.a) score++;
+    });
+    var data = loadSubjTests(sess.login);
+    data[sKey + "_" + lKey] = { score: score, total: total, done: new Date().toISOString() };
+    saveSubjTests(sess.login, data);
+    var pct = Math.round(score / total * 100);
+    var levelHint = pct >= 75 ? "показывает готовность к углублённому уровню" : pct >= 50 ? "база освоена — можно углубляться" : "стоит укрепить базу";
+    html = "<div style='background:var(--ok-soft);border-left:4px solid var(--ok);padding:.9rem 1.1rem;border-radius:0 8px 8px 0'>" +
+      "<p><b>" + esc(subj.title) + " · " + esc(lv.label) + ":</b> " + score + " из " + total + " (" + pct + "%).</p>" +
+      "<p style='margin:0'>Рекомендация: " + levelHint + ".</p></div>" +
+      "<div style='margin-top:.9rem'><button class='btn small ghost' onclick='openSubjectTest()'>← К выбору</button> <button class='btn small ghost' onclick='closeTest()'>Закрыть</button></div>";
+    el("test-body").innerHTML = html;
+  };
+
+  window.closeTest = function () { var box = el("testModal"); if (box) box.style.display = "none"; };
+
+  function subjTestStatusLine(login) {
+    var d = loadSubjTests(login);
+    var done = Object.keys(d).filter(function (k) { return d[k] && typeof d[k].score === "number"; });
+    if (!done.length) return "<div style='color:var(--muted);font-size:.82rem;margin:.4rem 0'><b style='color:var(--navy)'>Предметные тесты</b> — не пройдены.</div>";
+    var lines = done.map(function (k) {
+      var p = d[k];
+      var parts = k.replace("_base", " · база").replace("_pro", " · углубление").replace("_olim", " · олимпиадка").split("_");
+      var title = parts[0] === "algebra" ? "Математика" : parts[0] === "russian" ? "Русский язык" : parts[0];
+      return title + " " + (parts[1] ? "· " + parts[1] : "") + ": " + p.score + "/" + p.total;
+    });
+    return "<div style='background:var(--purple-soft);border:1px solid var(--purple);border-radius:10px;padding:.65rem .85rem;margin:.55rem 0'>" +
+      "<b style='color:var(--purple);font-size:.9rem'>Предметные тесты</b>" +
+      "<div style='font-size:.82rem;margin-top:.3rem'>" + lines.join("<br>") + "</div></div>";
   }
 
   renderApp();
