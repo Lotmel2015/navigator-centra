@@ -1862,6 +1862,13 @@
     <div id="diag-body"></div>
   </div>
 </div>
+<div class="doc-modal" id="protoModal" onclick="if(event.target===this)closeProto()">
+  <div class="dm-panel" style="max-width:720px">
+    <h2>Протокол двойной диагностики «ресурс + состояние»</h2>
+    <p style="color:var(--muted);font-size:.85rem">Заполняется специалистом (психолог / тьютор) в одной встрече 40 минут: часть А — ресурсы и интересы, часть Б — состояние, часть В — вывод и рекомендации. Сохраняется автоматически и доступна при печати.</p>
+    <div id="proto-body"></div>
+  </div>
+</div>
 <script>
 (function () {
   var LS_USERS = "iop_users";
@@ -2221,6 +2228,7 @@
     /* Быстрый доступ к документам ученика */
     var docLinks = "<div style='margin:.5rem 0'><b style='font-size:.9rem;color:var(--navy)'>Документы ученика (заполненные им формы):</b>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='viewDoc(\"iom\",\"" + login + "\")'>Карта маршрута</button>" +
+      "<button class='btn small ghost' style='margin:.2rem' onclick='openProto(\"" + login + "\")'>Протокол двойной диагностики</button>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='viewDoc(\"reflex\",\"" + login + "\")'>Входная рефлексия</button>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='viewDoc(\"proby\",\"" + login + "\")'>Таблица проб</button>" +
       "<button class='btn small ghost' style='margin:.2rem' onclick='viewDoc(\"plan\",\"" + login + "\")'>План подготовки</button>" +
@@ -2245,7 +2253,7 @@
         "<textarea rows='2' onchange='saveNote(\"" + key + "\", this.value)' placeholder='Что проверил, что поддержать на следующем этапе…'>" + esc(getNotes(login)[key] || "") + "</textarea>" +
         "</div>";
     });
-    el("tutor-stages").innerHTML = scrBox + diagTutorBox(login) + tnoteBar + docLinks + box;
+    el("tutor-stages").innerHTML = scrBox + diagTutorBox(login) + protoStatusLine(login) + tnoteBar + docLinks + box;
   };
 
   window.saveTNote = function (v) {
@@ -3562,6 +3570,61 @@
       "<tr><td style='padding:.28rem .5rem .28rem 0;color:var(--muted)'>Тревожность</td><td style='padding:.28rem .5rem'><b>" + (res.anxiety ? " " + res.anxiety.toFixed(1) + " · " + diagLevelName("anxiety", res.anxiety) : "—") + "</b></td></tr>" +
       "<tr><td style='padding:.28rem .5rem .28rem 0;color:var(--muted)'>Уверенность</td><td style='padding:.28rem .5rem'><b>" + (res.efficacy ? " " + res.efficacy.toFixed(1) + " · " + diagLevelName("efficacy", res.efficacy) : "—") + "</b></td></tr>" +
       "</table></div>";
+  }
+
+  /* ===== Протокол двойной диагностики «ресурс + состояние» ===== */
+  var PROTO_FIELDS = [
+    { k: "res1", l: "Ресурс · Интересы и увлечения (2–3 фразы)" },
+    { k: "res2", l: "Ресурс · Сильные стороны (что замечаете)" },
+    { k: "res3", l: "Ресурс · Самооценка возможностей (как ученик видит свои способности)" },
+    { k: "res4", l: "Ресурс · Поддерживающая среда (семья, кружки, друзья)" },
+    { k: "sos1", l: "Состояние · Тревожность и стресс (наблюдения)" },
+    { k: "sos2", l: "Состояние · Мотивация и вовлечённость" },
+    { k: "sos3", l: "Состояние · Самоэффективность и уверенность" },
+    { k: "sos4", l: "Состояние · Признаки риска (если есть)" },
+    { k: "out", l: "Вывод · Соответствие профилю центра и тип сопровождения" },
+    { k: "rec", l: "Рекомендации · Первые шаги и контрольные точки" }
+  ];
+
+  function protoKey(login) { return "iop_proto_" + (login || ""); }
+  function loadProto(login) { try { return JSON.parse(localStorage.getItem(protoKey(login))) || {}; } catch (e) { return {}; } }
+  function saveProto(login, d) { try { localStorage.setItem(protoKey(login), JSON.stringify(d)); } catch (e) {} }
+
+  function openProto(login) {
+    var box = el("protoModal"); if (!box) return;
+    var sess = getSession(); if (!sess) return;
+    var isTutor = sess.role === "tyutor";
+    var who = login || sess.login;
+    var us = getUsers().find(function (u) { return u.login === who; });
+    var data = loadProto(who);
+    var html = "";
+    if (us) html += "<p style='color:var(--muted);font-size:.85rem'>Ученик: <b>" + esc(us.fio || "") + "</b>" + (us.klass ? " · " + esc(us.klass) + " класс" : "") + (us.ou ? " · " + esc(us.ou) : "") + "</p>";
+    if (!isTutor) html += "<p style='color:var(--warn);font-size:.8rem'>Этот документ ведёт специалист вместе с тобой: ты можешь посмотреть, что получилось.</p>";
+    PROTO_FIELDS.forEach(function (f) {
+      html += "<div style='margin:.55rem 0'><label style='font-size:.82rem;font-weight:700;color:var(--navy);display:block'>" + esc(f.l) + "</label>" +
+        "<textarea data-pk='" + f.k + "' rows='2' style='width:100%;box-sizing:border-box' oninput='saveProtoField(\"" + who + "\",\"" + f.k + "\",this.value)'>" + esc(data[f.k] || "") + "</textarea></div>";
+    });
+    html += "<div style='display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem'>" +
+      "<button class='btn small' onclick='window.print()'>Печать / PDF</button>" +
+      "<button class='btn small ghost' onclick='closeProto()'>Закрыть</button></div>";
+    el("proto-body").innerHTML = html;
+    box.style.display = "block";
+  }
+  window.openProtoFor = function (login) { openProto(login); };
+  window.saveProtoField = function (login, k, v) {
+    var d = loadProto(login); d[k] = v; d._save = new Date().toISOString(); saveProto(login, d);
+  };
+  window.closeProto = function () { var box = el("protoModal"); if (box) box.style.display = "none"; };
+
+  function protoStatusLine(login) {
+    var d = loadProto(login);
+    var filled = PROTO_FIELDS.filter(function (f) { return d[f.k] && String(d[f.k]).trim() !== ""; }).length;
+    if (filled === 0) return "<div style='color:var(--muted);font-size:.82rem;margin:.4rem 0'><b style='color:var(--navy)'>Протокол двойной диагностики</b> — ещё не заполнен.</div>";
+    return "<div style='background:var(--teal-soft);border:1px solid var(--teal);border-radius:10px;padding:.6rem .8rem;margin:.5rem 0'>" +
+      "<b style='color:var(--teal);font-size:.9rem'>Протокол двойной диагностики</b>" +
+      "<span style='float:right'><button class='btn small ghost' style='font-size:.76rem' onclick='openProto(\"" + login + "\")'>Открыть / заполнить</button></span>" +
+      "<div style='font-size:.8rem;margin-top:.2rem'>Заполнено: " + filled + " из " + PROTO_FIELDS.length + (d._save ? " · обновлён " + new Date(d._save).toLocaleDateString("ru-RU") : "") + "</div>" +
+      "</div>";
   }
 
   renderApp();
