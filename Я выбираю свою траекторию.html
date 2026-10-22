@@ -951,6 +951,7 @@
       </div>
     </div>
     <p class="stage-goal" style="font-size:.9rem"><b>Что дальше.</b> Изучай этапы ниже и отмечай пройденные. Каждый этап откроется после предыдущего — это работает как твой личный навигатор. Данные маршрута сохраняются в этом браузере.</p>
+    <div id="streak-box" style="display:none;background:#fff7e0;border:1px solid #f2d27a;border-radius:10px;padding:.7rem .9rem;margin:.8rem 0;font-size:.92rem;font-weight:700;color:#7a5b00"></div>
     <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0">
       <button class="btn small" onclick="openDiag()">Пройти диагностику →</button>
       <button class="btn small ghost" onclick="viewDiagResult()">Мой профиль (результат диагностики)</button>
@@ -1888,6 +1889,37 @@
   function getTNote(login) { try { return localStorage.getItem("iop_tnote_" + login) || ""; } catch (e) { return ""; } }
   function setTNote(login, v) { try { localStorage.setItem("iop_tnote_" + login, v); } catch (e) {} }
 
+  /* ===== Геймификация: серия дней (streak) ===== */
+  function getG(login) { try { return JSON.parse(localStorage.getItem("iop_g_" + login)) || {}; } catch (e) { return {}; } }
+  function setG(login, g) { try { localStorage.setItem("iop_g_" + login, JSON.stringify(g)); } catch (e) {} }
+  function z2(n) { return (n < 10 ? "0" : "") + n; }
+  function todayKey() { var d = new Date(); return d.getFullYear() + "-" + z2(d.getMonth() + 1) + "-" + z2(d.getDate()); }
+  function bumpStreak(login) {
+    if (!login) return null;
+    var g = getG(login);
+    var tk = todayKey();
+    if (g.last === tk) return g;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yk = y.getFullYear() + "-" + z2(y.getMonth() + 1) + "-" + z2(y.getDate());
+    g.cur = (g.last === yk) ? (g.cur || 0) + 1 : 1;
+    g.last = tk;
+    if ((g.cur || 0) > (g.best || 0)) g.best = g.cur;
+    setG(login, g);
+    return g;
+  }
+  function renderStreak(login) {
+    var el = document.getElementById("streak-box");
+    if (!el) return;
+    if (!login) { el.style.display = "none"; return; }
+    var g = getG(login);
+    if (!g.cur) { el.style.display = "none"; return; }
+    el.style.display = "block";
+    var txt = "🔥 Твоя серия занятий: " + g.cur + " дн.";
+    if (g.best) txt += " · лучшая серия: " + g.best + " дн.";
+    txt += (g.cur % 7 === 0) ? " · 🏅 награда за " + g.cur + " дней!" : "";
+    el.textContent = txt;
+  }
+
   function esc(s) {
     return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
@@ -2038,6 +2070,7 @@
             var was = !!d[key];
             if (d[key]) delete d[key]; else d[key] = true;
             setDone(sess.login, d);
+            bumpStreak(sess.login);
             renderApp();
             if (!was) {
               var sNext = stageEl(key);
@@ -2117,6 +2150,7 @@
       "<button class='btn ghost small' onclick='logout()'>Выйти</button>";
     if (sess.role === "shkolnik") {
       renderProfileShkolnik();
+      renderStreak(sess.login);
       if (dashTut) dashTut.style.display = "none";
       var d = getDone(sess.login);
       var n = ORDER.filter(function (k) { return d[k]; }).length;
