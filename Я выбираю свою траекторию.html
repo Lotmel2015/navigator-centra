@@ -111,6 +111,32 @@
   .btn.teal { background: var(--teal); color:#fff; }
   .btn.ghost { background: transparent; color: var(--navy); border: 1px solid var(--navy); }
   .btn.small { font-size: .82rem; padding: .3rem .7rem; margin: .2rem .2rem .2rem 0; }
+  /* ===== Поиск по порталу ===== */
+  .searchbox { margin: 1.2rem 0 .6rem; position: relative; }
+  .search-input-wrap { position: relative; display: flex; align-items: center; background: var(--card);
+    border: 1.5px solid #cdd5e0; border-radius: 12px; padding: 0 .8rem; box-shadow: 0 1px 3px rgba(31,58,95,.06); }
+  .search-input-wrap:focus-within { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,111,105,.12); }
+  .search-ico { font-size: 1rem; color: var(--muted); margin-right: .5rem; flex: 0 0 auto; }
+  #search-input { flex: 1 1 auto; border: 0; background: transparent; font: 15px/1.4 system-ui, sans-serif;
+    color: var(--ink); padding: .8rem .2rem; outline: none; min-width: 0; }
+  #search-input::placeholder { color: #9aa5b1; }
+  .search-clear { border: 0; background: transparent; color: var(--muted); font-size: 1rem; cursor: pointer;
+    padding: .3rem .4rem; flex: 0 0 auto; border-radius: 6px; }
+  .search-clear:hover { color: var(--warn); background: var(--warn-soft); }
+  .search-results { display: none; position: absolute; left: 0; right: 0; top: calc(100% + .3rem);
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 34px rgba(31,58,95,.16);
+    max-height: 60vh; overflow: auto; z-index: 60; }
+  .search-results.open { display: block; }
+  .search-group { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); padding: .7rem .9rem .25rem; }
+  .search-item { display: block; width: 100%; text-align: left; border: 0; background: transparent;
+    padding: .6rem .9rem; cursor: pointer; font: inherit; border-top: 1px solid #eef1f5; }
+  .search-item:hover, .search-item.active { background: var(--navy-soft); }
+  .search-item b { display: block; color: var(--navy); font-size: .92rem; }
+  .search-item small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.4; margin-top: .1rem; }
+  .search-item .s-kicker { font-size: .72rem; color: var(--teal); font-weight: 700; text-transform: uppercase; }
+  .search-empty, .search-hint { padding: .9rem; color: var(--muted); font-size: .86rem; }
+  .search-empty b { color: var(--navy); }
 #sessionbar { margin: .8rem 0; padding: .7rem 1rem; border-radius: 12px; display: none;
                 background: #eef1f6; border: 1px solid #cdd5e0; font-size: .92rem; color: #222529; }
   #sessionbar b { color: #2563eb; }
@@ -258,6 +284,8 @@
   .fillnow .fn-btn:hover { filter: brightness(1.08); }
   body:not(.role-shkolnik) .fillnow { display: none; }
   .doc-item.flash { animation: docflash 1.6s ease-out; }
+  .flash { animation: docflash 1.6s ease-out; border-radius: 10px; }
+  mark { background: #ffe28a; color: #4a3200; padding: 0 .12em; border-radius: 3px; }
   @keyframes docflash { 0% { box-shadow: 0 0 0 4px rgba(15,111,105,.4); } 100% { box-shadow: 0 0 0 0 rgba(15,111,105,0); } }
 
   /* ==== Пояснения в формах документов ==== */
@@ -416,6 +444,16 @@
 </head>
 <body>
 <main>
+  <!-- ==================== ПОИСК ПО ПОРТАЛУ ==================== -->
+  <div class="searchbox" id="searchbox">
+    <div class="search-input-wrap">
+      <span class="search-ico" aria-hidden="true">🔎</span>
+      <input type="search" id="search-input" placeholder="Найти занятие, документ или материал… (например: диагностика, ИУП, тревога, ОГЭ)" autocomplete="off">
+      <button class="search-clear" id="search-clear" title="Очистить" onclick="clearSearch()" aria-label="Очистить">✕</button>
+    </div>
+    <div class="search-results" id="search-results" aria-live="polite"></div>
+  </div>
+
 <header>
     <h1>Я выбираю свою траекторию</h1>
     <p class="meta">Выбирай предметы и экзамены осознанно — и поступай туда, куда хочешь. Личный практикум по ИОМ / ИОП / ИУП для школьников 7–11 классов: 4 этапа и 20 занятий вместе с наставником. Войди в профиль — откроется твой маршрут. Всё сохраняется в браузере.</p>
@@ -478,6 +516,11 @@
           <a href="Отчёты/Отчёт Индивидуальное образование старшеклассников/Отчёт Индивидуальное образование старшеклассников.html" target="_blank" rel="noopener">Индивидуальное образование</a> ·
           <a href="Отчёты/Отчёт Практики индивидуального сопровождения/Отчёт Практики индивидуального сопровождения.html" target="_blank" rel="noopener">Практики сопровождения</a>
         </p>
+      </div>
+      <div class="th-card">
+        <h4>Синтез: самоопределение и траектории</h4>
+        <p>Синтез 5 исследований (методики самоопределения, ИОМ/ИУП/ИОП, подходы в образовании, цифровые платформы, международные модели): что полезно порталу и центру.</p>
+        <a href="Отчёты/Отчёт Синтез исследований самоопределение и траектории/Отчёт Синтез исследований самоопределение и траектории.html" target="_blank" rel="noopener">Открыть →</a>
       </div>
       <div class="th-card">
         <h4>Реестр источников и ссылок</h4>
@@ -3047,6 +3090,187 @@
     }
     renumberStress();
   }
+  /* ===== Единый поиск по порталу ===== */
+  function currentRoleForSearch() {
+    var sess = getSession();
+    return sess ? sess.role : "anon";
+  }
+  function buildSearchIndex() {
+    var idx = [];
+    var role = currentRoleForSearch();
+    var isTutor = role === "tyutor";
+    function t(el) { return (el && el.textContent ? el.textContent : "").replace(/\s+/g, " ").trim(); }
+    document.querySelectorAll(".stage").forEach(function (st) {
+      var head = st.querySelector(".stage-head");
+      var title = head ? t(head.querySelector("h2") || head) : "";
+      var goal = st.querySelector(".stage-goal");
+      idx.push({ type: "Этап", title: title, text: title + " " + t(goal), el: st, doc: null, panel: null,
+        jump: function () { openResult(this); } });
+      st.querySelectorAll(".lesson").forEach(function (ls) {
+        var h = ls.querySelector(".lesson-head h4");
+        var ltitle = h ? t(h) : "";
+        var sub = ls.querySelector(".less-sub");
+        idx.push({ type: "Занятие", title: ltitle, text: ltitle + " " + t(sub) + " " + t(ls).slice(0, 600), el: ls, doc: null, panel: null,
+          jump: function () { openResult(this); } });
+      });
+    });
+    /* Документы курса (школьнику) */
+    document.querySelectorAll(".doc-item").forEach(function (di) {
+      var h = di.querySelector("h3");
+      var desc = di.querySelector(".doc-desc");
+      var dtitle = h ? t(h) : "";
+      idx.push({ type: "Документ", title: dtitle, text: dtitle + " " + t(desc) + " " + t(di).slice(0, 400),
+        el: di, doc: di.getAttribute("data-doc"), panel: null, jump: function () { openResult(this); } });
+    });
+    /* Вкладки «В помощь тьютору» (видны только тьютору) */
+    if (isTutor) {
+      document.querySelectorAll(".th-panel").forEach(function (panel) {
+        var h = panel.querySelector(".th-head") || panel.querySelector("h2");
+        var ptitle = h ? t(h) : "";
+        var ptitleFull = ptitle || "";
+        var cards = panel.querySelectorAll(".th-card");
+        cardloop: for (var ci = 0; ci < cards.length; ci++) {
+          var ch = cards[ci].querySelector("h4");
+          var ctitle = ch ? t(ch) : "";
+          var cbody = t(cards[ci]).slice(0, 300);
+          idx.push({ type: "Материал тьютора", title: (ptitleFull ? ptitleFull + " — " : "") + ctitle, text: ctitle + " " + cbody,
+            el: panel, doc: null, panel: panel, ignoreTitle: ctitle, jump: function () { openResult(this); } });
+        }
+      });
+    }
+    return idx;
+  }
+  var searchIndexCache = [];
+  function searchIndex() {
+    if (!searchIndexCache.length) searchIndexCache = buildSearchIndex();
+    return searchIndexCache;
+  }
+  function normSearch(s) {
+    return (s || "").toLowerCase().replace(/ё/g, "е").trim();
+  }
+  window.doSearch = function () {
+    var input = document.getElementById("search-input");
+    var box = document.getElementById("search-results");
+    if (!input || !box) return;
+    var q = normSearch(input.value);
+    if (q.length < 2) { box.classList.remove("open"); box.innerHTML = ""; return; }
+    var results = [];
+    searchIndexCache = buildSearchIndex();
+    searchIndex().forEach(function (it) {
+      var hay = normSearch(it.title + " " + it.text);
+      if (hay.indexOf(q) !== -1) results.push(it);
+    });
+    if (!results.length) {
+      box.innerHTML = "<div class='search-empty'>Ничего не найдено по запросу <b>«" + esc(input.value.trim()) + "»</b>. Попробуйте короче или иначе — например: <i>диагностика</i>, <i>ИУП</i>, <i>тревога</i>.</div>";
+      box.classList.add("open");
+      return;
+    }
+    var groups = {};
+    results.forEach(function (r) { (groups[r.type] = groups[r.type] || []).push(r); });
+    var flat = [];
+    Object.keys(groups).forEach(function (g) { groups[g].forEach(function (r) { flat.push(r); }); });
+    var html = "";
+    var gi = 0;
+    Object.keys(groups).forEach(function (g) {
+      html += "<div class='search-group'>" + esc(g) + "</div>";
+      groups[g].slice(0, 8).forEach(function (r) {
+        var label = r.title || (r.type === "Этап" ? "Этап" : "");
+        html += "<button class='search-item' data-i='" + gi + "' onclick='pickSearchResult(this)'>" +
+          "<span class='s-kicker'>" + esc(r.type) + "</span>" +
+          "<b>" + hl(label, q) + "</b>" +
+          "<small>" + hl(r.text.slice(0, 90), q) + "</small></button>";
+        gi++;
+      });
+    });
+    box.innerHTML = html;
+    box.classList.add("open");
+    window.__searchFlat = flat;
+  };
+  function hl(text, q) {
+    if (!text) return "";
+    var esc2 = esc(text);
+    var low = text.toLowerCase().replace(/ё/g, "е");
+    var pos = low.indexOf(q);
+    if (pos === -1 || !q) return esc2;
+    return esc2.slice(0, pos) + "<mark>" + esc2.slice(pos, pos + q.length) + "</mark>" + esc2.slice(pos + q.length);
+  }
+  function escapeHtmlAttr(s) { return String(s).replace(/"/g, "&quot;"); }
+  window.pickSearchResult = function (btn) {
+    var i = parseInt((btn.getAttribute("data-i") || "0"), 10);
+    var flat = window.__searchFlat || [];
+    var target = flat[i || 0];
+    if (target) target.jump();
+  };
+  function openResult(r) {
+    var box = document.getElementById("search-results");
+    if (box) box.classList.remove("open");
+    if (r.el) {
+      if (r.type === "Этап") {
+        var st = r.el.closest(".stage") || r.el;
+        st.classList.add("open");
+        st.scrollIntoView({ behavior: "smooth", block: "start" });
+        flashElement(st);
+      } else if (r.type === "Занятие") {
+        var ls = r.el.closest(".lesson") || r.el;
+        var stage = ls.closest(".stage");
+        if (stage) { stage.classList.add("open"); }
+        ls.classList.add("open");
+        ls.scrollIntoView({ behavior: "smooth", block: "start" });
+        flashElement(ls);
+      } else if (r.type === "Документ") {
+        var doc = r.el;
+        doc.classList.add("active");
+        var allTabs = document.querySelectorAll(".docs-tabs button");
+        allTabs.forEach(function (b2) {
+          var oc = b2.getAttribute("onclick") || "";
+          var docid = "d" + (doc.getAttribute("data-doc") || "");
+          if (oc.indexOf("'" + docid + "'") !== -1) b2.classList.add("active");
+        });
+        if (typeof window.showDoc === "function" && r.doc) {
+          try { window.showDoc("d" + r.doc, null); } catch (e) {}
+        }
+        doc.scrollIntoView({ behavior: "smooth", block: "start" });
+        flashElement(doc);
+      } else if (r.type === "Материал тьютора" && r.panel) {
+        activateThPanel(r.panel);
+        r.panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        flashElement(r.panel);
+      }
+    }
+  }
+  function activateThPanel(panel) {
+    var panels = document.querySelectorAll(".th-panel");
+    panels.forEach(function (p) { p.classList.remove("active"); });
+    panel.classList.add("active");
+    var id = panel.getAttribute("id");
+    if (id) {
+      document.querySelectorAll(".th-tabs button").forEach(function (b) {
+        b.classList.remove("active");
+        if ((b.getAttribute("onclick") || "").indexOf("'" + id + "'") !== -1) b.classList.add("active");
+      });
+    }
+  }
+  function flashElement(el) {
+    if (!el) return;
+    el.classList.remove("flash");
+    void el.offsetWidth;
+    el.classList.add("flash");
+    setTimeout(function () { el.classList.remove("flash"); }, 2200);
+  }
+  window.clearSearch = function () {
+    var input = document.getElementById("search-input");
+    var box = document.getElementById("search-results");
+    if (input) input.value = "";
+    if (box) box.classList.remove("open");
+  };
+  (function bindSearch() {
+    var input = document.getElementById("search-input");
+    if (!input) return;
+    input.addEventListener("input", function () { window.doSearch(); });
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") window.clearSearch();
+    });
+  })();
   window.thTab = function (id, btn) {
     document.querySelectorAll(".th-panel").forEach(function (p) { p.classList.remove("active"); });
     document.querySelectorAll(".th-tabs button").forEach(function (b) { b.classList.remove("active"); });
