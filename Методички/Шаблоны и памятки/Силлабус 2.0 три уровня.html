@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Силлабус 2.0: три уровня — подбор под ученика</title>
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#22303c;--muted:#5c6a77;--navy:#1f3a5f;--navy-soft:#e7eef7;
+    --teal:#0f6f69;--teal-soft:#e1efed;--gold:#9a6a1f;--gold-soft:#f8f0dc;--ok:#1a7f4b;--ok-soft:#dcefe3;
+    --warn:#b3382c;--warn-soft:#f9e9e6;--line:#dde3ea;--violet:#6b4fa0;--violet-soft:#efe9f7;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,"Segoe UI",Roboto,sans-serif}
+  main{max-width:1000px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+  header{border-bottom:2px solid var(--navy);padding-bottom:.8rem;margin-bottom:1.2rem}
+  .eyebrow{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:700}
+  h1{font-size:1.5rem;line-height:1.3;margin:.3rem 0;color:var(--navy)}
+  .meta{color:var(--muted);font-size:.85rem}
+  h2{font-size:1.12rem;color:var(--teal);margin:1.6rem 0 .5rem;border-bottom:1px solid var(--line);padding-bottom:.3rem}
+  h3{font-size:1rem;color:var(--navy);margin:1.1rem 0 .4rem}
+  p{margin:.5rem 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.15rem;margin:1rem 0}
+  ul,ol{margin:.4rem 0 .5rem 1.2rem;padding:0}ul li,ol li{margin:.28rem 0}
+  a{color:var(--teal);text-decoration:none;font-weight:600}a:hover{text-decoration:underline}
+  table{border-collapse:collapse;width:100%;font-size:.88rem;margin:.6rem 0}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--navy-soft);color:var(--navy);font-size:.78rem}
+  .tldr{background:var(--teal-soft);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin:1.2rem 0}
+  .tldr b{color:var(--teal)}
+  .ok{color:var(--ok);font-weight:700}
+  .warn{color:var(--warn);font-weight:700}
+  .note{font-size:.82rem;color:var(--muted)}
+  .level{border-left:5px solid;border-radius:0 10px 10px 0}
+  .l-nav{border-color:var(--warn);background:var(--warn-soft)}
+  .l-std{border-color:var(--teal);background:var(--teal-soft)}
+  .l-ch{border-color:var(--violet);background:var(--violet-soft)}
+  .placeholder{background:var(--gold-soft);border:1px dashed var(--gold);border-radius:6px;padding:.15rem .4rem;font-size:.85rem;color:#7a5616}
+  .pick{background:var(--ok-soft);border-left:4px solid var(--ok);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:.8rem 0}
+  footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.2rem;padding-top:.7rem}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Шаблоны и памятки · ИОМ/ИУП · версия 2.0</div>
+    <h1>Силлабус 2.0: три уровня</h1>
+    <p class="meta">Критический разбор классического силлабуса + модернизированная конфигурация · 27.10.2026</p>
+  </header>
+
+  <div class="tldr"><b>Главное.</b> Классический силлабус — инструмент вуза, рассчитанный на самоорганизованного взрослого. Он не универсален и не персонализирован «из коробки»: комфортен «системщикам», но плохо ложится на тревожных, низкомотивированных, творческих и на 9-классников. Модернизация — не «улучшенный шаблон», а <b>три уровня («Навигатор» / «Стандарт» / «Челлендж»)</b>, которые ученик выбирает сам вместе с наставником. Силлабус работает только как <b>живой процесс</b> рядом с сопровождением, а не как статичный документ.</div>
+
+  <h2>1. Почему классический силлабус ограничен (кратко)</h2>
+  <div class="card">
+    <ul>
+      <li><b>Эффективен, но не там, где ждут:</b> влияет на ясность, автономию и восприятие курса (Harnish &amp; Bridges 2011; Frey et al. 2021), но прямой связи с баллами не доказано.</li>
+      <li><b>Не универсален:</b> родом из вуза, рассчитан на взрослого с саморегуляцией.</li>
+      <li><b>Не персонализирован:</b> один формат на всех, статичен на семестр (Eslami et al. 2024 называют силлабусы «статичными инструментами»).</li>
+      <li><b>Плохо ложится на:</b> тревожных (правила усиливают страх), низкомотивированных (нет инициативы), творческих (жёсткая структура душит), 9-классников (ведущая деятельность — общение, не самоорганизация), детей с ОВЗ.</li>
+    </ul>
+  </div>
+
+  <h2>2. Как подобрать уровень (главная таблица)</h2>
+  <div class="card">
+    <table>
+      <tr><th>Признак ученика</th><th>Уровень</th><th>Почему</th></tr>
+      <tr><td>Высокая саморегуляция, олимпиадник, сам ставит цели («системщик»)</td><td class="warn">Челлендж</td><td>Цель-вызов вместо рамок; минимум формализма</td></tr>
+      <tr><td>Целевой на ЕГЭ, средняя мотивация, работает при поддержке</td><td class="ok">Стандарт</td><td>Полный силлабус: цель, расписание, критерии, правила</td></tr>
+      <tr><td>Тревожный / низкомотивированный / 9 класс / впервые в проекте</td><td>Навигатор</td><td>Минимум правил, максимум поддержки, «куда идти, если трудно»</td></tr>
+      <tr><td>Творческий профиль (кино, дизайн, арт)</td><td>Навигатор + портфолио</td><td>Силлабус-расписание душит; нужны фазы и дедлайны, а не конспект</td></tr>
+    </table>
+    <p class="note">Ученик выбирает уровень <b>сам</b> в начале модуля (автономия по Деси–Райан), наставник лишь помогает честно оценить себя. Уровень можно сменить в любой момент — это не приговор.</p>
+  </div>
+
+  <h2>3. Форма «Навигатор» (лёгкая, 1 стр.)</h2>
+  <div class="card level l-nav">
+    <p><b>Для кого:</b> тревожные, низкомотивированные, 9 класс, творческие. <b>Смысл:</b> не напугать, дать ощущение поддержки и ближайший шаг.</p>
+    <ol>
+      <li><b>Моя маленькая цель на 2 недели:</b> <span class="placeholder">одна конкретная вещь, не страшная</span></li>
+      <li><b>Что я сделаю (по дням):</b> <span class="placeholder">2–4 коротких шага, не «уроки», а «15 минут»</span></li>
+      <li><b>Кто мне поможет, если трудно:</b> <span class="placeholder">наставник/учитель/друг; как связаться</span></li>
+      <li><b>Что делать, если не получилось:</b> <span class="placeholder">«это нормально, я скажу наставнику, и мы придумаем план Б»</span></li>
+      <li><b>Мой маленький успех в конце:</b> <span class="placeholder">отметить даже небольшое движение</span></li>
+    </ol>
+    <p class="note"><b>Правил минимум или нет.</b> Весь акцент на поддержке и ближайшем шаге. Силлабус здесь — «плечо», а не «контракт».</p>
+  </div>
+
+  <h2>4. Форма «Стандарт» (полная, 1 стр.)</h2>
+  <div class="card level l-std">
+    <p><b>Для кого:</b> целевые на ЕГЭ, средняя мотивация, работают при поддержке (типаж «устойчивый системщик»). Это текущий шаблон без изменений.</p>
+    <ol>
+      <li><b>Паспорт:</b> курс · модуль · даты · <b>моя цель</b> · <b>зачем мне это</b></li>
+      <li><b>Что я освою:</b> 2–3 конкретных умения (не «разобраться», а «решаю задачи типа 17»)</li>
+      <li><b>Расписание:</b> по неделям + ресурсы со ссылками</li>
+      <li><b>Как пойму, что готов:</b> измеримые критерии («8 из 10 без подсказок», «объясняю наставнику»)</li>
+      <li><b>Правила тёплым тоном:</b> «если не решилось за 25 минут — нормально, повтор через 7–14 дней»</li>
+      <li><b>Поддержка:</b> наставник, к кому идти, режим (сон/перерывы)</li>
+      <li><b>Итог:</b> что получилось, что беру дальше</li>
+    </ol>
+  </div>
+
+  <h2>5. Форма «Челлендж» (цель-рекорд, без рамок)</h2>
+  <div class="card level l-ch">
+    <p><b>Для кого:</b> олимпиадники, высокомотивированные, самоорганизованные (Наумкин, Гришаева). <b>Смысл:</b> не мешать, дать вызов и критерии «взрослого» уровня.</p>
+    <ol>
+      <li><b>Цель-вызов:</b> <span class="placeholder">«к дате XX — призёр этапа / 95 баллов / рекордный результат»</span></li>
+      <li><b>Что считаю «взял высоту»:</b> <span class="placeholder">конкретная планка, выше стандартной</span></li>
+      <li><b>Моя собственная система:</b> <span class="placeholder">ученик сам описывает ритм/инструменты (журнал, срезы, Anki…)</span></li>
+      <li><b>Что от наставника:</b> <span class="placeholder">экспертиза, разбор сложных задач, а не контроль</span></li>
+      <li><b>Что делаю при спаде:</b> <span class="placeholder">открытый разговор, пересборка, а не «виноват»</span></li>
+    </ol>
+    <p class="note"><b>Минимум формализма:</b> форма задаётся учеником, наставник не навязывает структуру. Цель — самодисциплина через интерес, а не через документ.</p>
+  </div>
+
+  <h2>6. Шесть принципов «живого силлабуса» (вместо статичного)</h2>
+  <div class="card">
+    <ol>
+      <li><b>Выбор уровня — за учеником</b> (автономия по Деси–Райан работает сильнее навязанного формата).</li>
+      <li><b>Живой документ:</b> пересматривается раз в 2–4 недели с наставником, а не составляется на год.</li>
+      <li><b>«Обещание», а не контракт с санкциями</b> (Бэйн, 2004): «что ты сможешь к концу» вместо «что обязан».</li>
+      <li><b>Работает только с сопровождением:</b> журнал наставника, встречи, срезы (ваша обвязка в 10А — правильная).</li>
+      <li><b>Учёт возраста:</b> 9 класс → «Навигатор»; 10 → «Стандарт»; 11 → «Челлендж» по желанию.</li>
+      <li><b>Критерии = самопроверка</b> (Dunlosky: retrieval practice эффективна): «решено 8 из 10» — это и критерий, и тренировка.</li>
+    </ol>
+  </div>
+
+  <div class="pick"><b>Как стартовать:</b> на ближайшей встрече наставник показывает ученику таблицу «Как подобрать уровень» (раздел 2) и вместе с ним выбирает форму. Заполнение — 15 минут. Через 2–3 недели — проверка: «удобно? мой уровень?». Это и есть силлабус 2.0.</div>
+
+  <footer>Силлабус 2.0 · создан по итогам критического разбора классической конфигурации и анализа каталогов работ (I:\Информатика) · 27.10.2026 · на основе: Harnish &amp; Bridges 2011; Frey et al. 2021; Eslami et al. 2024; Бэйн 2004; Деси–Райан; Эльконин; Dunlosky et al. 2013.</footer>
+</body>
+</html>

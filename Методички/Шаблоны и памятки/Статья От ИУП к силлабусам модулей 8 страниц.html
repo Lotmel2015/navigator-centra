@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Статья: от ИУП к силлабусам модулей (8 страниц)</title>
+<style>
+  :root{--bg:#fbfcfe;--ink:#16222e;--muted:#5c6b78;--accent:#1f6feb;--accent-soft:#eaf1fd;
+    --ok:#0e7c5b;--ok-soft:#e5f4ef;--warn:#b7791f;--warn-soft:#fdf3e2;--line:#e3e8ee;--card:#fff;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.68 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  main{max-width:900px;margin:0 auto;padding:2rem 1.25rem 3rem}
+  .eyebrow{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{font-size:1.45rem;line-height:1.3;margin:.35rem 0 .5rem;color:#11263c}
+  h2{font-size:1.08rem;color:var(--accent);margin:1.7rem 0 .5rem;border-bottom:1px solid var(--line);padding-bottom:.3rem}
+  h3{font-size:1rem;color:#11263c;margin:1.2rem 0 .4rem}
+  p{margin:.55rem 0;text-align:justify}
+  ul,ol{margin:.4rem 0 .7rem 1.3rem;padding:0}li{margin:.3rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.84rem;margin:.7rem 0}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:#f2f5f7;color:var(--muted);font-size:.75rem}
+  .tldr{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 6px 6px 0;padding:.9rem 1.1rem;margin:1.2rem 0}
+  .tldr b{color:var(--accent)}
+  .note{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:0 6px 6px 0;padding:.7rem .95rem;margin:1rem 0;font-size:.9rem}
+  .note b{color:var(--warn)}
+  .fill{background:#fff8e6;border-bottom:1px dashed var(--warn);padding:0 .25rem}
+  .udk{font-size:.85rem;color:var(--muted);margin-bottom:.2rem}
+  .title{font-size:1.12rem;font-weight:700;text-align:center;line-height:1.35;margin:.4rem 0;text-transform:uppercase}
+  .author{text-align:center;font-size:.95rem;margin:.25rem 0}
+  .org{text-align:center;font-size:.83rem;color:var(--muted);margin:.1rem 0 1rem}
+  .abs{font-size:.9rem;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem}
+  .src{font-size:.84rem}
+  .src li{margin:.3rem 0}
+  .en{font-size:.88rem;background:#f7f9fb;border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.2rem;padding-top:.7rem}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Вариант 2 · полная статья для журнала · около 8 страниц</div>
+
+  <div class="tldr"><b>Как пользоваться.</b> Текст рассчитан примерно на 8 страниц (Times New Roman 14 пт, интервал 1,5). Жёлтым — поля под ваши данные. Оформление приведено к требованиям журнала «Красноярское образование: вектор развития» (КК ИПК): УДК, аннотация 100–250 слов, 5–7 ключевых слов, список литературы по ГОСТ Р 7.0.5–2008, блок REFERENCES, английский блок. Для журнала «Информатика в школе» потребуется кегль 12, не менее 20 источников и иная последовательность блоков — см. страницу «Площадки для публикации».</div>
+
+  <p class="udk">УДК 373.1</p>
+  <p class="title">От годового индивидуального плана к силлабусам модулей: практика тьюторского сопровождения на уроках информатики</p>
+  <p class="author"><span class="fill">Фамилия Имя Отчество</span></p>
+  <p class="org"><span class="fill">Полное название организации, адрес, должность, e-mail</span></p>
+
+  <div class="abs">
+    <p><b>Аннотация.</b> В статье описан приём работы тьютора-предметника в старшей школе: годичный индивидуальный учебный план (ИУП) ученика «нарезается» на модули продолжительностью 2–4 недели и оформляется как силлабус модуля — одностраничный документ с целью, планируемыми результатами, расписанием, измеримыми критериями готовности, правилами и блоком поддержки. Эмпирическую основу составил анализ 135 файлов сопровождения и 30 папок учеников в пяти параллелях 9–11 классов: индивидуальные образовательные маршруты, индивидуальные учебные планы, дорожные карты, журналы сопровождения и журналы ошибок, понедельные срезы. Установлено, что содержательное ядро силлабуса в работах учеников уже присутствует и по детализации превосходит типовые зарубежные образцы, однако отсутствует промежуточный формат планирования, который удерживает цель и критерии на горизонте 2–4 недель. Предложен формат силлабуса модуля в трёх вариантах («Навигатор», «Стандарт», «Челлендж») и процедура сопровождения объёмом 30 минут на модуль. Практическая значимость: формат не увеличивает отчётность, поскольку является производной от существующего ИУП, и может быть перенесён на другие предметы и параллели.</p>
+    <p><b>Ключевые слова:</b> индивидуальный учебный план, индивидуальный образовательный маршрут, тьюторское сопровождение, силлабус модуля, саморегуляция, критерии освоения, обучение информатике.</p>
+  </div>
+
+  <h2>Введение</h2>
+  <p>Индивидуализация старшей школы перестала быть экспериментальной практикой. Право обучающегося на индивидуальный учебный план закреплено статьёй 34 Федерального закона «Об образовании в Российской Федерации» [1], порядок его формирования разъяснён методическими рекомендациями Минпросвещения России [2], а федеральный государственный образовательный стандарт среднего общего образования требует обеспечения индивидуальных потребностей и возможностей обучающихся [3]. В школах появились тьюторы, наставники и целые службы сопровождения.</p>
+  <p>Однако между наличием документа и реальным поведением ученика сохраняется разрыв. Годовой ИУП отвечает на вопрос «куда я иду в этом году», но не на вопрос «что я делаю на этой неделе и как пойму, что продвинулся». Подросток, который держит в голове только дальнюю цель, теряет промежуточные ориентиры; наставник на каждой встрече вынужден восстанавливать контекст; критерии движения размываются до субъективных ощущений.</p>
+  <p>Исследования саморегуляции и мотивации дают достаточно определённый ответ о причинах. Продуктивное планирование опирается на три условия: ясность ожиданий, переживание автономии и регулярную поддерживающую обратную связь [4; 5]. В работах о роли тона и структуры учебных документов показано, что даже формулировки правил влияют на восприятие курса и готовность ему следовать [6; 7]. При этом в массовой школьной практике перечисленные условия редко собраны в одном инструменте, который подросток способен использовать самостоятельно.</p>
+  <p><b>Цель статьи</b> — описать формат «силлабус модуля» как недостающее звено между годовым индивидуальным планом и ежедневной работой ученика, представить эмпирическое обоснование формата по материалам собственной практики и показать процедуру его внедрения, не увеличивающую отчётность.</p>
+
+  <h2>Материалы и методы</h2>
+  <p>Эмпирическую базу составили каталоги сопровождения пяти параллелей 9–11 классов, в которых тьюторское сопровождение ведётся по предмету «Информатика». Общий объём — 135 файлов, в том числе 30 папок учеников. Состав документов неоднороден и отражает разные этапы становления системы (таблица 1).</p>
+
+  <div style="overflow-x:auto"><table>
+    <thead><tr><th>Параллель</th><th>Файлов / папок</th><th>Основные форматы</th><th>Преобладающие документы</th></tr></thead>
+    <tbody>
+      <tr><td>11 класс, группа Г</td><td>11 файлов</td><td>HTML — 9, DOCX — 2</td><td>Помесячные планы подготовки к ЕГЭ, «образ выпускника»</td></tr>
+      <tr><td>11 класс, группа А</td><td>9 файлов</td><td>HTML — 5, DOCX — 4</td><td>Целевые планы, дорожные карты</td></tr>
+      <tr><td>10 класс, группа А</td><td>13 папок, 51 файл</td><td>DOCX — 37, XLSX — 9, HTML — 8</td><td>ИУП, ИОМ/ИОП, дорожные карты, журналы сопровождения и ошибок, срезы</td></tr>
+      <tr><td>9 класс, группа г</td><td>8 файлов, 7 папок</td><td>HTML — 17</td><td>ИОМ и ИУП, понедельные планы подготовки к ОГЭ, траектории 9–11</td></tr>
+      <tr><td>10 класс, группа Г</td><td>10 папок, 43 файла</td><td>HTML — 21, DOCX — 13, XLSX — 1</td><td>Профильные планы (биохимический, цифровой агроном), планы к ЕГЭ</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.83rem;color:var(--muted)"><i>Таблица 1. Состав каталогов сопровождения (октябрь 2026 г.).</i></p>
+
+  <p>Метод анализа — структурно-содержательный. Каждый документ рассматривался по набору элементов, характерных для международной практики учебных программ: паспорт курса и цель, планируемые результаты, календарный график, ресурсы, критерии оценивания, правила работы, механизм поддержки. Дополнительно фиксировались формат хранения, наличие рефлексивного блока и измеримость сформулированных критериев. Данные об учениках в настоящей статье обезличены.</p>
+  <p>Ограничение исследования: выборка формировалась в рамках одной образовательной организации и одного предмета, поэтому выводы носят характер описания практики, а не статистического обобщения. Сопоставление параллелей между собой корректно лишь как отражение этапов становления системы.</p>
+
+  <h2>Результаты</h2>
+  <h3>Что уже сложилось</h3>
+  <p>Анализ выявил высокую зрелость отдельных элементов планирования. Прежде всего, в работах присутствует <b>целевой портрет</b> — «образ успешного выпускника», сформулированный персонально: от участия в предметных олимпиадах до поступления в конкретный вуз и даже до смены профиля подготовки. Такой портрет выполняет функцию, аналогичную профилю обучающегося в международных моделях индивидуального планирования.</p>
+  <p>Во-вторых, обнаружена <b>высокая поурочная детализация</b>. В одном из маршрутов 10 класса план содержит 144 занятия, каждое из которых описано сценарием на 40 минут и фиксированной структурой: 5 минут повторения, 25 минут работы, 7 минут проверки, 3 минуты записи в журнал ошибок. По степени проработанности подобные материалы превосходят типовые зарубежные образцы, которые, как правило, ограничиваются уровнем модуля или темы.</p>
+  <p>В-третьих, сформирована <b>система контроля</b>: журналы ошибок с полями «тема — ошибка — причина — правильная идея — дата повторения», понедельные срезы, контрольные точки и критериальная шкала оценки качества самого плана, включающая цель, диагностику, ресурсы, детализацию, контроль, сопровождение, реалистичность, адресность и оформление.</p>
+  <p>В-четвёртых, заметна <b>реалистичность</b> планирования: часть учеников сознательно отказывается от максималистских формулировок, учитывая учебную нагрузку и ресурсы времени. Подобная самоограничивающая формулировка цели — признак зрелой саморегуляции, а не недостатка амбиций.</p>
+
+  <h3>Чего не хватает</h3>
+  <p>Наряду с сильными сторонами выявлены устойчивые пробелы, общие для всех параллелей.</p>
+  <ol>
+    <li><b>Отсутствует промежуточный формат планирования.</b> Годовой ИУП есть, поурочный сценарий есть, а горизонта 2–4 недели, который ученик удерживает в оперативной памяти, нет. Именно на этом горизонте чаще всего теряется связь между целью и действием.</li>
+    <li><b>Правила работы не выделены.</b> Они растворены в тексте сценариев и воспринимаются как часть методики, а не как договорённость с учеником. Между тем формулировка правил влияет на мотивацию и готовность их соблюдать [6].</li>
+    <li><b>Критерии освоения не подняты на уровень модуля.</b> Критерии существуют для отдельного занятия и для оценки качества плана, но отсутствует простая проверяемая формула «модуль освоен, если…».</li>
+    <li><b>Не выстроена связка «целевой портрет — вклад курса — критерии модуля».</b> Ученик видит дальнюю цель и видит занятия, но не видит, какой именно вклад вносит текущий модуль в достижение цели.</li>
+    <li><b>Сильно различается зрелость параллелей.</b> В одной группе система ведётся второй год и включает журналы, срезы и рефлексию; в другой она только формируется; в выпускных классах приоритет отдан планам подготовки к экзаменам, а контрольные документы свёрнуты.</li>
+  </ol>
+
+  <h2>Обсуждение: формат силлабусa модуля</h2>
+  <p>Предлагаемое решение не требует создания нового документооборота. Силлабус модуля — это <b>производная от существующего ИУП</b>: ученик не пишет заново, а переносит и сокращает уже готовые фрагменты. Одна страница на 2–4 недели содержит:</p>
+  <ul>
+    <li><b>паспорт модуля</b> — курс, номер и название модуля, даты, цель в форме «к дате я умею…», ответ на вопрос «зачем мне это» с указанием связи с целевым портретом;</li>
+    <li><b>планируемые результаты</b> — конкретные умения, осваиваемый материал и артефакт (код, проект, комплект задач);</li>
+    <li><b>расписание</b> — занятия и действия по неделям с указанием ресурсов;</li>
+    <li><b>критерии готовности</b> — измеримые, проверяемые за пять минут;</li>
+    <li><b>правила модуля</b> — в поддерживающей формулировке;</li>
+    <li><b>блок поддержки</b> — наставник, порядок обращения при затруднении, режим нагрузки;</li>
+    <li><b>итог модуля</b> — что получилось, что переносится в следующий модуль.</li>
+  </ul>
+
+  <h3>Три уровня формы</h3>
+  <p>Одинаковая форма для всех подростков не работает: уровень саморегуляции и характер мотивации различаются сильнее, чем принято учитывать в методических рекомендациях. Поэтому предусмотрены три варианта, которые ученик выбирает совместно с наставником и пересматривает каждые 2–4 недели (таблица 2).</p>
+
+  <div style="overflow-x:auto"><table>
+    <thead><tr><th>Уровень</th><th>Для кого</th><th>Устройство формы</th><th>Роль наставника</th></tr></thead>
+    <tbody>
+      <tr><td><b>Навигатор</b></td><td>9 класс, тревожность, неопределённость цели, творческий профиль</td><td>Минимум полей, максимум подсказок, отдельный блок «что делать, если трудно»</td><td>Поддерживающий, удерживает рамку</td></tr>
+      <tr><td><b>Стандарт</b></td><td>Цель — успешная сдача экзаменов, работа с опорой на взрослого</td><td>Полная форма из семи блоков</td><td>Соавтор планирования</td></tr>
+      <tr><td><b>Челлендж</b></td><td>Олимпиадная подготовка, высокая самоорганизация</td><td>Цель-вызов, собственная система, сокращённый набор полей</td><td>Эксперт, к которому приходят с вопросом</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.83rem;color:var(--muted)"><i>Таблица 2. Уровни формы силлабусa модуля.</i></p>
+
+  <h3>Процедура сопровождения</h3>
+  <p>Внедрение укладывается в 30 минут работы наставника на модуль:</p>
+  <ol>
+    <li><b>старт модуля (15 минут, совместно):</b> подтверждение уровня, заполнение цели, расписания, критериев и правил;</li>
+    <li><b>середина модуля (5 минут):</b> отметка прогресса и корректировка расписания;</li>
+    <li><b>финиш модуля (10 минут):</b> проверка критериев готовности, заполнение итога, решение о смене уровня.</li>
+  </ol>
+  <p>Такая периодичность соответствует данным о том, что регулярная обратная связь и короткие циклы целеполагания поддерживают саморегуляцию сильнее, чем редкие крупные контрольные точки [5; 8].</p>
+
+  <h3>Требования к формулировкам</h3>
+  <p>Два требования определяют качество формата. Первое — <b>измеримость критерия</b>: формулировка должна проверяться за пять минут действием (решить задачу, показать код, объяснить алгоритм). Второе — <b>поддерживающий тон правил</b>. Вместо «вы обязаны вести журнал» формулируется «после занятия занеси результат в журнал — так ты увидишь свой прогресс»; вместо «пропускать запрещено» — «если пропустил занятие, напиши наставнику, вместе решим, как наверстать». Исследования показывают, что тон учебного документа влияет на восприятие курса и готовность следовать правилам [6; 7].</p>
+
+  <h2>Заключение</h2>
+  <p>Проведённый анализ показывает, что в практике сопровождения старшеклассников сложился развитый набор инструментов индивидуального планирования, который по ряду параметров опережает типовые зарубежные образцы. Основной дефицит лежит не в содержании, а в формате: отсутствует промежуточный уровень планирования, удерживаемый самим учеником. Силлабус модуля закрывает этот дефицит, не добавляя отчётности, и делает связку «целевой портрет — курс — критерии» видимой и рабочей.</p>
+  <p>Дальнейшие задачи практики: измерить динамику качества целей и реалистичности планов после внедрения формата; проверить переносимость приёма на другие предметы; оценить, как меняется доля выполненных критериев готовности при переходе между уровнями формы.</p>
+
+  <h2>Список литературы</h2>
+  <div class="src">
+    <ol>
+      <li>Федеральный закон от 29.12.2012 № 273-ФЗ «Об образовании в Российской Федерации» (ред. с изм.) // СПС «КонсультантПлюс».</li>
+      <li>Письмо Минпросвещения России от 26.02.2021 № 03-205 «О методических рекомендациях» // СПС «КонсультантПлюс».</li>
+      <li>Приказ Минобрнауки России от 17.05.2012 № 413 «Об утверждении федерального государственного образовательного стандарта среднего общего образования».</li>
+      <li>Ryan R.M., Deci E.L. Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being // American Psychologist. 2000. Vol. 55, № 1. P. 68–78.</li>
+      <li>Zimmerman B.J. Attaining self-regulation: a social cognitive perspective // Handbook of Self-Regulation / ed. by M. Boekaerts, P.R. Pintrich, M. Zeidner. San Diego: Academic Press, 2000. P. 13–39.</li>
+      <li>Harnish R.J., Bridges K.R. Effect of syllabus tone: students' perceptions of instructor and course // Social Psychology of Education. 2011. Vol. 14. P. 319–330.</li>
+      <li>Frey T.K., Tatum N.T., Andrews S.E. Responding to the warmth of the syllabus: a replication study // Journal of Education for Business. 2021. Vol. 96, № 5.</li>
+      <li>Dunlosky J., Rawson K.A., Marsh E.J., Nathan M.J., Willingham D.T. Improving students' learning with effective learning techniques: promising directions from cognitive and educational psychology // Psychological Science in the Public Interest. 2013. Vol. 14, № 1. P. 4–58.</li>
+      <li>Hattie J. Visible Learning: A Synthesis of Over 800 Meta-Analyses Relating to Achievement. London: Routledge, 2009. 378 p.</li>
+      <li>Wigfield A., Eccles J.S. Expectancy-value theory of achievement motivation // Contemporary Educational Psychology. 2000. Vol. 25, № 1. P. 68–81.</li>
+      <li>Sitzmann T., Ely K. A meta-analysis of self-regulated learning in work-related training and educational attainment: what we know and where we need to go // Psychological Bulletin. 2011. Vol. 137, № 3. P. 421–442.</li>
+      <li>Давыдов В.В. Теория развивающего обучения. М.: ИНТОР, 1996. 544 с.</li>
+      <li>Хуторской А.В. Методика личностно-ориентированного обучения. Как обучать всех по-разному? М.: ВЛАДОС-ПРЕСС, 2005. 383 с.</li>
+      <li>Асмолов А.Г., Бурменская Г.В., Володарская И.А. и др. Как проектировать универсальные учебные действия в основной школе: от действия к мысли. М.: Просвещение, 2011.</li>
+      <li>ГОСТ Р 7.0.5–2008. Библиографическая ссылка. Общие требования и правила составления. М.: Стандартинформ, 2008.</li>
+      <li>Ковалёва Т.М. Материалы к обсуждению стандарта тьюторской деятельности // Межрегиональная тьюторская ассоциация. URL: https://thetutor.ru/ (дата обращения: 27.10.2026).</li>
+    </ol>
+  </div>
+
+  <h2>REFERENCES</h2>
+  <div class="src">
+    <ol>
+      <li>Federal Law of 29.12.2012 No. 273-FZ «On Education in the Russian Federation», art. 34 (in Russ.).</li>
+      <li>Letter of the Ministry of Education of Russia of 26.02.2021 No. 03-205 «On methodological recommendations» (in Russ.).</li>
+      <li>Order of the Ministry of Education and Science of Russia of 17.05.2012 No. 413 «On approval of the federal state educational standard of secondary general education» (in Russ.).</li>
+      <li>Ryan, R.M., Deci, E.L. (2000), Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being, American Psychologist, vol. 55, no. 1, pp. 68–78.</li>
+      <li>Zimmerman, B.J. (2000), Attaining self-regulation: a social cognitive perspective, in Boekaerts, M., Pintrich, P.R., Zeidner, M. (eds.), Handbook of Self-Regulation, Academic Press, San Diego, pp. 13–39.</li>
+      <li>Harnish, R.J., Bridges, K.R. (2011), Effect of syllabus tone: students' perceptions of instructor and course, Social Psychology of Education, vol. 14, pp. 319–330.</li>
+      <li>Frey, T.K., Tatum, N.T., Andrews, S.E. (2021), Responding to the warmth of the syllabus: a replication study, Journal of Education for Business, vol. 96, no. 5.</li>
+      <li>Dunlosky, J., Rawson, K.A., Marsh, E.J., Nathan, M.J., Willingham, D.T. (2013), Improving students' learning with effective learning techniques, Psychological Science in the Public Interest, vol. 14, no. 1, pp. 4–58.</li>
+      <li>Hattie, J. (2009), Visible Learning: A Synthesis of Over 800 Meta-Analyses Relating to Achievement, Routledge, London, 378 p.</li>
+      <li>Wigfield, A., Eccles, J.S. (2000), Expectancy-value theory of achievement motivation, Contemporary Educational Psychology, vol. 25, no. 1, pp. 68–81.</li>
+      <li>Sitzmann, T., Ely, K. (2011), A meta-analysis of self-regulated learning in work-related training and educational attainment, Psychological Bulletin, vol. 137, no. 3, pp. 421–442.</li>
+      <li>Davydov, V.V. (1996), Teoriya razvivayushchego obucheniya [Theory of developmental education], INTOR, Moscow, 544 p. (in Russ.).</li>
+      <li>Khutorskoy, A.V. (2005), Metodika lichnostno-orientirovannogo obucheniya [Methods of personality-oriented teaching], VLADOS-PRESS, Moscow, 383 p. (in Russ.).</li>
+      <li>Asmolov, A.G., Burmenskaya, G.V., Volodarskaya, I.A. et al. (2011), Kak proektirovat' universal'nye uchebnye deystviya v osnovnoy shkole [How to design universal learning activities in secondary school], Prosveshchenie, Moscow (in Russ.).</li>
+      <li>GOST R 7.0.5–2008 (2008), Bibliograficheskaya ssylka. Obshchie trebovaniya i pravila sostavleniya [Bibliographic reference. General requirements and rules], Standartinform, Moscow (in Russ.).</li>
+      <li>Kovaleva, T.M. Materialy k obsuzhdeniyu standarta tyutorskoy deyatel'nosti [Materials for discussion of the tutor activity standard], Interregional Tutor Association. Available at: https://thetutor.ru/ (accessed 27 October 2026) (in Russ.).</li>
+    </ol>
+  </div>
+
+  <h2>English abstract</h2>
+  <div class="en">
+    <p><b>From an annual individual curriculum to module syllabi: tutoring practice in computer science classes</b></p>
+    <p><b>Abstract.</b> The article describes a technique used by a subject tutor in upper secondary school: a student's annual individual curriculum is divided into modules of two to four weeks and formalised as a module syllabus — a one-page document containing the goal, intended outcomes, schedule, measurable readiness criteria, rules and a support section. The empirical basis is an analysis of 135 support files and 30 student folders across five parallel classes (grades 9–11). It is shown that the substantive core of a syllabus is already present in student work, while the intermediate planning format is missing. A module syllabus in three variants (Navigator, Standard, Challenge) and a 30-minute-per-module support procedure are proposed. The format does not increase paperwork, since it is derived from the existing curriculum, and can be transferred to other subjects.</p>
+    <p><b>Keywords:</b> individual curriculum, individual educational route, tutoring, module syllabus, self-regulation, mastery criteria, computer science education.</p>
+  </div>
+
+  <div class="note"><b>Перед отправкой:</b> замените жёлтые поля; проверьте УДК; сверьте выходные данные источников по первоисточникам (страницы и номера выпусков), поскольку требования журналов к библиографии строгие. Для журнала «Информатика в школе» нужно не менее 20 источников — добавьте 4–5 работ по вашей теме. Все данные об учениках обезличены.</div>
+
+  <footer>Статья · около 8 страниц · подготовлено 28.10.2026 · оформление согласовано с требованиями журнала «Красноярское образование: вектор развития» (КК ИПК) · источники: анализ каталогов сопровождения, материалы «Силлабус модуля», «Силлабус 2.0: три уровня», «Памятка: как из ИУП сделать силлабусы модулей».</footer>
+</main>
+</body>
+</html>
