@@ -3100,6 +3100,22 @@
     var role = currentRoleForSearch();
     var isTutor = role === "tyutor";
     function t(el) { return (el && el.textContent ? el.textContent : "").replace(/\s+/g, " ").trim(); }
+    /* Текст занятия ТОЛЬКО из частей, видимых текущей роли:
+       блоки «Внимание» (.watch), «Материалы» (.material) и панель методички (.matbar)
+       скрыты от школьника — значит не должны попадать и в его результаты поиска.
+       Тьютору эти блоки видны, поэтому для него берём весь текст. */
+    function lessonTextForRole(ls, tutor) {
+      var parts = [];
+      ls.childNodes.forEach(function (n) {
+        if (!n || n.nodeType !== 1) return;
+        if (!tutor && n.classList) {
+          var cls = (n.className || "").toString();
+          if (cls.indexOf("watch") !== -1 || cls.indexOf("material") !== -1 || cls.indexOf("matbar") !== -1) return;
+        }
+        parts.push(n.textContent || "");
+      });
+      return parts.join(" ").replace(/\s+/g, " ").trim();
+    }
     document.querySelectorAll(".stage").forEach(function (st) {
       var head = st.querySelector(".stage-head");
       var title = head ? t(head.querySelector("h2") || head) : "";
@@ -3110,7 +3126,8 @@
         var h = ls.querySelector(".lesson-head h4");
         var ltitle = h ? t(h) : "";
         var sub = ls.querySelector(".less-sub");
-        idx.push({ type: "Занятие", title: ltitle, text: ltitle + " " + t(sub) + " " + t(ls).slice(0, 600), el: ls, doc: null, panel: null,
+        var bodyText = lessonTextForRole(ls, isTutor);
+        idx.push({ type: "Занятие", title: ltitle, text: ltitle + " " + t(sub) + " " + bodyText.slice(0, 600), el: ls, doc: null, panel: null,
           jump: function () { openResult(this); } });
       });
     });
@@ -3530,6 +3547,9 @@
   window.openDocBlank = function (doc) {
     var sess = getSession();
     if (!sess) {
+      var ov = el("authOverlay");
+      if (ov) { ov.classList.add("show"); }
+      document.body.classList.add("auth-open");
       var ap = el("authPanel");
       if (ap) { ap.scrollIntoView({ behavior: "smooth", block: "center" }); }
       return;
