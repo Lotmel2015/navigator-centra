@@ -292,7 +292,7 @@
   .lesson.open .lesson-body { display: block; }
   .stage-body { display: none; }
   .stage.open .stage-body { display: block; }
-  @media print { .lesson-body, .stage-body { display: block !important; } }
+  @media print { .lesson-body, .stage-body { display: block !important; } .collapsible-body { display: block !important; } }
 
   /* ==== Блок «Заполни на занятии» ==== */
   .fillnow { margin: .8rem 0 .2rem; background: #eef6f3; border: 1px solid #bfe0d6; border-left: 4px solid var(--teal);
@@ -829,6 +829,7 @@
         <div class="th-card"><h4>Рабочие шаблоны (интерактивные)</h4><p>Полный набор бланков для ученика: ИОМ (карта маршрута), ИУП, таблица проб, план подготовки, дневник наблюдений, стресс-карточка, матрица вуз, договорённости с семьёй, входная рефлексия, памятка родителю. Автозаполнение и печать.</p><a href="Методички/Рабочие шаблоны - ИОМ и ИУП (интерактив).html" target="_blank">Открыть рабочие шаблоны →</a></div>
         <div class="th-card"><h4>Библиотека источников</h4><p>Научная база: исследования эффективности наставничества (Nickow, Raposa, DuBois), техник обучения (Adesope, Wisniewski, Sisk), карьерной готовности (OECD, Whiston), мотивации (Deci &amp; Ryan, Eccles). С кратким описанием и выводами для практики.</p><a href="Методички/Библиотека источников тьютора.html" target="_blank">Открыть источники →</a></div>
         <div class="th-card"><h4>Силлабусы: как превратить ИУП в понятный план</h4><p>Инструментарий по силлабусам: три уровня («Навигатор» / «Стандарт» / «Челлендж»), разбор эффективности и международная практика, готовый шаблон модуля, памятка для ученика и наставника, сводный анализ работ.</p><a href="Методички/Шаблоны и памятки/Силлабус 2.0 три уровня.html" target="_blank">Силлабус 2.0 →</a> · <a href="Методички/Шаблоны и памятки/Памятка как из ИУП сделать силлабусы модулей.html" target="_blank">Памятка →</a> · <a href="Методички/Шаблоны и памятки/Силлабус модуля шаблон.html" target="_blank">Шаблон →</a> · <a href="Методички/Шаблоны и памятки/Сводный анализ работ по каталогам.html" target="_blank">Сводный анализ →</a></div>
+        <div class="th-card"><h4>Путеводитель школьника «Мой маршрут: работаю сам»</h4><p>Что школьник может делать самостоятельно между встречами: пошаговые действия по всем 20 занятиям, готовые промпты для DeepSeek, точки обращения к тьютору. Выдавайте ученику и опирайтесь на него при планировании встреч.</p><a href="Методички/Мой маршрут работаю сам путеводитель школьника.html" target="_blank">Открыть путеводитель →</a></div>
       </div>
 
       <div style="margin-top:1rem">
@@ -1045,10 +1046,8 @@
     <p class="stage-goal" style="font-size:.9rem"><b>Что дальше.</b> Изучай этапы ниже и отмечай пройденные. Каждый этап откроется после предыдущего — это работает как твой личный навигатор. Данные маршрута сохраняются в этом браузере.</p>
     <div id="streak-box" style="display:none;background:#fff7e0;border:1px solid #f2d27a;border-radius:10px;padding:.7rem .9rem;margin:.8rem 0;font-size:.92rem;font-weight:700;color:#7a5b00"></div>
     <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0">
-      <button class="btn small" onclick="openDiag()">Пройти диагностику →</button>
+<button class="btn small" onclick="openDiag()">Пройти диагностику →</button>
       <button class="btn small ghost" onclick="viewDiagResult()">Мой профиль (результат диагностики)</button>
-      <button class="btn small teal" onclick="openCert()">Мой сертификат →</button>
-      <button class="btn small navy" onclick="openSubjectTest()">Предметные тесты →</button>
     </div>
     <div id="diag-summary" style="font-size:.85rem;color:var(--muted)"></div>
   </section>
@@ -1468,8 +1467,9 @@
 
 </div>
 <!-- ==================== ЗАПОЛНЯЕМЫЕ ДОКУМЕНТЫ КУРСА ==================== -->
-  <section class="docs-wrap" id="docs">
-    <h2>Мои документы курса</h2>
+  <section class="docs-wrap block collapsible" id="docs">
+    <h2 class="collapsible-head" onclick="toggleBlock(this)"><span class="cchev">▾</span> Мои документы курса</h2>
+    <div class="collapsible-body">
     <p class="docs-sub">Заполняй документы прямо здесь — они сохраняются в твой профиль (в этом браузере). Под каждым шаблоном появляется ссылка «Открыть мой документ»: по ней можно в любой момент посмотреть сохранённое, распечатать или скачать.</p>
     <div class="sendwork" id="sendWorkWrap">
       <div class="sendwork-txt"><b>Показать выполненную работу тьютору</b><small>Когда закончишь заполнять документы занятия — собери их в один файл и пришли тьютору (в мессенджер или на почту). Он увидит твою работу и сможет проверить её, даже если вы работаете в дистанте.</small></div>
@@ -1922,13 +1922,15 @@
         <button class="btn small teal" onclick="downloadDoc('pamyatka')">Скачать .txt</button>
       </div>
     </div>
+    </div>
 </section>
 
-<section id="partners-section" style="margin:2.4rem 0 1rem">
-  <div class="th-head">
+<section id="partners-section" class="block collapsible" style="margin:2.4rem 0 1rem">
+  <div class="th-head collapsible-head" onclick="toggleBlock(this)">
     <h2>Партнёры и доказательная база</h2>
     <span class="th-badge">проверено</span>
   </div>
+  <div class="collapsible-body">
   <p class="th-sub">Портал опирается на государственные стандарты, официальные сервисы профориентации и результаты исследований. Все ссылки проверены и открываются из России.</p>
   <div class="th-grid">
     <div class="th-card">
@@ -1953,6 +1955,7 @@
     </div>
   </div>
   <p class="th-sub" style="margin-top:.6rem">Доказательная база и источники — в разделе «Отчёты и исследования» выше и в «Библиотеке источников тьютора» («Методички»).</p>
+  </div>
 </section>
 </main>
 <div class="doc-modal" id="docModal" onclick="if(event.target===this)closeDoc()">
@@ -3709,7 +3712,7 @@
     if (!nav) return;
     var links = [];
     if (role === "shkolnik") {
-      links = [["#dash-shkolnik","Мой профиль"],["#stage-8-1","Этап 1"],["#stage-8-2","Этап 2"],["#stage-9-1","Этап 3"],["#stage-9-2","Этап 4"],["#docs","Мои документы"],["#partners-section","Партнёры"]];
+      links = [["#dash-shkolnik","Мой профиль"],["#stage-8-1","Этап 1"],["#stage-8-2","Этап 2"],["#stage-9-1","Этап 3"],["#stage-9-2","Этап 4"],["#docs","Мои документы"],["Методички/Мой маршрут работаю сам путеводитель школьника.html","Мой маршрут"],["#partners-section","Партнёры"]];
     } else if (role === "tyutor") {
       links = [["#dash-tutor","Панель тьютора"],["#tutor-help","В помощь тьютору"],["#stage-8-1","Этап 1"],["#stage-8-2","Этап 2"],["#stage-9-1","Этап 3"],["#stage-9-2","Этап 4"],["#reports-section","Отчёты"],["#partners-section","Партнёры"]];
     } else {
@@ -3717,7 +3720,7 @@
       return;
     }
     var html = "<b>Быстрый переход:</b>";
-    links.forEach(function (lk) { html += "<a href='" + lk[0] + "'>" + lk[1] + "</a>"; });
+    links.forEach(function (lk) { var ext = lk[0].indexOf("#") !== 0; html += "<a href='" + lk[0] + "'" + (ext ? " target='_blank'" : "") + ">" + lk[1] + "</a>"; });
     nav.innerHTML = html;
     nav.style.display = "flex";
   };
@@ -3839,6 +3842,8 @@
     typeScores.sort(function (a, b) { return b.s - a.s; });
     res.interests.top = typeScores[0] && typeScores[0].s > 0 ? typeScores[0] : null;
     res.interests.second = typeScores[1] && typeScores[1].s > 0 ? typeScores[1] : null;
+    res.scores = {};
+    typeScores.forEach(function (x) { res.scores[x.t] = x.s; });
     var anx = 0, an = 0;
     DIAG_ANX.forEach(function (q, i) { var v = diagVal("dga" + i); if (v) { anx += v; an++; } });
     res.anxiety = an ? Math.round(anx / an * 10) / 10 : null;
@@ -3874,12 +3879,28 @@
 
   function diagResultHtml(res) {
     if (!res) return "<p style='color:var(--muted)'>Диагностика ещё не пройдена.</p>";
-    var h = "";
-    if (res.interests && res.interests.top) h += "<p><b>Твои главные направления:</b> «" + esc(res.interests.top.label) + "»" + (res.interests.second ? ", «" + esc(res.interests.second.label) + "»" : "") + ".</p>";
-    h += "<p><b>Тревожность:</b> " + (res.anxiety === null ? "—" : res.anxiety.toFixed(1) + " · " + diagLevelName("anxiety", res.anxiety)) + ".</p>";
-    h += "<p><b>Уверенность в себе:</b> " + (res.efficacy === null ? "—" : res.efficacy.toFixed(1) + " · " + diagLevelName("efficacy", res.efficacy)) + ".</p>";
-    h += "<p style='font-size:.8rem;color:var(--muted)'>Это стартовая точка, а не приговор: профиль может меняться. Пройдено: " + new Date(res.done).toLocaleDateString("ru-RU") + ".</p>";
-    return "<div style='background:var(--ok-soft);border-left:4px solid var(--ok);padding:.9rem 1.1rem;border-radius:0 8px 8px 0'>" + h + "</div>";
+    var inner = diagProfileHtml(res);
+    return "<div style='background:var(--ok-soft);border-left:4px solid var(--ok);padding:.9rem 1.1rem;border-radius:0 8px 8px 0'>" + inner + "</div>";
+  }
+
+  function diagProfileHtml(res) {
+    if (!res) return "<span style='color:var(--muted)'>Диагностика ещё не пройдена.</span>";
+    var h = "<div style='border-top:1px solid var(--line);margin-top:.6rem;padding-top:.5rem'>";
+    h += "<div style='display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem'><span style='color:var(--ok);font-weight:700'>Диагностика пройдена ✓</span><span style='color:var(--muted);font-size:.78rem'>" + new Date(res.done).toLocaleDateString("ru-RU") + "</span></div>";
+    if (res.interests && res.interests.top) h += "<p style='margin:.6rem 0 .3rem'><b>Твои направления:</b><br>" + esc(res.interests.top.label) + (res.interests.second ? " · " + esc(res.interests.second.label) : "") + "</p>";
+    if (res.scores) {
+      var order = [["Р","Техника и руки"],["И","Наука и исследования"],["А","Творчество и искусство"],["С","Люди и помощь"],["П","Организация и дело"],["К","Данные и порядок"]];
+      var maxs = 5;
+      order.forEach(function (o) {
+        var s = res.scores[o[0]] || 0;
+        var w = Math.round(s / maxs * 100);
+        h += "<div style='margin:.35rem 0;font-size:.8rem'><div style='display:flex;justify-content:space-between'><span>" + esc(o[1]) + "</span><b>" + (s ? s.toFixed(1) : "0") + "</b></div><div style='background:var(--line);border-radius:99px;height:8px;margin-top:.15rem'><div style='background:var(--navy);border-radius:99px;height:8px;width:" + w + "%'></div></div></div>";
+      });
+    }
+    h += "<p style='margin:.6rem 0 0;font-size:.85rem'><b>Состояние:</b><br>Тревожность: <b>" + (res.anxiety === null ? "—" : res.anxiety.toFixed(1) + " · " + diagLevelName("anxiety", res.anxiety)) + "</b><br>Уверенность: <b>" + (res.efficacy === null ? "—" : res.efficacy.toFixed(1) + " · " + diagLevelName("efficacy", res.efficacy)) + "</b></p>";
+    h += "<p style='font-size:.78rem;color:var(--muted);margin:.5rem 0 0'>Это стартовая точка, а не приговор: профиль может меняться.</p>";
+    h += "</div>";
+    return h;
   }
 
   window.viewDiagResult = function () {
@@ -3897,8 +3918,7 @@
     var sess = getSession(); if (!sess) { elm.innerHTML = ""; return; }
     var res = loadDiag(sess.login);
     if (!res) { elm.innerHTML = "<span style='color:var(--muted)'>Диагностика ещё не пройдена — она поможет понять свои интересы и состояние.</span>"; return; }
-    var t = res.interests && res.interests.top ? res.interests.top.label : "—";
-    elm.innerHTML = "<span style='color:var(--ok);font-weight:700'>Диагностика пройдена ✓</span> · направления: <b>" + esc(t) + "</b> · тревожность: <b>" + (res.anxiety ? " " + res.anxiety.toFixed(1) : "—") + "</b> · уверенность: <b>" + (res.efficacy ? " " + res.efficacy.toFixed(1) : "—") + "</b>";
+    elm.innerHTML = diagProfileHtml(res);
   }
 
   function diagTutorBox(login) {
