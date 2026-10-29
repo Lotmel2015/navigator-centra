@@ -440,6 +440,13 @@
   .doc-modal table { border-collapse: collapse; width: 100%; font-size: .85rem; margin: .7rem 0; }
   .doc-modal td, .doc-modal th { border: 1px solid var(--line); padding: .35rem .45rem; vertical-align: top; text-align: left; }
   .doc-modal th { background: var(--navy-soft); color: var(--navy); }
+
+  /* Сворачиваемые блоки: понятия, отчёты, группы */
+  .collapsible-body { display: none; }
+  .block-open .collapsible-body { display: block; }
+  .collapsible-head { cursor: pointer; user-select: none; }
+  .collapsible-head .cchev { transition: transform .2s; display: inline-block; margin-left: .4rem; }
+  .block-open > .collapsible-head .cchev, .block-open.collapsible-head .cchev { transform: rotate(180deg); }
   </style>
 </head>
 <body>
@@ -462,8 +469,10 @@
   <section id="landing">
     <div class="tldr"><b>Это твой документ.</b> Здесь ты сам решаешь, как учиться: какие предметы углублять, какой темп выбрать, как подготовиться к экзаменам и куда двигаться дальше. Ниже — за 60 секунд: что такое ИОМ, ИОП и ИУП и почему это выгодно именно тебе. Потом — вход в твой профиль.</div>
 
-    <h2>ИОМ, ИОП, ИУП — три буквы, которые работают на тебя</h2>
-    <div class="roles">
+    <div class="block collapsible block-open">
+    <h2 class="collapsible-head" onclick="toggleBlock(this)"><span class="cchev">▾</span> ИОМ, ИОП, ИУП — три буквы, которые работают на тебя</h2>
+    <div class="collapsible-body">
+      <div class="roles">
       <div class="rolecard teal"><b>ИОМ — твоя карта</b><span>Индивидуальный образовательный маршрут. Это навигатор: какие шаги сделаешь, какие контрольные точки пройдёшь, куда придёшь к финишу своей школьной траектории. Не «как все», а именно твой путь.</span></div>
       <div class="rolecard navy"><b>ИОП — твой маршрутный лист</b><span>Индивидуальная образовательная программа. Цели, способы и формы контроля: что ты хочешь понять, какими занятиями двигаться, как проверяем результат. Главный в этом документе — ты.</span></div>
       <div class="rolecard gold"><b>ИУП — твой список предметов</b><span>Индивидуальный учебный план. Твоё законное право (ст. 2 и 34 Закона «Об образовании») учиться по собственному набору предметов, уровней и часов. Не у всех есть такой документ — а у тебя может быть.</span></div>
@@ -479,14 +488,17 @@
     <div class="warn-box"><b>Аналогия из жизни.</b> Все ученики выходят из школы с одинаковыми рюкзаками. ИОМ — это карта, по которой ты идёшь к своей цели; ИУП — список вещей, которые кладёшь в рюкзак (предметы, уровни, часы); ИОП — маршрутный лист всей программы. Заполнить все три документа — значит не «плыть по течению», а самому сесть за руль. Здесь нет правильных и неправильных ответов — есть «интересно» и «пока не моё».</div>
 
     <p><b>Кому это нужно:</b> школьникам 7–11 классов, которые хотят осознанно выбрать экзамены, профиль, вуз; тьюторам, которые помогают им этот путь построить; родителям, которые хотят, чтобы ребёнок учился без страха и с интересом.</p>
+    </div>
+  </div>
   </section>
 
   <!-- ==================== ОТЧЁТЫ И ИССЛЕДОВАНИЯ ==================== -->
-  <section id="reports-section" style="margin:2.4rem 0 1rem">
-    <div class="th-head">
+  <section id="reports-section" class="block collapsible" style="margin:2.4rem 0 1rem">
+    <div class="th-head collapsible-head" onclick="toggleBlock(this)">
       <h2>Отчёты и исследования</h2>
       <span class="th-badge">база знаний</span>
     </div>
+    <div class="collapsible-body">
     <p class="th-sub">Результаты исследований серии «Сопровождение старшеклассников»: что реально влияет на образовательный результат, как устроены практики сопровождения одарённых, что из этого проверено доказательно. Отчёты открываются в браузере рядом с порталом.</p>
 
     <div class="th-grid">
@@ -527,6 +539,7 @@
         <p>160+ проверенных ссылок с отметкой доступности (открываются без VPN), включая источники исследований 12–14.10.2026.</p>
         <a href="Отчёты/Реестр источников и ссылок/Реестр источников и ссылок.html" target="_blank" rel="noopener">Открыть реестр →</a>
       </div>
+    </div>
     </div>
   </section>
 
@@ -1047,11 +1060,19 @@
   </section>
 
 <nav class="toc">
-    <a href="#stage-8-1">Этап 1 · Старт</a>
-    <a href="#stage-8-2">Этап 2 · Пробы</a>
-    <a href="#stage-9-1">Этап 3 · ОГЭ и профиль</a>
-    <a href="#stage-9-2">Этап 4 · Проект ИУП</a>
-  </nav>
+<a href="#stage-8-1">Этап 1 · Старт</a>
+<a href="#stage-8-2">Этап 2 · Пробы</a>
+<a href="#stage-9-1">Этап 3 · ОГЭ и профиль</a>
+<a href="#stage-9-2">Этап 4 · Проект ИУП</a>
+</nav>
+
+  <!-- ============ МАРШРУТ ШКОЛЬНИКА: 4 ЭТАПА (общая группа) ============ -->
+  <section id="stages-group">
+    <div class="th-head">
+      <h2>Этапы маршрута</h2>
+      <span class="th-badge">4 этапа · 20 занятий</span>
+    </div>
+    <p class="th-sub">Маршрут школьника разделён на четыре этапа: «Старт», «Пробы», «ОГЭ и профиль», «Проект ИУП». Каждый этап открывается кликом по заголовку — внутри занятия, материалы и бланки.</p>
 
   <!-- ============ 8 КЛАСС · ЭТАП 1 ============ -->
   <section id="stage-8-1">
@@ -1421,6 +1442,7 @@
 
       <div class="criterion" style="background:var(--ok-soft);border-left:3px solid var(--ok);border-radius:0 6px 6px 0;padding:.6rem .85rem;margin:.8rem 0;font-size:.92rem"><b>После этапа.</b> Отметьте завершение маршрута. Проект ИУП передан в школу; защита проведена; карта финальной версии в личном деле. Личный маршрут завершён.</div>
     </article>
+  </section>
   </section>
 
 </div>
@@ -3658,6 +3680,9 @@
     stages.forEach(function (s) {
       if (anyOpen) s.classList.remove("open"); else s.classList.add("open");
     });
+  };
+  window.toggleBlock = function (head) {
+    if (head && head.parentElement) head.parentElement.classList.toggle("block-open");
   };
   window.toggleLesson = function (headEl, ev) {
     if (ev && ev.target && ev.target.closest && ev.target.closest("a, button, input, select, textarea")) return;
