@@ -263,6 +263,26 @@
   body.role-shkolnik #docs { display: block; }
   body.role-tyutor #docs { display: none; }
 
+  /* ==== Ролевое разделение экрана: школьнику и тьютору — только свои блоки ==== */
+  body.role-shkolnik #landing { display: none; }
+  body.role-tyutor #landing { display: none; }
+  body.role-shkolnik #reports-section { display: none; }
+  body.role-shkolnik #tutor-help { display: none; }
+  body.role-tyutor #dash-shkolnik { display: none; }
+  body.role-shkolnik .nav-stage-links { display: none; }
+  /* Старая навигация по этапам заменена липкой ролевой панелью */
+  body.role-shkolnik nav.toc, body.role-tyutor nav.toc { display: none; }
+  /* Партнёры и материалы видны всем, отчёты — гостям и тьюторам */
+
+  /* ==== Ролевая мини-навигация (липкая) ==== */
+  .rolenav { position: sticky; top: 0; z-index: 45; display: flex; flex-wrap: wrap; gap: .45rem;
+    align-items: center; background: var(--navy); border-radius: 0 0 12px 12px;
+    padding: .5rem .8rem; margin: 0 0 1rem; }
+  .rolenav b { color: #fff; font-size: .8rem; margin-right: .2rem; letter-spacing: .04em; }
+  .rolenav a { color: #fff; text-decoration: none; font-size: .82rem; font-weight: 600;
+    background: rgba(255,255,255,.14); padding: .28rem .7rem; border-radius: 999px; }
+  .rolenav a:hover { background: rgba(255,255,255,.3); }
+
   /* ==== Сворачиваемые этапы и занятия ==== */
   .stage-head, .lesson-head { cursor: pointer; user-select: none; }
   .stage-head .cchev, .lesson-head .cchev { display: inline-block; margin-left: auto; font-size: .85rem;
@@ -628,8 +648,9 @@
   </div>
 </div>
 
-  <div id="route">
-  <div id="sessionbar"></div>
+<div id="route">
+<div id="sessionbar"></div>
+<div class="rolenav" id="rolenav"></div>
   <div id="progbar-wrap">
     <div id="prog-label">Прогресс моего маршрута</div>
     <div class="track"><div class="fill" id="prog-fill"></div></div>
@@ -2247,6 +2268,7 @@
     if (sess.role === "shkolnik") {
       renderProfileShkolnik();
       renderStreak(sess.login);
+      renderRolenav("shkolnik");
       if (dashTut) dashTut.style.display = "none";
       var d = getDone(sess.login);
       var n = ORDER.filter(function (k) { return d[k]; }).length;
@@ -2267,6 +2289,7 @@
       prog.style.display = "none";
       if (dashTut) dashTut.style.display = "block";
       renderTutorPanel();
+      renderRolenav("tyutor");
     }
   }
 
@@ -3680,6 +3703,23 @@
     stages.forEach(function (s) {
       if (anyOpen) s.classList.remove("open"); else s.classList.add("open");
     });
+  };
+  window.renderRolenav = function (role) {
+    var nav = document.getElementById("rolenav");
+    if (!nav) return;
+    var links = [];
+    if (role === "shkolnik") {
+      links = [["#dash-shkolnik","Мой профиль"],["#stage-8-1","Этап 1"],["#stage-8-2","Этап 2"],["#stage-9-1","Этап 3"],["#stage-9-2","Этап 4"],["#docs","Мои документы"],["#partners-section","Партнёры"]];
+    } else if (role === "tyutor") {
+      links = [["#dash-tutor","Панель тьютора"],["#tutor-help","В помощь тьютору"],["#stage-8-1","Этап 1"],["#stage-8-2","Этап 2"],["#stage-9-1","Этап 3"],["#stage-9-2","Этап 4"],["#reports-section","Отчёты"],["#partners-section","Партнёры"]];
+    } else {
+      nav.style.display = "none";
+      return;
+    }
+    var html = "<b>Быстрый переход:</b>";
+    links.forEach(function (lk) { html += "<a href='" + lk[0] + "'>" + lk[1] + "</a>"; });
+    nav.innerHTML = html;
+    nav.style.display = "flex";
   };
   window.toggleBlock = function (head) {
     if (head && head.parentElement) head.parentElement.classList.toggle("block-open");
