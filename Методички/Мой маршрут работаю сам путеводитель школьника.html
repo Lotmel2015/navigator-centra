@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мой маршрут: работаю сам — путеводитель школьника</title>
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#22303c;--muted:#5c6a77;--navy:#1f3a5f;--navy-soft:#e7eef7;
+    --teal:#0f6f69;--teal-soft:#e1efed;--gold:#9a6a1f;--gold-soft:#f8f0dc;--ok:#1a7f4b;--ok-soft:#dcefe3;
+    --warn:#b3382c;--warn-soft:#f9e9e6;--line:#dde3ea;--violet:#6b4fa0;--violet-soft:#efe9f7;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,"Segoe UI",Roboto,sans-serif}
+  main{max-width:1000px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+  header{border-bottom:2px solid var(--navy);padding-bottom:.8rem;margin-bottom:1rem}
+  .eyebrow{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:700}
+  h1{font-size:1.5rem;line-height:1.3;margin:.3rem 0;color:var(--navy)}
+  .meta{color:var(--muted);font-size:.85rem}
+  /* Быстрый переход */
+  .tabnav{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0 1.2rem;padding:.5rem .6rem;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .tabnav button{border:1px solid var(--line);background:var(--card);color:var(--navy);font:650 .86rem/1.2 system-ui,sans-serif;padding:.5rem .8rem;border-radius:999px;cursor:pointer;transition:.15s}
+  .tabnav button:hover{border-color:var(--navy)}
+  .tabnav button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  /* Панели разделов */
+  .tabpanel{display:none}
+  .tabpanel.active{display:block}
+  .st-t{font-size:1.1rem;color:var(--navy);margin:.4rem 0 .6rem;padding-bottom:.3rem;border-bottom:1px solid var(--line)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.15rem;margin:1rem 0}
+  .tldr{background:var(--teal-soft);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin:1.1rem 0}
+  .tldr b{color:var(--teal)}
+  .warn-box{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:1rem 0;font-size:.92rem}
+  .rules{background:var(--violet-soft);border-left:4px solid var(--violet);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:1rem 0;font-size:.92rem}
+  .rules b{color:var(--violet)}
+  /* Занятие: сворачиваемое */
+  .lesson{border:1px solid var(--line);border-radius:10px;margin:.7rem 0;overflow:hidden;background:#fff}
+  .lesson>.lh{background:var(--navy-soft);padding:.55rem .85rem;font-weight:650;color:var(--navy);font-size:.94rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .lesson>.lh .arr{transition:transform .2s;font-size:.8rem;color:var(--muted)}
+  .lesson.open>.lh .arr{transform:rotate(90deg)}
+  .lesson>.lb{display:none;padding:.6rem .85rem}
+  .lesson.open>.lb{display:block}
+  .ref{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:6px;padding:.5rem .7rem;margin:.4rem 0}
+  .ref b{color:var(--navy)}
+  .do{background:var(--ok-soft);border-left:4px solid var(--ok);border-radius:0 6px 6px 0;padding:.55rem .75rem;margin:.5rem 0}
+  .do b{color:var(--ok)}
+  .tut{background:var(--gold-soft);border-left:4px solid var(--gold);border-radius:0 6px 6px 0;padding:.55rem .75rem;margin:.5rem 0}
+  .tut b{color:#7a5616}
+  .ai{background:var(--violet-soft);border-left:4px solid var(--violet);border-radius:0 6px 6px 0;padding:.55rem .75rem;margin:.5rem 0}
+  .ai b{color:var(--violet)}
+  .prompt{background:#fff;border:1px dashed var(--violet);border-radius:6px;padding:.5rem .7rem;margin:.4rem 0;font-size:.92rem;position:relative}
+  .copybtn{position:absolute;top:.45rem;right:.5rem;font-size:.7rem;padding:.15rem .5rem;border:1px solid var(--violet);border-radius:999px;background:var(--violet-soft);color:var(--violet);cursor:pointer;font-weight:700}
+  .copybtn:hover{background:var(--violet);color:#fff}
+  .tool{background:#fff;border:1px solid var(--teal);border-left:4px solid var(--teal);border-radius:6px;padding:.6rem .8rem;margin:.5rem 0;font-size:.92rem}
+  .tool b{color:var(--teal)}
+  .chips{display:flex;flex-wrap:wrap;gap:.35rem;margin:.4rem 0}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.25rem .6rem;font-size:.85rem;cursor:pointer}
+  .chip.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .cards3{display:flex;flex-wrap:wrap;gap:.7rem;margin:.5rem 0}
+  .flip{flex:1 1 200px;border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;background:#fff;font-size:.9rem;cursor:pointer}
+  .flip b{color:var(--navy)}
+  .flip .back{display:none;color:var(--muted);font-size:.86rem;margin-top:.3rem}
+  .flip.open{border-color:var(--teal)}
+  .flip.open .back{display:block}
+  .note{font-size:.85rem;color:var(--muted)}
+  .minibtn{margin:.3rem .3rem .6rem 0;font-size:.82rem}
+  .minibtn2{margin:.6rem 0 .4rem;font-size:.82rem}
+  ul{margin:.4rem 0 .5rem 1.1rem;padding:0}ul li{margin:.25rem 0}
+  footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.2rem;padding-top:.7rem}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Школьнику · маршрут самоопределения 8–11 класс</div>
+    <h1>Мой маршрут: работаю сам</h1>
+    <p class="meta">Путеводитель по четырём этапам: что сделать самому, что спросить у тьютора, что уточнить у ИИ (DeepSeek) · 29.10.2026</p>
+  </header>
+
+  <div class="tabnav">
+    <button class="active" onclick="showTab('tab-start',this)">Как пользоваться</button>
+    <button onclick="showTab('tab-st1',this)">Этап 1 · Старт</button>
+    <button onclick="showTab('tab-st2',this)">Этап 2 · Пробы</button>
+    <button onclick="showTab('tab-st3',this)">Этап 3 · ОГЭ и профиль</button>
+    <button onclick="showTab('tab-st4',this)">Этап 4 · Проект ИУП</button>
+  </div>
+
+  <!-- ============ СТАРТОВЫЙ БЛОК ============ -->
+  <section class="tabpanel active" id="tab-start">
+    <div class="tldr"><b>Как пользоваться.</b> Выбери раздел в быстром переходе сверху — откроется только его информация. Внутри раздела нажми на название занятия (они свёрнуты), чтобы увидеть три блока: <b style="color:var(--ok)">«Сделаю сам»</b> (зелёный), <b style="color:#7a5616">«Спрошу тьютора»</b> (золотой), <b style="color:var(--violet)">«Спрошу DeepSeek»</b> (фиолетовый) с промптом и кнопкой «копировать».</div>
+
+    <div class="warn-box"><b>Важно про ИИ.</b> DeepSeek — помощник, а не замена людям. Не пиши в чат своё полное имя, фамилию, школу и телефон (личные данные). Не жди от ИИ диагнозов и «правильных ответов» про тебя — он показывает варианты, а решаешь ты. Если тревога или трудности длятся дольше 2–3 недель — это к психологу, а не к ИИ.</div>
+
+    <div class="rules"><b>Как пользоваться DeepSeek в маршруте.</b>
+      <ul>
+        <li><b>Можно спрашивать:</b> объясни / покажи варианты / составь список / помоги сформулировать / подскажи, где искать.</li>
+        <li><b>Не стоит:</b> писать личные данные (ФИО, школа, адрес, телефон), ждать «диагноз» или категоричную оценку «подходит/не подходит», просить написать за тебя всё целиком — решение остаётся твоим.</li>
+        <li><b>Перепроверяй факты:</b> ИИ может ошибаться; важные данные (вузы, баллы, сроки) сверяй с официальными сайтами (ФИПИ, Рособрнадзор, сайты вузов) или с тьютором.</li>
+      </ul>
+    </div>
+
+    <div class="card"><b>Где лежат материалы, которые упоминаются в маршруте.</b>
+      <ul>
+        <li><b>Бланки и документы</b> — в портале «Я выбираю свою траекторию»: раздел «Мои документы курса» (входная рефлексия, карта маршрута, таблица проб, дневник наблюдений, план к ОГЭ, «Мои способы справиться», матрица вуз, договорённости с семьёй, проект ИУП).</li>
+        <li><b>Интерактивные шаблоны</b> — файл «Рабочие шаблоны - ИОМ и ИУП (интерактив)» в папке «Методички» рядом с порталом.</li>
+        <li><b>Методичка занятия</b> — открывается кнопкой «Методичка тьютора» в карточке занятия на портале.</li>
+        <li><b>Пробники и демоверсии ОГЭ</b> — открытый банк ФИПИ (oge.fipi.ru/bank), демоверсии (fipi.ru/oge/demoversii-specifikacii-kodifikatory).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ ЭТАП 1 ============ -->
+  <section class="tabpanel" id="tab-st1">
+    <div class="st-t">Этап 1 · Старт: я и мир профессий (занятия 1–5)</div>
+    <button class="minibtn2" onclick="openIn(this,true)">Развернуть занятия</button><button class="minibtn2" onclick="openIn(this,false)">Свернуть</button>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 1. Вход в маршрут: ИОП, ИУП, ИОМ</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Понять, что такое индивидуальный маршрут, из чего он состоит и почему он твой. Узнать три «буквы»: ИОП, ИУП, ИОМ — и заполнить первый лист «Что я хочу понять о себе».</div>
+        <div class="tool"><b>Инструмент «Карточки понятий»</b> — нажми на карточку, чтобы перевернуть и увидеть пример:</div>
+        <div class="cards3">
+          <div class="flip" onclick="this.classList.toggle('open')"><b>ИОП</b><div class="back">Индивидуальная ОБРАЗОВАТЕЛЬНАЯ ПРОГРАММА — «стратегия»: что хочешь освоить и каким будет результат (например: «стать инженером-конструктором БПЛА»). Вопрос: «зачем и к чему я иду?».</div></div>
+          <div class="flip" onclick="this.classList.toggle('open')"><b>ИУП</b><div class="back">Индивидуальный УЧЕБНЫЙ ПЛАН — «наполнение»: какие предметы и курсы берёшь (физика углублённо, кружок по БПЛА). Вопрос: «что именно я изучаю?».</div></div>
+          <div class="flip" onclick="this.classList.toggle('open')"><b>ИОМ</b><div class="back">Индивидуальный ОБРАЗОВАТЕЛЬНЫЙ МАРШРУТ — «путь»: в каком порядке идёшь и с чьей помощью (этапы, встречи с тьютором, пробы). Вопрос: «как я буду это делать?».</div></div>
+        </div>
+        <div class="do"><b>Сделаю сам:</b> переверни 3 карточки выше (клик). Открой «Рабочие шаблоны» и заполни лист «Что я хочу понять о себе» своими словами. Дома подумай: «Мой любимый предмет и почему» — запиши одну мысль.</div>
+        <div class="tut"><b>Спрошу тьютора:</b> рассказать про любимый предмет; если не понимаешь «зачем мне это» — так и скажи, это хороший вопрос.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Объясни мне простыми словами, чем отличаются ИОП, ИУП и ИОМ. Я учусь в [класс], мне интересно [2-3 направления]. Приведи пример, как эти три документа могут выглядеть для моей ситуации. Пиши коротко, без канцелярита.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 2. Диагностика интересов и склонностей</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Собрать стартовые данные о себе: что интересно, в чём силён, что тревожит. Это не оценка, а исходная точка для выбора.</div>
+        <div class="tool"><b>Инструмент «Типы Климова».</b> Е.А. Климов разделил профессии по предмету труда на 5 типов. Выбери 1–2, которые тебе ближе (клик по чипсу) — подсказка, не приговор.</div>
+        <div class="chips"><span class="chip">🧑‍🔧 человек–техника (машины, приборы, БПЛА)</span><span class="chip">🔢 человек–знак (цифры, тексты, коды)</span><span class="chip">🌿 человек–природа (растения, животные, экология)</span><span class="chip">👥 человек–человек (помощь, обучение, общение)</span><span class="chip">🎨 человек–художественный образ (искусство, дизайн)</span></div>
+        <div class="do"><b>Сделаю сам:</b> пройди «Входную диагностику» на портале (раздел «Входная диагностика» — портал подсчитает профиль интересов). Выбери 1–2 типа Климова кликом. Запиши в карту «Что я хочу попробовать».</div>
+        <div class="tut"><b>Спрошу тьютора:</b> вместе разобрать результаты: «Что откликается, а что нет?» (встреча 18–25 минут). Если в результатах «повышенная тревожность» — не пугайся, тьютор подскажет.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Мои результаты диагностики: интересы — [напиши], любимые предметы — [напиши], любимые занятия — [напиши]. Какие направления и профессии могут мне подойти? Не ставь оценок «подходит/не подходит», покажи просто варианты и объясни, с чем они связаны.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 3. Мир профессий: карта-обзор</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Расширить карту профессий и снять стереотипы. Выбор пока откладываем: мы не выбираем, а смотрим.</div>
+        <div class="tool"><b>Инструмент «Пять миров профессий».</b> Отметь 1–3 мира, где «живут» твои интересы (клик по чипсу).</div>
+        <div class="chips"><span class="chip">🧑‍🔧 техника</span><span class="chip">🔢 знак</span><span class="chip">🌿 природа</span><span class="chip">👥 люди</span><span class="chip">🎨 образ</span></div>
+        <div class="do"><b>Сделаю сам:</b> отметь до 3 миров кликом. Запиши в карту «Что меня удивило» (одна фраза).</div>
+        <div class="tut"><b>Спрошу тьютора:</b> обсудить стереотипы, если сомневаешься из-за «престижа» или «мальчики/девочки» — это частая ловушка.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Расскажи про профессии мира «[напиши мир: техника/знак/природа/люди/образ]». Какие из них будут востребованы через 5–10 лет? Что делает такой специалист каждый день и какие школьные предметы ему нужны? Коротко, списком.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 4. Мои сильные стороны и предметы</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Научиться опираться на сильные стороны и связать их с предметами и профессиями. Сильная сторона — не «что легко», а что увлекает и получается.</div>
+        <div class="tool"><b>Инструмент «Колода сильных сторон».</b> Выбери ровно 5 (клик). Для каждой подумай: «В каком предмете это видно? В какой профессии пригодится?»</div>
+        <div class="chips"><span class="chip">любознательность</span><span class="chip">упорство</span><span class="chip">фантазия</span><span class="chip">аккуратность</span><span class="chip">логика</span><span class="chip">общительность</span><span class="chip">помощь другим</span><span class="chip">быстро учусь</span><span class="chip">терпение</span><span class="chip">чувство прекрасного</span><span class="chip">изобретательность</span><span class="chip">ответственность</span><span class="chip">смелость пробовать</span><span class="chip">системность</span><span class="chip">честность</span></div>
+        <div class="do"><b>Сделаю сам:</b> выбери 5 чипсов. Для каждой запиши связку «предмет → где видно» и «профессия → где пригодится». Если кажется «у меня ничего не получается» — вспомни самый маленький успех из прошлого.</div>
+        <div class="tut"><b>Спрошу тьютора:</b> получить конкретную обратную связь; попросить назвать одну сильную сторону, которую ты сам не видишь.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Вот 5 моих сильных сторон: [список]. С какими школьными предметами они связаны и в каких профессиях пригодились бы? Дай связки «сильная сторона → предмет → профессия», по 1–2 на каждую.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 5. Карта маршрута, версия 0.1</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Собрать всё в один документ — твою первую карту маршрута. Это твой план, который можно менять. Карта заполняется твоими словами, не «под тьютора».</div>
+        <div class="do"><b>Сделаю сам:</b> заполни «Карту маршрута» в «Рабочих шаблонах»: паспорт, интересы (из занятия 2), 2–3 области для проб, «что я хочу попробовать». Составь 2–3 фразы «что я узнал(а) о себе за эти встречи».</div>
+        <div class="tut"><b>Спрошу тьютора — встреча обязательна:</b> показать карту, проверить, что формулировки твои и реалистичные, договориться о встрече с родителями и резюме для них.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Составь короткое резюме для родителей по моей карте: я интересуюсь [направления], мне нравится [что], сильные стороны [список]. Напиши так, чтобы родители поняли, что я выбираю и почему мне нужна их поддержка.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ЭТАП 2 ============ -->
+  <section class="tabpanel" id="tab-st2">
+    <div class="st-t">Этап 2 · Пробы: примеряю профессию (занятия 6–10)</div>
+    <button class="minibtn2" onclick="openIn(this,true)">Развернуть занятия</button><button class="minibtn2" onclick="openIn(this,false)">Свернуть</button>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 6. Профпроба: пробуем профессию руками</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Попробовать профессию на деле — доказанный способ понять «моё/не моё». «Не понравилось» — тоже результат, а не провал.</div>
+        <div class="tool"><b>Инструмент «Домашние мини-пробы» (без оборудования).</b></div>
+        <ul class="note">
+          <li><b>Инженерная:</b> построй мост из бумаги и скотча, который выдержит книгу. Запиши, что сломалось первым и почему.</li>
+          <li><b>Цифровая:</b> напиши сценарий мобильного приложения или алгоритм простой программы (можно на бумаге, шагами).</li>
+          <li><b>Творческая:</b> сними 1-минутный ролик «моя будущая профессия» на телефон и смонтируй.</li>
+        </ul>
+        <div class="do"><b>Сделаю сам:</b> выполни 1–2 мини-пробы. Запиши результаты в «Таблицу сравнения проб» (нравится / получается / где применяется). Не оценивай себя строго — просто фиксируй.</div>
+        <div class="tut"><b>Спрошу тьютора:</b> записаться на реальную пробу; после — обсудить «Какая проба зажгла? Что именно понравилось?»</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Дай мне 3 простых задания по направлению [направление], которые можно сделать дома без сложного оборудования, чтобы понять, нравится ли мне это. Для каждого: что нужно, что делать, как пойму, что понравилось.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 7. Один день на месте профессии</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Увидеть реальный рабочий день специалиста и снизить страх неизвестности. Реальная работа отличается от рекламы — это ценно.</div>
+        <div class="tool"><b>Инструмент «Видео-экскурсии».</b> Нет очного визита? Посмотри видео-туры на сайтах предприятий, онлайн-экскурсии музеев техники, интервью со специалистами на YouTube-каналах компаний.</div>
+        <div class="do"><b>Сделаю сам:</b> посмотри 1 видео-экскурсию. Заполни «Дневник наблюдений»: что делает специалист, какие предметы нужны, что удивило.</div>
+        <div class="tut"><b>Спрошу тьютора:</b> организовать очный визит или проверенное видео; получить разрешение родителей (для визита).</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Какие вопросы задать инженеру [направление] при посещении предприятия или после видео-экскурсии? Составь список из 10 вопросов: путь в профессию, обычный день, что нравится, что трудно, какие предметы нужны.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 8. Встреча с представителями профессий</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Получить живые ответы от практика и научиться формулировать вопросы. Настоящие люди сильнее рекламы.</div>
+        <div class="do"><b>Сделаю сам:</b> подготовь 5–8 вопросов гостю (список можно составить с DeepSeek, но переформулируй своими словами).</div>
+        <div class="tut"><b>Спрошу тьютора:</b> договориться о госте или видео-интервью; после — обсудить «что совпало с ожиданиями, что удивило».</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Человек работал в области [направление] больше 10 лет. Составь 8 вопросов, чтобы понять: как он пришёл в профессию, какие ошибки и находки были, что посоветует школьнику. Вопросы простые и живые.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 9. Выбор 2–3 областей: стол сравнения</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Перевести впечатления от проб в обоснованный выбор. Выбор — не «любовь с первого взгляда», а взвешенная таблица. И его можно изменить.</div>
+        <div class="do"><b>Сделаю сам:</b> заполни «Таблицу сравнения проб» по каждой пробе: «мне нравится / у меня получается / где применяется / какие предметы нужны». Посмотри, какая область выигрывает по всем строкам.</div>
+        <div class="tut"><b>Спрошу тьютора — встреча:</b> сформулировать вывод «Мои области — это … потому что …»; зафиксировать 2–3 области и запасной вариант.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Я попробовал(а) направления: [3 направления]. Вот моя таблица «нравится / получается / где применяется / предметы»: [вставь]. Помоги сформулировать вывод «мои области — это…, потому что…» — так, чтобы это были мои слова, а не шпаргалка.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 10. Итоги года: карта 1.0 и разговор с родителями</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Закрепить выбор, вовлечь родителей как партнёров (не судей), завершить год чувством «я справился». Ты сам объясняешь свой выбор — шаг взросления.</div>
+        <div class="do"><b>Сделаю сам:</b> заполни «Договорённости с семьёй»; подготовь короткую презентацию «мои области и почему» (план можно составить с DeepSeek).</div>
+        <div class="tut"><b>Спрошу тьютора — встреча с родителями обязательна:</b> презентовать выбор, заполнить договорённости, подписать карту 1.0. Если родители давят — тьютор поможет перевести разговор к твоим интересам.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Составь план короткой презентации для родителей (5 слайдов): «Мои области и почему». Простые слова, без канцелярита. Мой выбор: [опиши].</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ЭТАП 3 ============ -->
+  <section class="tabpanel" id="tab-st3">
+    <div class="st-t">Этап 3 · ОГЭ и профиль: я выбираю осознанно (занятия 11–15)</div>
+    <button class="minibtn2" onclick="openIn(this,true)">Развернуть занятия</button><button class="minibtn2" onclick="openIn(this,false)">Свернуть</button>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 11. ОГЭ по выбору: что это и как выбрать</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Понять, как устроен ОГЭ, и выбрать предметы по трём критериям. «Ты выбираешь не навсегда, а на один экзамен».</div>
+        <div class="tool"><b>Инструмент «Критерии выбора ОГЭ».</b> Для каждого предмета ответь на 3 вопроса: 1) нужен ли он для твоего профиля/направления? 2) входит ли в твои сильные стороны? 3) какой запасной вариант, если первый не сработает?</div>
+        <div class="do"><b>Сделаю сам:</b> заполни таблицу «мои предметы на ОГЭ» в «Рабочих шаблонах» (2–4 предмета по выбору + обязательные русский и математика). Для каждого пройди по трём критериям.</div>
+        <div class="tut"><b>Спрошу тьютора:</b> проверить обоснованность выбора, обсудить запасной вариант.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Я выбираю предметы ОГЭ по выбору. Мне интересно [направления], сильные стороны [список]. Какие предметы стоит выбрать и почему? Какой запасной вариант разумно оставить? Учитывай, что выбор можно изменить.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 12. Профильные предметы: план подготовки</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Составить реалистичный план: маленькими шагами каждую неделю, а не зубрить всё сразу.</div>
+        <div class="do"><b>Сделаю сам:</b> в «Рабочих шаблонах» заполни «План подготовки к ОГЭ»: темы по каждому предмету, ранжирование по сложности, недели с реальным количеством часов (без перегруза).</div>
+        <div class="tut"><b>Спрошу тьютора:</b> договориться «кто за что отвечает»; выбрать порядок тем; следить, чтобы план был посильным.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Составь недельный план подготовки к ОГЭ по [предмет] на 8 недель: разбей темы на посильные порции, добавь повторение через 7–14 дней и 1 самопроверку в неделю. Я могу заниматься [часы в неделю].</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 13. Дни открытых дверей: вузы и колледжи</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Связать свой интерес с конкретными учебными заведениями и наборами экзаменов. День открытых дверей — «примерить вуз на себя».</div>
+        <div class="do"><b>Сделаю сам:</b> выбери 2–3 вуза или колледжа; на официальных сайтах найди «дни открытых дверей» (очные или онлайн). Заполни «Матрицу профиль → вуз/СПО → предметы → конкурс».</div>
+        <div class="tut"><b>Спрошу тьютора:</b> организовать поездку или онлайн-участие; обсудить «что это значит для меня».</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Какие вузы и колледжи в моём регионе [регион] имеют направление [направление]? Какие предметы нужны для поступления? Как узнать про дни открытых дверей? Дай список и подскажи, где сверить актуальное.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 14. Тревожность и самоэффективность</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Дать инструменты снижения тревоги перед экзаменами и укрепить веру в себя. Тревога — сигнал, что нужна поддержка, а не наказание.</div>
+        <div class="tool"><b>Инструмент «Техники за 2 минуты».</b><br><b>«Дыхание по квадрату»:</b> вдох 4 с → пауза 4 с → выдох 4 с → пауза 4 с. Повтори 4–5 раз.<br><b>«Назвать и проговорить»:</b> скажи вслух: «Я замечаю, что я волнуюсь. Это нормально. Что конкретно меня тревожит?» — назови страх словами.</div>
+        <div class="do"><b>Сделаю сам:</b> заполни «Мои способы справиться» — выбери 2–3 техники. Практикуй «дыхание по квадрату» перед сном или контрольной.</div>
+        <div class="tut"><b>Спрошу тьютора:</b> составить «план Б» («что будет, если не сдам на отлично»). Если тревога стойкая (2–3 недели) — тьютор направит к психологу. Это нормально.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Дай короткую телесную технику, чтобы успокоиться за 2 минуты перед контрольной (дыхание, напряжение-расслабление). Без диагнозов и советов «просто не волнуйся». 3–4 шага.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 15. Карта маршрута 2.0: цели к ОГЭ</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Обновить карту с чёткими, проверяемыми целями. Не «хочу знать физику», а «решаю 8 из 10 задач без помощи».</div>
+        <div class="do"><b>Сделаю сам:</b> сформулируй цели по схеме «Я считаю тему … освоенной, когда решу 8 из 10 задач без помощи». Запиши в карту 2.0 цели и контрольные точки.</div>
+        <div class="tut"><b>Спрошу тьютора — встреча:</b> проверить цели на реалистичность, определить контрольные точки; тьютор становится «равным наставником».</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Помоги сформулировать мои цели к ОГЭ по схеме «я считаю тему освоенной, когда…». Предмет: [предмет], темы: [список]. Цели должны быть проверяемыми (задачи/баллы/время).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ЭТАП 4 ============ -->
+  <section class="tabpanel" id="tab-st4">
+    <div class="st-t">Этап 4 · Проект ИУП: от выбора к документу (занятия 16–20)</div>
+    <button class="minibtn2" onclick="openIn(this,true)">Развернуть занятия</button><button class="minibtn2" onclick="openIn(this,false)">Свернуть</button>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 16. Анализ результатов: пробники и диагностики</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Объективно оценить готовность и скорректировать план. Ошибка — сигнал «здесь подправить», а не «ты неспособен». Мы сравниваем тебя с тобой вчерашним.</div>
+        <div class="tool"><b>Где взять пробники:</b> открытый банк заданий ФИПИ — oge.fipi.ru/bank; демоверсии, спецификации, кодификаторы — fipi.ru/oge/demoversii-specifikacii-kodifikatory.</div>
+        <div class="do"><b>Сделаю сам:</b> реши 1 пробник по каждому выбранному предмету (с таймером). Выпиши ошибки в «План подготовки» → «зоны роста»; отметь сильные темы. Не бросай выбор из-за одного слабого пробника.</div>
+        <div class="tut"><b>Спрошу тьютора:</b> разобрать пробник; решить — корректируем ли набор предметов; договориться о поддерживающем режиме.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Вот мои ошибки в пробнике по [предмет]: [список тем]. Какие темы повторять в первую очередь? Составь план на 2 недели по приоритетам. Не придумывай мои ошибки — работай только с тем, что я написал(а).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 17. Профиль и ИУП: предметы, уровни, часы</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Собрать проект ИУП — твой документ о том, как ты будешь учиться в 10 классе. Углублённый уровень — не наказание, а выбор тех, кому это нужно.</div>
+        <div class="tool"><b>Инструмент «Конструктор профиля».</b> Минимум по ФГОС СОО: 13 предметов, из них 2 углублённых. Профили: технологический (физ-мат), естественно-научный, гуманитарный, социально-экономический, универсальный.</div>
+        <div class="do"><b>Сделаю сам:</b> выбери профиль (по интересам из карты). В «Рабочих шаблонах» заполни «Проект ИУП»: предметы, уровень, часы. Проверь минимум.</div>
+        <div class="tut"><b>Спрошу тьютора:</b> проверить, что предметы связаны с твоими интересами (а не с «модой»); зафиксировать «что обсудим с родителями».</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Помоги собрать проект ИУП для 10 класса: профиль [профиль], интересы [список], сильные стороны [список]. Какие предметы взять на углублённый уровень (минимум 2)? Какие обязательные предметы не забыть? Объясни, почему.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 18. Согласование с родителями и школой</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Презентовать проект ИУП родителям и школе, ответить на вопросы, подписать документы. Согласование — совместное решение, родители — партнёры.</div>
+        <div class="do"><b>Сделаю сам:</b> подготовь проект ИУП к встрече; составь краткое объяснение для родителей (можно с DeepSeek): что выбрал, почему, какие обязательные предметы остаются.</div>
+        <div class="tut"><b>Спрошу тьютора — встреча семьи, тьютора и школы обязательна:</b> презентовать проект, обсудить вопросы, подписать заявление о переходе на ИУП. ИУП не отменяет обязательные предметы и аттестацию.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Составь простое и убедительное объяснение для родителей: почему я выбрал(а) [предметы/уровни] в 10 классе. Их опасения скорее всего: «а не будет ли меньше часов», «а что с обязательными предметами». Ответь спокойно, фактами.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 19. Рефлексия и защита маршрута</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Подвести итог двух лет: «Ты прошёл путь от “не знаю” до “я выбрал”». Это праздник завершения, а не экзамен — не дави на себя.</div>
+        <div class="do"><b>Сделаю сам:</b> подготовь рассказ «Мой маршрут за два года» по карте: что узнал(а) о себе, что выбрал(а) и почему, что дальше.</div>
+        <div class="tut"><b>Спрошу тьютора — защита:</b> рассказать путь, ответить на вопросы, получить письменное подтверждение в личном деле.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Составь структуру моего рассказа «Мой маршрут за два года» по фактам: интересы [список], пробы [список], выбор [список], планы [список]. Это мои слова — просто помоги уложить их в историю.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lh" onclick="tog(this)"><span>Занятие 20. Передача в 10 класс: сопровождение продолжается</span><span class="arr">▶</span></div>
+      <div class="lb">
+        <div class="ref"><b>Зачем.</b> Обеспечить плавный переход в старшую школу: поддержка не заканчивается, она меняет форму. В 10 классе тьютор становится «равным наставником».</div>
+        <div class="do"><b>Сделаю сам:</b> заполни «План первых 4 недель 10 класса»: привычки, предметы, внеурочное, одна цель на месяц.</div>
+        <div class="tut"><b>Спрошу тьютора — передача:</b> тьютор передаст твою карту и план следующему наставнику; обсуди, как изменится его роль.</div>
+        <div class="ai"><b>Спрошу DeepSeek.</b> <button class="copybtn" onclick="cp(this)">копировать</button>
+          <div class="prompt">Составь план моих первых 4 недель в 10 классе: предметы, на которые сразу обратить внимание, привычки (повторение, сон, перерывы), одна цель на месяц. Учти мой профиль: [профиль].</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Мой маршрут: работаю сам · путеводитель школьника по 20 занятиям · 29.10.2026 · парные материалы: «Рабочие шаблоны - ИОМ и ИУП (интерактив)», методички занятий, портал «Я выбираю свою траекторию».</footer>
+</main>
+<script>
+  function showTab(id, btn){
+    document.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tabnav button').forEach(function(b){ b.classList.remove('active'); });
+    var t = document.getElementById(id); if (t) t.classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function tog(el){ el.parentElement.classList.toggle('open'); }
+  function cp(btn){
+    var p = btn.nextElementSibling;
+    if (p) {
+      var r = document.createRange(); r.selectNodeContents(p);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      try { document.execCommand("copy"); } catch(e){}
+      s.removeAllRanges(); btn.textContent = "скопировано ✓";
+      setTimeout(function(){ btn.textContent = "копировать"; }, 1500);
+    }
+  }
+  function openIn(btn, open){
+    var sec = btn.closest('.tabpanel'); if (!sec) return;
+    sec.querySelectorAll('.lesson').forEach(function(x){ x.classList.toggle('open', open); });
+  }
+  document.querySelectorAll(".chips .chip").forEach(function(c){
+    c.addEventListener("click", function(){ c.classList.toggle("on"); });
+  });
+</script>
+</body>
+</html>
