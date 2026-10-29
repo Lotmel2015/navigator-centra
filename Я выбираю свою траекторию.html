@@ -1022,6 +1022,7 @@
 <section id="dash-tutor">
     <div style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between;margin-bottom:.4rem">
       <h3 style="margin:0">Панель тьютора: подтверждение этапов учеников</h3>
+      <button class="btn ghost small" onclick="toggleAllStages()">Развернуть / свернуть все этапы</button>
       <button class="btn ghost small" onclick="logout()">Выйти из профиля</button>
     </div>
     <h2 style="margin-top:1rem">Роли тьютора: три взгляда на одно занятие</h2>
@@ -3649,6 +3650,14 @@
   window.toggleStage = function (headEl) {
     var stage = headEl.closest(".stage");
     if (stage) stage.classList.toggle("open");
+  };
+  window.toggleAllStages = function () {
+    var stages = document.querySelectorAll(".stage");
+    var anyOpen = false;
+    stages.forEach(function (s) { if (s.classList.contains("open")) anyOpen = true; });
+    stages.forEach(function (s) {
+      if (anyOpen) s.classList.remove("open"); else s.classList.add("open");
+    });
   };
   window.toggleLesson = function (headEl, ev) {
     if (ev && ev.target && ev.target.closest && ev.target.closest("a, button, input, select, textarea")) return;
