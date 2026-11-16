@@ -684,10 +684,10 @@
         <select id="sh-tutor"><option value="">— выбери из списка —</option></select>
         <div id="sh-tutor-hint" style="font-size:.78rem;color:var(--muted);margin-top:.3rem"></div>
       </div>
-      <button class="btn-enter" onclick="registerShkolnik()">Открыть мой маршрут →</button>
-      <div class="authmsg">Наставник — из списка зарегистрированных. Нет его — войди без, назначим позже.</div>
-      <div class="screen-box" style="margin-top:.9rem;background:var(--bg,#f6f8fb);border:1px dashed var(--line,#dfe5ec);border-radius:10px;padding:.8rem .9rem">
-        <div class="scrn-h" style="font-size:.82rem;font-weight:800;color:var(--navy,#1f3a5f);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.45rem">Пара слов о себе (быстрый отбор)</div>
+      <div class="authmsg" style="margin:0 0 .6rem">Наставник — из списка зарегистрированных. Нет его — войди без, назначим позже.</div>
+      <div class="screen-box" style="margin:0 0 1rem;background:var(--bg,#f6f8fb);border:1px dashed var(--line,#dfe5ec);border-radius:10px;padding:.8rem .9rem">
+        <div class="scrn-h" style="font-size:.82rem;font-weight:800;color:var(--navy,#1f3a5f);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem">Пара слов о себе (быстрый отбор)</div>
+        <div style="font-size:.78rem;color:#5c6a77;line-height:1.4;margin-bottom:.6rem">Ответь на все четыре вопроса — без них регистрация не завершится: по ним подберём наставника и передадим тьютору короткий брифинг.</div>
         <div class="field"><label>Что тебя сейчас больше всего интересует?</label>
           <select id="sc-int"><option value="">— выбери —</option><option>Техника и инженерия</option><option>Медицина и биология</option><option>IT и программирование</option><option>Экономика и финансы</option><option>Искусство и творчество</option><option>Гуманитарные науки</option><option>Спорт и активность</option><option>Пока не знаю</option></select>
         </div>
@@ -701,6 +701,7 @@
           <select id="sc-auto" onchange="fillTutorSelect()"><option value="">— выбери —</option><option>Нужен постоянный контроль и подсказки</option><option>Могу сам, если есть чёткий план</option><option>Полностью сам, хочу только советы и разборы</option></select>
         </div>
       </div>
+      <button class="btn-enter" onclick="registerShkolnik()">Открыть мой маршрут →</button>
     </div>
 
     <!-- Форма помогающего -->
@@ -2551,6 +2552,16 @@
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { el("errS").textContent = "Укажите корректную электронную почту."; return; }
     var pass = el("sh-pass").value || "";
     if (pass.length < 4) { el("errS").textContent = "Пароль должен быть не короче 4 символов."; return; }
+    var scMiss = "";
+    if (!el("sc-int").value) scMiss = "sc-int";
+    else if (!el("sc-goal").value) scMiss = "sc-goal";
+    else if (!el("sc-time").value) scMiss = "sc-time";
+    else if (!el("sc-auto").value) scMiss = "sc-auto";
+    if (scMiss) {
+      el("errS").textContent = "Анкета обязательна: ответь на все четыре вопроса — по ним подбираем наставника.";
+      el(scMiss).focus();
+      return;
+    }
     var emailTaken = getUsers().some(function (u) { return u.email && u.email.toLowerCase() === email.toLowerCase(); });
     if (emailTaken) { el("errS").textContent = "Эта почта уже зарегистрирована. Войдите под ней."; return; }
     var tutorId = el("sh-tutor").value || "";
