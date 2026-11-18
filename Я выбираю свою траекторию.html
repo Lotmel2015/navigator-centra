@@ -290,6 +290,10 @@
   body.role-tyutor #reports-section { order: 2; }
   body.role-tyutor .tview { display: none !important; }
   body.role-tyutor .tview.active { display: block !important; }
+  /* ==== Разделы обучающегося: те же страницы, стартовая — «Мой профиль» ==== */
+  body.role-shkolnik main > header { display: none; }
+  body.role-shkolnik .tview { display: none !important; }
+  body.role-shkolnik .tview.active { display: block !important; }
   #rolenav a.active { background: #fff; color: var(--navy); }
 
   /* ==== Ролевая мини-навигация (липкая) ==== */
@@ -1132,7 +1136,7 @@
     </div>
   </section>
 
-  <section id="dash-shkolnik">
+  <section id="dash-shkolnik" class="tview active" data-view="profile">
     <h3>Мой профиль и мой маршрут</h3>
     <div id="profile-shkolnik" style="background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.9rem 1.1rem;margin:.7rem 0;font-size:.95rem">
       <div id="ps-fio" style="font-weight:700;color:var(--navy);margin-bottom:.2rem"></div>
@@ -1881,7 +1885,7 @@
 
     </div>
   </section><!-- ==================== ЗАПОЛНЯЕМЫЕ ДОКУМЕНТЫ КУРСА ==================== -->
-  <section class="docs-wrap block collapsible" id="docs">
+  <section class="docs-wrap block collapsible tview" data-view="docs" id="docs">
     <h2 class="collapsible-head" onclick="toggleBlock(this)"><span class="cchev">▾</span> Мои документы курса</h2>
     <div class="collapsible-body">
     <p class="docs-sub">Заполняй документы прямо здесь — они сохраняются в твой профиль (в этом браузере). Под каждым шаблоном появляется ссылка «Открыть мой документ»: по ней можно в любой момент посмотреть сохранённое, распечатать или скачать.</p>
@@ -2724,8 +2728,7 @@
     var dashSh = el("dash-shkolnik");
     var dashTut = el("dash-tutor");
     if (!sess) {
-      tutorViewLogin = null;
-      tutorView = "panel";
+      portalViewLogin = null;
       bar.style.display = "none"; prog.style.display = "none";
       if (overlay) {
         overlay.classList.add("show");
@@ -2751,6 +2754,8 @@
       renderStreak(sess.login);
       renderRolenav("shkolnik");
       if (dashTut) dashTut.style.display = "none";
+      var freshS = portalViewLogin !== sess.login;
+      if (freshS) { portalViewLogin = sess.login; portalView = "profile"; }
       var d = getDone(sess.login);
       var n = ORDER.filter(function (k) { return d[k]; }).length;
       var nLess = 0, totalLess = 0;
@@ -2765,18 +2770,19 @@
       el("prog-label").textContent = "Мой маршрут: пройдено " + nLess + " из " + totalLess + " занятий (" + n + " из " + ORDER.length + " этапов)";
       el("prog-fill").style.width = totalLess ? Math.round(nLess / totalLess * 100) + "%" : "0%";
       prog.style.display = "block";
+      showView(portalView, { silent: !freshS, noScroll: !freshS });
     } else {
       if (dashSh) dashSh.style.display = "none";
       prog.style.display = "none";
       if (dashTut) dashTut.style.display = "block";
-      var freshView = tutorViewLogin !== sess.login;
+      var freshView = portalViewLogin !== sess.login;
       if (freshView) {
-        tutorViewLogin = sess.login;
-        tutorView = "panel";
+        portalViewLogin = sess.login;
+        portalView = "panel";
       }
       renderTutorPanel();
       renderRolenav("tyutor");
-      showTutorView(tutorView, { silent: !freshView, noScroll: !freshView });
+      showView(portalView, { silent: !freshView, noScroll: !freshView });
     }
   }
 
@@ -3796,21 +3802,23 @@
     var target = flat[i || 0];
     if (target) target.jump();
   };
-  function ensureTutorViewFor(node) {
+  function ensureViewFor(node) {
     var sess = getSession();
-    if (!sess || sess.role !== "tyutor" || !node || !node.closest) return;
+    if (!sess || !node || !node.closest) return;
     var view = "";
-    if (node.closest("#tutor-help")) view = "help";
+    if (node.closest("#dash-shkolnik")) view = "profile";
+    else if (node.closest("#dash-tutor")) view = "panel";
+    else if (node.closest("#tutor-help")) view = "help";
+    else if (node.closest("#docs")) view = "docs";
     else if (node.closest("#stages-group")) view = "route";
     else if (node.closest("#reports-section")) view = "reports";
     else if (node.closest("#partners-section")) view = "partners";
-    else if (node.closest("#dash-tutor")) view = "panel";
-    if (view && window.showTutorView) window.showTutorView(view, { silent: false, noScroll: true });
+    if (view && window.showView) window.showView(view, { silent: false, noScroll: true });
   }
   function openResult(r) {
     var box = document.getElementById("search-results");
     if (box) box.classList.remove("open");
-    ensureTutorViewFor(r.el || r.panel);
+    ensureViewFor(r.el || r.panel);
     if (r.el) {
       if (r.type === "Этап") {
         var st = r.el.closest(".stage") || r.el;
@@ -4233,15 +4241,21 @@
       if (anyOpen) s.classList.remove("open"); else s.classList.add("open");
     });
   };
-  /* Страницы тьютора: переключение разделов вместо длинной прокрутки */
-  var tutorView = "panel";
-  var tutorViewLogin = null;
-  window.showTutorView = function (view, opts) {
+  /* Страницы разделов: у тьютора и школьника свои наборы, переключение без прокрутки */
+  var PORTAL_VIEWS = {
+    tyutor: ["panel","help","reports","partners","route"],
+    shkolnik: ["profile","docs","route","partners"]
+  };
+  var portalView = "profile";
+  var portalViewLogin = null;
+  window.showView = function (view, opts) {
     opts = opts || {};
     var sess = getSession();
-    if (!sess || sess.role !== "tyutor") return;
-    if (["panel","help","reports","partners","route"].indexOf(view) === -1) view = "panel";
-    tutorView = view;
+    if (!sess) return;
+    var allowed = PORTAL_VIEWS[sess.role] || [];
+    if (!allowed.length) return;
+    if (allowed.indexOf(view) === -1) view = allowed[0];
+    portalView = view;
     document.querySelectorAll(".tview").forEach(function (s) {
       s.classList.toggle("active", s.getAttribute("data-view") === view);
     });
@@ -4252,17 +4266,20 @@
     if (rep && view === "reports") rep.classList.add("block-open");
     var prt = el("partners-section");
     if (prt && view === "partners") prt.classList.add("block-open");
+    var dcs = el("docs");
+    if (dcs && view === "docs") dcs.classList.add("block-open");
     if (!opts.silent) {
       try { history.replaceState(null, "", "#" + view); } catch (err) {}
       if (!opts.noScroll) window.scrollTo(0, 0);
     }
   };
+  window.showTutorView = function (view, opts) { return window.showView(view, opts); };
   window.renderRolenav = function (role) {
     var nav = document.getElementById("rolenav");
     if (!nav) return;
     var links = [];
     if (role === "shkolnik") {
-      links = [["#dash-shkolnik","Мой профиль"],["#docs","Мои документы"],["#stages-group","Мой маршрут"],["#partners-section","Партнёры"]];
+      links = [["#profile","Мой профиль","profile"],["#docs","Мои документы","docs"],["#route","Мой маршрут","route"],["#partners","Партнёры","partners"]];
     } else if (role === "tyutor") {
       links = [["#panel","Панель тьютора","panel"],["#help","В помощь тьютору","help"],["#reports","Отчёты","reports"],["#partners","Партнёры","partners"]];
     } else {
@@ -4286,7 +4303,7 @@
     var tv = e.target && e.target.closest ? e.target.closest("#rolenav a[data-view]") : null;
     if (tv) {
       e.preventDefault();
-      if (window.showTutorView) window.showTutorView(tv.getAttribute("data-view"));
+      if (window.showView) window.showView(tv.getAttribute("data-view"));
       return;
     }
     var a = e.target && e.target.closest ? e.target.closest("#rolenav a[href^='#']") : null;
