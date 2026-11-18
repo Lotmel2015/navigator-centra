@@ -283,6 +283,15 @@
   body.role-shkolnik nav.toc, body.role-tyutor nav.toc { display: none; }
   /* Партнёры и материалы видны всем, отчёты — гостям и тьюторам */
 
+  /* ==== Разделы тьютора: переключение страниц вместо длинной прокрутки ==== */
+  body.role-tyutor main { display: flex; flex-direction: column; }
+  body.role-tyutor main > header { display: none; }
+  body.role-tyutor #route { order: 1; }
+  body.role-tyutor #reports-section { order: 2; }
+  body.role-tyutor .tview { display: none !important; }
+  body.role-tyutor .tview.active { display: block !important; }
+  #rolenav a.active { background: #fff; color: var(--navy); }
+
   /* ==== Ролевая мини-навигация (липкая) ==== */
   .rolenav { position: sticky; top: 0; z-index: 45; display: flex; flex-wrap: wrap; gap: .45rem;
     align-items: center; background: var(--navy); border-radius: 0 0 12px 12px;
@@ -591,7 +600,7 @@
   </section>
 
   <!-- ==================== ОТЧЁТЫ И ИССЛЕДОВАНИЯ ==================== -->
-  <section id="reports-section" class="block collapsible" style="margin:2.4rem 0 1rem">
+  <section id="reports-section" class="block collapsible tview" data-view="reports" style="margin:2.4rem 0 1rem">
     <div class="th-head collapsible-head" onclick="toggleBlock(this)">
       <h2>Отчёты и исследования</h2>
       <span class="th-badge">база знаний</span>
@@ -750,7 +759,7 @@
   </div>
 
   <!-- ==================== В ПОМОЩЬ ТЬЮТОРУ ==================== -->
-  <section id="tutor-help">
+  <section id="tutor-help" class="tview" data-view="help">
     <div class="th-head">
       <h2>В помощь тьютору</h2>
       <span class="th-badge">рабочая библиотека</span>
@@ -1143,28 +1152,13 @@
     <div id="diag-summary" style="font-size:.85rem;color:var(--muted)"></div>
   </section>
 
-<section id="dash-tutor">
+<section id="dash-tutor" class="tview active" data-view="panel">
     <div style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between;margin-bottom:.4rem">
       <h3 style="margin:0">Панель тьютора: подтверждение этапов учеников</h3>
       <button class="btn ghost small" onclick="toggleAllStages()">Развернуть / свернуть все этапы</button>
       <button class="btn ghost small" onclick="logout()">Выйти из профиля</button>
     </div>
-    <h2 style="margin-top:1rem">Роли тьютора: три взгляда на одно занятие</h2>
-    <p>Молодому тьютору полезно удерживать три «шляпы». В начале практики редко получается всё сразу — осваивайте по одной: сначала методист (структура), затем психолог (контакт и состояние), затем педагог (техники обучения). К этому добавляются базовые принципы этики (профстандарт 01.005) и психологии доверия.</p>
-    <div class="roles">
-      <div class="rolecard teal"><b>Методист</b><span>знает последовательность, цель и критерии этапа; готовит материалы; управляет временем; фиксирует результат в карте маршрута. Вопрос себе: «что ученик должен понять/уметь к концу занятия?»</span></div>
-      <div class="rolecard navy"><b>Психолог</b><span>видит состояние ученика: тревога, усталость, сопротивление; создаёт безопасность и поддержку; соблюдает границы и правила доверительного контакта. Вопрос себе: «в каком состоянии подросток и что ему сейчас нужно?»</span></div>
-      <div class="rolecard gold"><b>Педагог</b><span>применяет доказанные техники: активное припоминание, распределённая практика, обратная связь «как исправить», самообъяснение. Вопрос себе: «как сделать, чтобы материал остался в голове надолго?»</span></div>
-    </div>
-    <h3>Пять принципов работы (напоминание на каждой неделе)</h3>
-    <div class="coins">
-      <div class="coin"><b>Последовательность</b><span>этапы не перескакивают: пока не сдан критерий, следующее не открывается. Это снимает тревогу «а что дальше».</span></div>
-      <div class="coin"><b>Посильность</b><span>каждое занятие завершается достижимым результатом; задача «чуть выше» текущего уровня.</span></div>
-      <div class="coin"><b>Обратная связь</b><span>«как исправить», а не оценка и не критика. Критика личности снижает результат, а не улучшает (метаанализ Wisniewski).</span></div>
-      <div class="coin"><b>Автономия</b><span>выбор ученика («какая тема ближе») заставляет его учиться самому, а не «под давлением» (Deci &amp; Ryan).</span></div>
-      <div class="coin"><b>Маленькие успехи</b><span>разбивая цель на шаги, мы укрепляем самоэффективность и снижаем выгорание.</span></div>
-    </div>
-    <label>Ученик</label>
+    <p style="font-size:.86rem;color:var(--muted);margin:.2rem 0 .8rem">Справка о ролях тьютора и пяти принципах — в разделе «В помощь тьютору» → «Методики и техники».</p>    <label>Ученик</label>
     <select id="tutor-student" onchange="renderTutorPanel()"></select>
     <div id="tutor-stages"></div>
 
@@ -1173,7 +1167,7 @@
 <!-- навигация по этапам перенесена в раздел «Мой маршрут» -->
 
   <!-- ============ МАРШРУТ ШКОЛЬНИКА: «Мой маршрут» с 2 подразделами ============ -->
-  <section id="stages-group" class="route-section">
+  <section id="stages-group" class="route-section tview" data-view="route">
     <div class="th-head">
       <h2>Мой маршрут</h2>
       <span class="th-badge">4 этапа · 20 занятий</span>
@@ -2345,7 +2339,7 @@
     </div>
 </section>
 
-<section id="partners-section" class="block collapsible" style="margin:2.4rem 0 1rem">
+  <section id="partners-section" class="block collapsible tview" data-view="partners" style="margin:2.4rem 0 1rem">
   <div class="th-head collapsible-head" onclick="toggleBlock(this)">
     <h2>Партнёры и доказательная база</h2>
     <span class="th-badge">проверено</span>
@@ -2730,6 +2724,8 @@
     var dashSh = el("dash-shkolnik");
     var dashTut = el("dash-tutor");
     if (!sess) {
+      tutorViewLogin = null;
+      tutorView = "panel";
       bar.style.display = "none"; prog.style.display = "none";
       if (overlay) {
         overlay.classList.add("show");
@@ -2773,8 +2769,14 @@
       if (dashSh) dashSh.style.display = "none";
       prog.style.display = "none";
       if (dashTut) dashTut.style.display = "block";
+      var freshView = tutorViewLogin !== sess.login;
+      if (freshView) {
+        tutorViewLogin = sess.login;
+        tutorView = "panel";
+      }
       renderTutorPanel();
       renderRolenav("tyutor");
+      showTutorView(tutorView, { silent: !freshView, noScroll: !freshView });
     }
   }
 
@@ -3707,8 +3709,8 @@
           jump: function () { openResult(this); } });
       });
     });
-    /* Документы курса (школьнику) */
-    document.querySelectorAll(".doc-item").forEach(function (di) {
+    /* Документы курса — только школьнику: у тьютора раздел скрыт */
+    if (!isTutor) document.querySelectorAll(".doc-item").forEach(function (di) {
       var h = di.querySelector("h3");
       var desc = di.querySelector(".doc-desc");
       var dtitle = h ? t(h) : "";
@@ -3794,9 +3796,21 @@
     var target = flat[i || 0];
     if (target) target.jump();
   };
+  function ensureTutorViewFor(node) {
+    var sess = getSession();
+    if (!sess || sess.role !== "tyutor" || !node || !node.closest) return;
+    var view = "";
+    if (node.closest("#tutor-help")) view = "help";
+    else if (node.closest("#stages-group")) view = "route";
+    else if (node.closest("#reports-section")) view = "reports";
+    else if (node.closest("#partners-section")) view = "partners";
+    else if (node.closest("#dash-tutor")) view = "panel";
+    if (view && window.showTutorView) window.showTutorView(view, { silent: false, noScroll: true });
+  }
   function openResult(r) {
     var box = document.getElementById("search-results");
     if (box) box.classList.remove("open");
+    ensureTutorViewFor(r.el || r.panel);
     if (r.el) {
       if (r.type === "Этап") {
         var st = r.el.closest(".stage") || r.el;
@@ -4219,6 +4233,30 @@
       if (anyOpen) s.classList.remove("open"); else s.classList.add("open");
     });
   };
+  /* Страницы тьютора: переключение разделов вместо длинной прокрутки */
+  var tutorView = "panel";
+  var tutorViewLogin = null;
+  window.showTutorView = function (view, opts) {
+    opts = opts || {};
+    var sess = getSession();
+    if (!sess || sess.role !== "tyutor") return;
+    if (["panel","help","reports","partners","route"].indexOf(view) === -1) view = "panel";
+    tutorView = view;
+    document.querySelectorAll(".tview").forEach(function (s) {
+      s.classList.toggle("active", s.getAttribute("data-view") === view);
+    });
+    document.querySelectorAll("#rolenav a[data-view]").forEach(function (a) {
+      a.classList.toggle("active", a.getAttribute("data-view") === view);
+    });
+    var rep = el("reports-section");
+    if (rep && view === "reports") rep.classList.add("block-open");
+    var prt = el("partners-section");
+    if (prt && view === "partners") prt.classList.add("block-open");
+    if (!opts.silent) {
+      try { history.replaceState(null, "", "#" + view); } catch (err) {}
+      if (!opts.noScroll) window.scrollTo(0, 0);
+    }
+  };
   window.renderRolenav = function (role) {
     var nav = document.getElementById("rolenav");
     if (!nav) return;
@@ -4226,13 +4264,17 @@
     if (role === "shkolnik") {
       links = [["#dash-shkolnik","Мой профиль"],["#docs","Мои документы"],["#stages-group","Мой маршрут"],["#partners-section","Партнёры"]];
     } else if (role === "tyutor") {
-      links = [["#dash-tutor","Панель тьютора"],["#tutor-help","В помощь тьютору"],["#reports-section","Отчёты"],["#partners-section","Партнёры"]];
+      links = [["#panel","Панель тьютора","panel"],["#help","В помощь тьютору","help"],["#reports","Отчёты","reports"],["#partners","Партнёры","partners"]];
     } else {
       nav.style.display = "none";
       return;
     }
     var html = "<b>Быстрый переход:</b>";
-    links.forEach(function (lk) { var ext = lk[0].indexOf("#") !== 0; html += "<a href='" + lk[0] + "'" + (ext ? " target='_blank'" : "") + ">" + lk[1] + "</a>"; });
+    links.forEach(function (lk) {
+      var ext = lk[0].indexOf("#") !== 0;
+      var dv = lk[2] ? " data-view='" + lk[2] + "'" : "";
+      html += "<a href='" + lk[0] + "'" + dv + (ext ? " target='_blank'" : "") + ">" + lk[1] + "</a>";
+    });
     html += "<a href='Кабинеты/Личные кабинеты.html' style='background:rgba(255,255,255,.28)'>Личный кабинет</a>";
     nav.innerHTML = html;
     nav.style.display = "flex";
@@ -4241,6 +4283,12 @@
     if (head && head.parentElement) head.parentElement.classList.toggle("block-open");
   };
   document.addEventListener("click", function (e) {
+    var tv = e.target && e.target.closest ? e.target.closest("#rolenav a[data-view]") : null;
+    if (tv) {
+      e.preventDefault();
+      if (window.showTutorView) window.showTutorView(tv.getAttribute("data-view"));
+      return;
+    }
     var a = e.target && e.target.closest ? e.target.closest("#rolenav a[href^='#']") : null;
     if (!a) return;
     var sec = document.getElementById(a.getAttribute("href").slice(1));
