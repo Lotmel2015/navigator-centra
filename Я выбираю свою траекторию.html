@@ -1940,7 +1940,7 @@
     <!-- 2. Карта маршрута (ИОМ) -->
     <div class="doc-item" id="diom" data-doc="iom">
       <h3>Индивидуальный образовательный маршрут (ИОМ)</h3>
-      <p class="doc-desc">Это твоя личная карта: куда ты идёшь, что делаешь по пути и как поймёшь, что дошёл. Заполняй её вместе с тьютором и обновляй каждый этап: <b>0.1</b> — когда только начинаешь, <b>1.0</b> — после первых проб, <b>2.0</b> — когда выбираешь экзамены и профиль, <b>финал</b> — в конце пути. Ниже подсказки, что писать в каждом поле.</p>
+      <p class="doc-desc">Это твоя личная карта: куда ты идёшь, что делаешь по пути и как поймёшь, что цель достигнута. Заполняй карту вместе с тьютором и обновляй каждый этап: <b>0,1</b> — когда только начинаешь, <b>1,0</b> — после первых проб, <b>2,0</b> — когда выбираешь экзамены и профиль, <b>финал</b> — в конце пути. Ниже подсказки, что писать в каждом поле.</p>
       <div class="docform">
 
         <div class="doc-part">
@@ -1959,9 +1959,9 @@
             <div><label>Версия маршрута</label>
               <select data-f="version">
                 <option value="">выберите</option>
-                <option>0.1 — стартовая версия</option>
-                <option>1.0 — после первых проб</option>
-                <option>2.0 — этап экзаменов и профиля</option>
+                <option>0,1 — стартовая версия</option>
+                <option>1,0 — после первых проб</option>
+                <option>2,0 — этап экзаменов и профиля</option>
                 <option>финальная — итоговая версия</option>
               </select>
               <span class="doc-tip">На каком ты сейчас этапе пути?</span>
@@ -2071,13 +2071,13 @@
     <!-- 3. Проект ИУП -->
     <div class="doc-item" id="diup" data-doc="iup">
       <h3>Проект индивидуального учебного плана (ИУП) для 10 класса</h3>
-      <p class="doc-desc">Это твой <b>собственный учебный план</b> на 10 класс: какие предметы учить, на каком уровне и сколько часов. Заполняется на занятиях 17–18. По закону у тебя есть право учиться по своему плану — это закреплено в ст. 34 закона «Об образовании».</p>
+      <p class="doc-desc">Это твой <b>собственный учебный план</b> на 10 класс: какие предметы учить, на каком уровне и сколько часов. Заполняется на занятиях 17–18. Право учиться по индивидуальному учебному плану закреплено в ст. 34 Федерального закона «Об образовании в Российской Федерации».</p>
       <div class="docform">
         <div class="doc-part">
           <h4>Шаг 1. Твой профиль</h4>
           <p class="dp-hint">Определи, в каком направлении хочешь учиться дальше.</p>
           <div class="row">
-            <div><label>Ученик, класс</label><input type="text" data-f="iup_fio" placeholder="Иванова Анна, 9«А» (впиши свой класс)"><span class="doc-tip">Твои фамилия, имя и класс.</span></div>
+            <div><label>Ученик, класс, школа</label><input type="text" data-f="iup_fio" placeholder="Иванова Анна, 9«А», СОШ № 5"><span class="doc-tip">Твои фамилия, имя, класс и школа.</span></div>
             <div><label>Профиль (ФГОС СОО)</label>
               <select data-f="iup_profil">
                 <option value="">выберите</option>
@@ -2095,7 +2095,12 @@
           <div><label>Обоснование выбора углублённых предметов</label><textarea data-f="iup_obosn" placeholder="Почему эти 2+ предмета на углублённом уровне"></textarea><span class="doc-tip"><b>Зачем:</b> углублённые предметы нужны для поступления — объясни, почему именно эти.</span></div>
         </div>
         <div class="doc-part">
-          <h4>Шаг 2. Согласование с семьёй и школой</h4>
+          <h4>Шаг 2. Предметы, уровни и часы</h4>
+          <p class="dp-hint">Собери план по предметам: что учить на базовом уровне, что на углублённом и сколько часов в неделю.</p>
+          <div><label>Предметы, уровни и часы</label><textarea data-f="iup_predmety" placeholder="профильная математика — углублённый, 6 ч/нед; физика — углублённый, 4 ч/нед; ..."></textarea><span class="doc-tip"><b>Зачем:</b> ИУП — это не список желаний, а план с уровнем и нагрузкой; его согласуют со школой.</span></div>
+        </div>
+        <div class="doc-part">
+          <h4>Шаг 3. Согласование с семьёй и школой</h4>
           <p class="dp-hint">Заполняется после встреч — это договорённости, а не экзамен.</p>
           <div class="row">
             <div><label>Что согласовано с родителями</label><textarea data-f="iup_sogl_rod" placeholder="Даты встреч, решения"></textarea><span class="doc-tip">Что решили вместе с родителями на встрече.</span></div>
@@ -3160,6 +3165,7 @@
     applyExamTexts();
     renderControls();
     renderSession();
+    prefillDocs();
   }
 
   /* Пометить материалы тьютора (методички и источники) как видимые только тьютору.
@@ -3210,6 +3216,61 @@
   }
   function saveDocData(doc, data) {
     try { localStorage.setItem(docStorageKey(doc), JSON.stringify(data)); } catch (e) {}
+  }
+
+  /* Автозаполнение ИОМ/ИУП из профиля, анкеты, диагностики и пройденных этапов */
+  function academicYearNow() {
+    var d = new Date(); var y = d.getFullYear();
+    if (d.getMonth() + 1 < 9) y -= 1;
+    return y + "/" + (y + 1);
+  }
+  function prefillDocs() {
+    var sess = getSession();
+    if (!sess || sess.role !== "shkolnik") return;
+    var us = getUsers().find(function (u) { return u.login === sess.login; });
+    if (!us) return;
+    var tutor = us.tutorId ? getUsers().find(function (u) { return u.login === us.tutorId; }) : null;
+    var diag = loadDiag(sess.login) || {};
+    var done = getDone(sess.login) || {};
+    var scr = us.screening || {};
+    var top = diag.interests && diag.interests.top ? diag.interests.top.label : "";
+    var second = diag.interests && diag.interests.second ? diag.interests.second.label : "";
+    var diagAreas = [top, second].filter(Boolean).join(", ");
+    var areas = [scr.int, diagAreas].filter(Boolean).join("; ");
+    var doneCount = ["8-1", "8-2", "9-1", "9-2"].filter(function (k) { return !!done[k]; }).length;
+    var version = doneCount >= 4 ? "финальная — итоговая версия"
+      : doneCount === 3 ? "2,0 — этап экзаменов и профиля"
+      : doneCount >= 1 ? "1,0 — после первых проб"
+      : "0,1 — стартовая версия";
+    prefillDocFields("iom", {
+      fio: us.fio || "",
+      klass: us.klass ? us.klass + " класс" : "",
+      shkola: us.ou || "",
+      tyutor: tutor ? (tutor.fio || "") : "",
+      god: academicYearNow(),
+      version: version,
+      oblasti: areas,
+      diagn_interesy: diagAreas
+    }, sess.login);
+    prefillDocFields("iup", {
+      iup_fio: [us.fio, us.klass ? us.klass + " класс" : "", us.ou].filter(Boolean).join(", "),
+      iup_svyaz: diagAreas ? "Из ИОМ: интересы — " + diagAreas : ""
+    }, sess.login);
+  }
+  function prefillDocFields(doc, defaults, login) {
+    var key = docStorageKey(doc, login);
+    try { if (localStorage.getItem(key)) return; } catch (e) { return; }
+    var box = document.querySelector('.doc-item[data-doc="' + doc + '"]');
+    if (!box) return;
+    var changed = false;
+    Object.keys(defaults).forEach(function (f) {
+      var field = box.querySelector('[data-f="' + f + '"]');
+      if (!field) return;
+      var v = defaults[f] || "";
+      if (!v) return;
+      if (!field.value) { field.value = v; changed = true; }
+    });
+    if (changed) { try { saveDocData(doc, collectDoc(doc)); } catch (e) {} }
   }
   function collectDoc(doc) {
     var box = document.getElementById("d" + (doc === "reflex" ? "reflex" : doc) );
