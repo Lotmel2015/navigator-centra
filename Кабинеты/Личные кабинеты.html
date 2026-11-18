@@ -82,6 +82,9 @@
   }
   .rail .item:hover { background: rgba(255,255,255,.12); }
   .rail .item.active { background: #fff; color: var(--navy); font-weight: 650; }
+  .rail .item .doc-name { display: block; min-width: 0; }
+  .rail .item .doc-name small { display: block; font-size: .72rem; font-weight: 500; line-height: 1.25; margin-top: .15rem; color: #b9c8dc; }
+  .rail .item.active .doc-name small { color: #5b6f89; }
   .rail .item .cnt { font-size: .74rem; background: rgba(255,255,255,.16); border-radius: 999px; padding: .05rem .45rem; }
   .rail .item.active .cnt { background: var(--navy-soft); color: var(--navy); }
   .rail .switch { margin-top: 1.2rem; display: flex; gap: .4rem; flex-wrap: wrap; }
@@ -315,8 +318,9 @@
   ];
 
   var DOCS = [
-    { id: "iup", name: "ИУП" },
-    { id: "iom", name: "ИОМ" },
+    { id: "iup", name: "ИУП", full: "индивидуальный учебный план" },
+    { id: "iom", name: "ИОМ", full: "индивидуальный образовательный маршрут" },
+    { id: "control", name: "Журнал контроля" },
     { id: "journal", name: "Журнал ошибок и рефлексии" }
   ];
 
@@ -379,13 +383,64 @@ var SEED = {"u-grishaeva":{"iup":{"profile":"10 «А», Школа космон�
   function noIup(d) { return !d || (!(d.goal || "").trim() && !(d.exams || []).length && !(d.subjects || []).length); }
   function noIom(d) { return !d || (!(d.goal || "").trim() && !(d.stages || []).length && !(d.points || []).length); }
   function noJournal(d) { return !d || !(d.weeks || []).length || !(d.weeks || []).some(function (w) { return (w.task || "").trim(); }); }
+
+  /* ---------- автозаполнение ИУП/ИОМ из данных портала ---------- */
+  var ROUTE_STAGES = [
+    { k: "8-1", s: "Этап 1 · стартовая диагностика", t: "«Старт: я и мир профессий»" },
+    { k: "8-2", s: "Этап 2 · профпробы и встречи", t: "«Пробы: примеряю профессию»" },
+    { k: "9-1", s: "Этап 3 · экзамены и профиль", t: "«ОГЭ и профиль: я выбираю осознанно»" },
+    { k: "9-2", s: "Этап 4 · проект ИУП", t: "«Проект ИУП: от выбора к документу»" }
+  ];
+  function academicYearNow() {
+    var d = new Date(); var y = d.getFullYear();
+    if (d.getMonth() + 1 < 9) y -= 1;
+    return y + "/" + (y + 1);
+  }
+  function autoGoal(u, iomDoc) {
+    var g = ((iomDoc && (iomDoc.cel_long || iomDoc.cel_year)) || "").trim();
+    if (g) return g;
+    var scr = u.screening || {};
+    var diag = readJSON("iop_diag_" + u.login, null) || {};
+    var top = diag.interests && diag.interests.top ? diag.interests.top.label : "";
+    var second = diag.interests && diag.interests.second ? diag.interests.second.label : "";
+    var parts = [];
+    if (scr.goal) parts.push("Цель: " + scr.goal);
+    if (scr.int) parts.push("Интерес: " + scr.int);
+    if (top) parts.push("Направления по диагностике: " + [top, second].filter(Boolean).join(", "));
+    return parts.join(" · ");
+  }
+  function autoIup(u) {
+    var iomDoc = readJSON("iop_doc_iom_" + u.login, null) || {};
+    var profile = [];
+    if (u.klass) profile.push(u.klass + " класс");
+    if (u.ou) profile.push(u.ou);
+    profile.push(academicYearNow());
+    return { profile: profile.join(", "), goal: autoGoal(u, iomDoc), exams: [], subjects: [], vuz: [], olymps: [], mode: "", control: "" };
+  }
+  function autoIom(u) {
+    var iomDoc = readJSON("iop_doc_iom_" + u.login, null) || {};
+    var done = readJSON("iop_done_" + u.login, null) || {};
+    var stages = ROUTE_STAGES.map(function (s) {
+      return { s: s.s + (done[s.k] ? " · пройден" : ""), t: s.t };
+    });
+    var res = [];
+    if (iomDoc.res_dom) res.push("Дома: " + iomDoc.res_dom);
+    if (iomDoc.res_shkola) res.push("Школа: " + iomDoc.res_shkola);
+    if (iomDoc.res_dop) res.push("Доп. образование: " + iomDoc.res_dop);
+    if (iomDoc.res_ludi) res.push("Люди: " + iomDoc.res_ludi);
+    return { goal: autoGoal(u, iomDoc), stages: stages, points: [], resources: res.join("; "), deviation: "" };
+  }
   function buildPupil(u) {
     var seed = seedFor(u.login);
     var li = loadDoc("iup", u.login);
     var lm = loadDoc("iom", u.login);
     var lj = loadDoc("journal", u.login);
-    var iup = noIup(li) ? ((seed && seed.iup) || li || emptyIup()) : li;
-    var iom = noIom(lm) ? ((seed && seed.iom) || lm || emptyIom()) : lm;
+    var s = getSession();
+    var isSelf = !!(s && s.role === "shkolnik" && s.login === u.login);
+    var iupEmpty = noIup(li) && !(seed && seed.iup);
+    var iomEmpty = noIom(lm) && !(seed && seed.iom);
+    var iup = (seed && seed.iup) || (iupEmpty && isSelf ? autoIup(u) : null) || li || emptyIup();
+    var iom = (seed && seed.iom) || (iomEmpty && isSelf ? autoIom(u) : null) || lm || emptyIom();
     var journal = noJournal(lj) ? ((seed && seed.journal) || lj || emptyJournal()) : lj;
     if (typeof journal.reflection === "string") journal.reflection = [];
     return {
@@ -403,7 +458,7 @@ var SEED = {"u-grishaeva":{"iup":{"profile":"10 «А», Школа космон�
   var session = getSession();
   var me = session ? userByLogin(session.login) : null;
   var data = { tutor: { name: "", cabinet: "" }, pupils: [] };
-  var state = { role: null, pupilId: null, doc: "journal", tab: "plan", arch: false };
+  var state = { role: null, pupilId: null, doc: "control", tab: "plan", arch: false };
 
   if (me && session.role === "shkolnik") {
     var selfPupil = buildPupil(me);
@@ -480,7 +535,7 @@ var SEED = {"u-grishaeva":{"iup":{"profile":"10 «А», Школа космон�
       '<h3>Мои документы</h3>' +
       DOCS.map(function (d) {
         return '<button class="item' + (state.doc === d.id ? " active" : "") + '" data-act="doc" data-doc="' + d.id + '">' +
-          '<span>' + esc(d.name) + '</span>' +
+          '<span class="doc-name">' + esc(d.name) + (d.full ? '<small>' + esc(d.full) + '</small>' : '') + '</span>' +
           (d.id === "journal" ? '<span class="cnt">' + waitingCount(p) + '</span>' : '') + '</button>';
       }).join("") +
       '<div class="switch">' +
@@ -733,22 +788,25 @@ var SEED = {"u-grishaeva":{"iup":{"profile":"10 «А», Школа космон�
     return head + '<div class="refl-list">' + list + '</div>';
   }
 
-  function journalDoc(p, readOnly) {
+  function controlDoc(p, readOnly) {
     var tabs = '<div class="tabs">' +
       '<button class="' + (state.tab === "plan" ? "active" : "") + '" data-act="tab" data-tab="plan">План недель</button>' +
+      '<button class="' + (state.tab === "checks" ? "active" : "") + '" data-act="tab" data-tab="checks">Чек-фиксации</button>' +
+    '</div>';
+    var body = state.tab === "checks" ? checksDoc(p, readOnly) : weeksTable(p, readOnly);
+    return '<div class="panel"><h2>Журнал контроля</h2>' +
+      '<p class="hint">План недель с сентября по май; каждая неделя — контрольная точка из ИУП. Отмечайте факт и статус выполнения.</p>' +
+      tabs + body + '</div>';
+  }
+
+  function journalDoc(p, readOnly) {
+    var tabs = '<div class="tabs">' +
       '<button class="' + (state.tab === "errors" ? "active" : "") + '" data-act="tab" data-tab="errors">Ошибки</button>' +
       '<button class="' + (state.tab === "refl" ? "active" : "") + '" data-act="tab" data-tab="refl">Рефлексия</button>' +
     '</div>';
-    var body = "";
-    if (state.tab === "plan") {
-      body = weeksTable(p, readOnly);
-    } else if (state.tab === "errors") {
-      body = errorsBlock(p, readOnly);
-    } else {
-      body = reflectionBlock(p, readOnly);
-    }
+    var body = state.tab === "errors" ? errorsBlock(p, readOnly) : reflectionBlock(p, readOnly);
     return '<div class="panel"><h2>Журнал ошибок и рефлексии</h2>' +
-      '<p class="hint">План недель с сентября по январь; каждая неделя — контрольная точка из ИУП. Ошибки и рефлексию можно добавлять в любой момент: прошлые записи сохраняются.</p>' +
+      '<p class="hint">Ошибки и рефлексию можно добавлять в любой момент: прошлые записи сохраняются.</p>' +
       tabs + body + '</div>';
   }
 
@@ -780,6 +838,7 @@ var SEED = {"u-grishaeva":{"iup":{"profile":"10 «А», Школа космон�
     var content = "";
     if (state.doc === "iup") content = docIup(p, false);
     else if (state.doc === "iom") content = docIom(p, false);
+    else if (state.doc === "control") content = controlDoc(p, false);
     else content = journalDoc(p, false);
 
     return '<div class="cabinet">' + railPupil(p) +
@@ -790,7 +849,7 @@ var SEED = {"u-grishaeva":{"iup":{"profile":"10 «А», Школа космон�
         '</div><div><span class="chip teal">кабинет школьника</span></div></div>' +
         progressBlock(p) +
         content +
-        (state.doc === "journal" && state.tab === "plan"
+        (state.doc === "control" && state.tab === "plan"
           ? '<div class="savebar"><span class="status' + (storageOk ? "" : " ok") + '">' +
               (storageOk ? 'Изменения сохраняются автоматически' : 'Сохранение недоступно — данные только в памяти') +
             '</span><button class="btn solid" data-act="send">Отправить тьютору</button>' +
@@ -959,15 +1018,16 @@ var SEED = {"u-grishaeva":{"iup":{"profile":"10 «А», Школа космон�
           '</div>' +
           (state.doc === "iup" ? docIup(p, true) :
            state.doc === "iom" ? docIom(p, true) :
-           ('<div class="tabs">' +
+           state.doc === "control" ? ('<div class="tabs">' +
               '<button class="' + (state.tab === "plan" ? "active" : "") + '" data-act="tab" data-tab="plan">План недель</button>' +
               '<button class="' + (state.tab === "res" ? "active" : "") + '" data-act="tab" data-tab="res">Резолюции</button>' +
+            '</div>' +
+            (state.tab === "res" ? tutorResolutionPanel(p) : tutorWeeks(p))) :
+           ('<div class="tabs">' +
               '<button class="' + (state.tab === "errors" ? "active" : "") + '" data-act="tab" data-tab="errors">Ошибки</button>' +
               '<button class="' + (state.tab === "refl" ? "active" : "") + '" data-act="tab" data-tab="refl">Рефлексия</button>' +
             '</div>' +
-            (state.tab === "errors" ? tutorErrors(p) :
-             state.tab === "refl" ? tutorReflection(p) :
-             state.tab === "res" ? tutorResolutionPanel(p) : tutorWeeks(p)))) +
+            (state.tab === "refl" ? tutorReflection(p) : tutorErrors(p)))) +
         '</div>';
     }
 
@@ -1045,14 +1105,14 @@ var SEED = {"u-grishaeva":{"iup":{"profile":"10 «А», Школа космон�
       state.arch = false; render();
     } else if (act === "doc") {
       state.doc = t.getAttribute("data-doc");
-      state.tab = "plan";
+      state.tab = state.doc === "journal" ? "errors" : "plan";
       render();
     } else if (act === "tab") {
       state.tab = t.getAttribute("data-tab");
       render();
     } else if (act === "pupil") {
       state.pupilId = t.getAttribute("data-id");
-      state.doc = "journal";
+      state.doc = "control";
       state.tab = "plan";
       render();
     } else if (act === "back-list") {
